@@ -1,0 +1,397 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08CD8B911B338A7500F7E530 /* libTradeItIosEmsApi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */; };
+		08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfPrice.m */; };
+		08CD8BA81B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */; };
+		08CD8BA91B338B5A00F7E530 /* TradeItAuthenticationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */; };
+		08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */; };
+		08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		08CD8B921B338A7500F7E530 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08CD8B7D1B338A7500F7E530 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08CD8B841B338A7500F7E530;
+			remoteInfo = TradeItIosEmsApi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		08CD8B831B338A7500F7E530 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTradeItIosEmsApi.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		08CD8B901B338A7500F7E530 /* TradeItIosEmsApiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TradeItIosEmsApiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		08CD8B961B338A7500F7E530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfPrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeitStockOrEtfPrice.m; sourceTree = "<group>"; };
+		08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItStockOrEtfOrderInfo.m; sourceTree = "<group>"; };
+		08CD8BA11B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfOrderInfo.h; sourceTree = "<group>"; };
+		08CD8BA21B338B5A00F7E530 /* TradeitStockOrEtfPrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeitStockOrEtfPrice.h; sourceTree = "<group>"; };
+		08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItAuthenticationInfo.m; sourceTree = "<group>"; };
+		08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItStockOrEtfTradeManager.m; sourceTree = "<group>"; };
+		08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItAuthenticationInfo.h; sourceTree = "<group>"; };
+		08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfTradeManager.h; sourceTree = "<group>"; };
+		08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockOrEtfTradeTest.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		08CD8B821B338A7500F7E530 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CD8B8D1B338A7500F7E530 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08CD8B911B338A7500F7E530 /* libTradeItIosEmsApi.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08CD8B7C1B338A7500F7E530 = {
+			isa = PBXGroup;
+			children = (
+				08CD8B871B338A7500F7E530 /* TradeItIosEmsApi */,
+				08CD8B941B338A7500F7E530 /* TradeItIosEmsApiTests */,
+				08CD8B861B338A7500F7E530 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		08CD8B861B338A7500F7E530 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */,
+				08CD8B901B338A7500F7E530 /* TradeItIosEmsApiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		08CD8B871B338A7500F7E530 /* TradeItIosEmsApi */ = {
+			isa = PBXGroup;
+			children = (
+				08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfPrice.m */,
+				08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */,
+				08CD8BA11B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.h */,
+				08CD8BA21B338B5A00F7E530 /* TradeitStockOrEtfPrice.h */,
+				08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */,
+				08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */,
+				08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */,
+				08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.h */,
+			);
+			path = TradeItIosEmsApi;
+			sourceTree = "<group>";
+		};
+		08CD8B941B338A7500F7E530 /* TradeItIosEmsApiTests */ = {
+			isa = PBXGroup;
+			children = (
+				08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */,
+				08CD8B951B338A7500F7E530 /* Supporting Files */,
+			);
+			path = TradeItIosEmsApiTests;
+			sourceTree = "<group>";
+		};
+		08CD8B951B338A7500F7E530 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				08CD8B961B338A7500F7E530 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		08CD8B841B338A7500F7E530 /* TradeItIosEmsApi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08CD8B991B338A7500F7E530 /* Build configuration list for PBXNativeTarget "TradeItIosEmsApi" */;
+			buildPhases = (
+				08CD8B811B338A7500F7E530 /* Sources */,
+				08CD8B821B338A7500F7E530 /* Frameworks */,
+				08CD8B831B338A7500F7E530 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TradeItIosEmsApi;
+			productName = TradeItIosEmsApi;
+			productReference = 08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		08CD8B8F1B338A7500F7E530 /* TradeItIosEmsApiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08CD8B9C1B338A7500F7E530 /* Build configuration list for PBXNativeTarget "TradeItIosEmsApiTests" */;
+			buildPhases = (
+				08CD8B8C1B338A7500F7E530 /* Sources */,
+				08CD8B8D1B338A7500F7E530 /* Frameworks */,
+				08CD8B8E1B338A7500F7E530 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08CD8B931B338A7500F7E530 /* PBXTargetDependency */,
+			);
+			name = TradeItIosEmsApiTests;
+			productName = TradeItIosEmsApiTests;
+			productReference = 08CD8B901B338A7500F7E530 /* TradeItIosEmsApiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08CD8B7D1B338A7500F7E530 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = TradeIt;
+				TargetAttributes = {
+					08CD8B841B338A7500F7E530 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+					08CD8B8F1B338A7500F7E530 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+				};
+			};
+			buildConfigurationList = 08CD8B801B338A7500F7E530 /* Build configuration list for PBXProject "TradeItIosEmsApi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 08CD8B7C1B338A7500F7E530;
+			productRefGroup = 08CD8B861B338A7500F7E530 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				08CD8B841B338A7500F7E530 /* TradeItIosEmsApi */,
+				08CD8B8F1B338A7500F7E530 /* TradeItIosEmsApiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		08CD8B8E1B338A7500F7E530 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		08CD8B811B338A7500F7E530 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08CD8BA81B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m in Sources */,
+				08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfPrice.m in Sources */,
+				08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m in Sources */,
+				08CD8BA91B338B5A00F7E530 /* TradeItAuthenticationInfo.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CD8B8C1B338A7500F7E530 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		08CD8B931B338A7500F7E530 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08CD8B841B338A7500F7E530 /* TradeItIosEmsApi */;
+			targetProxy = 08CD8B921B338A7500F7E530 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08CD8B971B338A7500F7E530 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		08CD8B981B338A7500F7E530 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		08CD8B9A1B338A7500F7E530 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		08CD8B9B1B338A7500F7E530 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		08CD8B9D1B338A7500F7E530 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TradeItIosEmsApiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		08CD8B9E1B338A7500F7E530 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TradeItIosEmsApiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08CD8B801B338A7500F7E530 /* Build configuration list for PBXProject "TradeItIosEmsApi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08CD8B971B338A7500F7E530 /* Debug */,
+				08CD8B981B338A7500F7E530 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08CD8B991B338A7500F7E530 /* Build configuration list for PBXNativeTarget "TradeItIosEmsApi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08CD8B9A1B338A7500F7E530 /* Debug */,
+				08CD8B9B1B338A7500F7E530 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		08CD8B9C1B338A7500F7E530 /* Build configuration list for PBXNativeTarget "TradeItIosEmsApiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08CD8B9D1B338A7500F7E530 /* Debug */,
+				08CD8B9E1B338A7500F7E530 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08CD8B7D1B338A7500F7E530 /* Project object */;
+}
