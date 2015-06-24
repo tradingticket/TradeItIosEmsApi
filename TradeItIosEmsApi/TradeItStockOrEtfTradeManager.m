@@ -22,5 +22,5 @@
     // Forward to the "initWithPublisherApp" initialization method
     return [self initWithPublisherApp:@""];
 }
-    
+
 @end

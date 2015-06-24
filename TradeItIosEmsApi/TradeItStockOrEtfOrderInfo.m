@@ -56,5 +56,11 @@
         self.price = [price copy];
         self.expiration = expiration;
     }
-    return self;}
+    return self;
+}
+
+- (NSString*) description{
+    return [NSString stringWithFormat:@"TradeItStockOrEtfOrderInfo: action:%@ quantity:%d symbol:%@ price:%@ expiration:%@", [self getActionString], self.quantity, self.symbol, self.price, [self getExpirationString]];
+}
+
 @end

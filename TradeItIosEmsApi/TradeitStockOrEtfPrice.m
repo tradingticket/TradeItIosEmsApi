@@ -69,7 +69,9 @@
     return self;
 }
 
-
+- (NSString *)description {
+    return [NSString stringWithFormat:@"TradeitStockOrEtfPrice : type:%@ limitPrice:%f stopPrice:%f", [self getTypeString], self.limitPrice, self.stopPrice];
+}
 
 
 @end

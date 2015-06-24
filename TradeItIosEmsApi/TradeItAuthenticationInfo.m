@@ -23,4 +23,8 @@
     return [self initWithId:@"" andPassword:@""];
 }
 
+-(NSString*) description {
+    return [NSString stringWithFormat:@"TradeItAuthenticationInfo: id:%@ password:%@", self.id, self.password];
+}
+
 @end

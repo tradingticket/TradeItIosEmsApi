@@ -13,6 +13,13 @@
 #import "TradeitStockOrEtfPrice.h"
 #import "TradeItAuthenticationInfo.h"
 
+#import "TradeitStockOrEtfTradeResult.h"
+#import "TradeitStockOrEtfTradeSuccessResult.h"
+#import "TradeItStockOrEtfReviewOrderDetails.h"
+#import "TradeitStockOrEtfTradeReviewResult.h"
+#import "TradeitStockOrEtfTradeSecurityQuestionResult.h"
+#import "TradeitStockOrEtfTradeMultipleAccountResult.h"
+#import "TradeItStockOrEtfTradeInProgressResult.h"
 
 @interface StockOrEtfTradeTest : XCTestCase
 
@@ -42,17 +49,35 @@
     
     TradeItAuthenticationInfo *authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummyPassword"];
     
-    NSLog(@"---------------------------Star Test----------------------------");
-    NSLog(@"------Hello World %@", tradeManager.publisherApp);
-    NSLog(@"------Order action %@", [orderInfo getActionString]);
-    NSLog(@"------Order Exiration %@", [orderInfo getExpirationString]);
-    NSLog(@"------Price Type %@ - limit %f, stop %f", [orderInfo.price getTypeString], orderInfo.price.limitPrice, orderInfo.price.stopPrice);
-    NSLog(@"------symbol %@", orderInfo.symbol);
-    NSLog(@"------quantity %d", orderInfo.quantity);
-    NSLog(@"------authenticationInfo %@ %@", authenticationInfo.id , authenticationInfo.password);
-
-
-
+    TradeitStockOrEtfTradeResult* tradeResult = [[TradeitStockOrEtfTradeResult alloc] initWithToken:@"token95489048" andShortMessage:@"succesful trade" andLongMessages:@[@"yoy",@"yoyoyo"]];
+    
+    TradeItStockOrEtfReviewOrderDetails * orderDetails = [TradeItStockOrEtfReviewOrderDetails new];
+    TradeitStockOrEtfTradeReviewResult *reviewResult = [[TradeitStockOrEtfTradeReviewResult alloc]
+                                                        initWithToken:@"token95489048"
+                                                        andShortMessage:@"succesful trade"
+                                                        andLongMessages:@[@"yoy",@"yoyoyo"]
+                                                        andOrderDetails: orderDetails
+                                                        andWarnings:@[@"wanting 1",@"warning2"]
+                                                        andAckWarnings:@[@"ack warning1", @"ack warning2"]];
+    
+    TradeitStockOrEtfTradeSuccessResult* successResult = [[TradeitStockOrEtfTradeSuccessResult alloc] initWithToken:@"token" andShortMessage:@"short message" andLongMessages:@[@"yoy",@"yoyoyo"] andOrderNumber:@"order number" andConfirmationMessage:@"confirmation" andTimestamp:@"12h34 EDT" andBroker:@"dummy"];
+    
+    TradeitStockOrEtfTradeSecurityQuestionResult *securityQuestionResult = [[TradeitStockOrEtfTradeSecurityQuestionResult alloc] initWithToken:@"token" andShortMessage:@"short message" andLongMessages:@[@"yo", @"yoyo"] andSecurityQuestion:@"What is your first name" andInformationShortMessage:@"info short message" andInformationLongMessage:@"info long message" andErrorFields:nil];
+    
+    TradeItStockOrEtfTradeMultipleAccountResult * multipleAccountResult = [[TradeItStockOrEtfTradeMultipleAccountResult alloc] initWithToken:@"toke" andShortMessage:@"short message" andLongMessages:@[@"yo"] andAccountList:@[@"acct 1", @"acct 2"]];
+    TradeItStockOrEtfTradeInProgressResult *inProgressResult = [[TradeItStockOrEtfTradeInProgressResult alloc] initWithToken:@"token" andShortMessage:@"Connecting with your broker"];
+    
+    NSLog(@"---------------------------Start Test----------------------------");
+    NSLog(@"------Publisher app %@", tradeManager.publisherApp);
+    NSLog(@"------%@", orderInfo );
+    NSLog(@"------%@ ", authenticationInfo);
+    NSLog(@"------tradeResult:%@", tradeResult);
+    NSLog(@"%@", reviewResult);
+    NSLog(@"%@", successResult);
+    NSLog(@"%@", securityQuestionResult);
+    NSLog(@"%@", multipleAccountResult);
+    NSLog(@"%@", inProgressResult);
+    
     NSLog(@"---------------------------End Test-----------------------------");
 }
 
