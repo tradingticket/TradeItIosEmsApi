@@ -1,5 +1,5 @@
 //
-//  TradeItAuthenticationInfo.h
+//  TradeItRequestAuthenticationInfo.h
 //  TradeItIosEmsApi
 //
 //  Created by Serge Kreiker on 6/17/15.
@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JSONModel.h"
 
-@interface TradeItAuthenticationInfo : NSObject
+@interface TradeItAuthenticationInfo : JSONModel<NSCopying>
 
 @property (copy) NSString *id;
 @property (copy) NSString *password;

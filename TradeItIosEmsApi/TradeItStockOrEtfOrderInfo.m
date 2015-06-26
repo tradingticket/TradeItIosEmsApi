@@ -10,57 +10,77 @@
 
 @implementation TradeItStockOrEtfOrderInfo
 
-+ (NSDictionary *)orderActionStrings
-{
-    return @{@(TradeItActionBuy) : @"buy",
-             @(TradeItActionSell) : @"sell",
-             @(TradeItActionSellShort) : @"sellShort",
-             @(TradeItActionBuyToCover): @"buyToCover"
-             };
-}
 
-+ (NSDictionary *)orderExpirationStrings
-{
-    return @{@(TradeItExpirationDay) : @"day",
-             @(TradeItExpirationGtc) : @"gtc"
-             };
-}
-
-
-- (NSString*) getActionString{
-    
-    if(self.action >= TradeItActionUnknown){
-        return @"unknownAction";
-    }
-    else{
-        return [[self class] orderActionStrings][@(self.action)];
-    }
-}
-
-- (NSString*) getExpirationString{
-    
-    if(self.expiration >= TradeItExpirationUnknown){
-        return @"unknownExpiration";
-    }
-    else{
-        return [[self class] orderExpirationStrings][@(self.expiration)];
-    }
-}
-
-- (id) initWithAction:(TradeItStockOrEtfOrderAction) action andQuantity:(double) quantity andSymbol:(NSString*)symbol andPrice:(TradeitStockOrEtfPrice*) price andExpiration:(TradeItStockOrEtfOrderExpiration) expiration{
+- (id) initWithAction:(TradeItStockOrEtfOrderAction) action andQuantity:(double) quantity andSymbol:(NSString*)symbol andPrice:(TradeitStockOrEtfOrderPrice*) price andExpiration:(TradeItStockOrEtfOrderExpiration) expiration{
     self = [super init];
     if (self) {
-        self.action = action;
+        self.action = [[self class ] getActionString:action];
         self.quantity = quantity;
         self.symbol = [symbol copy];
         self.price = [price copy];
-        self.expiration = expiration;
+        self.expiration = [[self class] getExpirationString:expiration];
     }
     return self;
 }
 
-- (NSString*) description{
-    return [NSString stringWithFormat:@"TradeItStockOrEtfOrderInfo: action:%@ quantity:%d symbol:%@ price:%@ expiration:%@", [self getActionString], self.quantity, self.symbol, self.price, [self getExpirationString]];
+- (id) init{
+    return [self initWithAction:TradeItStockOrEtfOrderActionBuy andQuantity:0.0 andSymbol:@"" andPrice:[[TradeitStockOrEtfOrderPrice alloc] initMarket] andExpiration:TradeItStockOrEtfOrderExpirationDay];
 }
+- (NSString*) description{
+    return [NSString stringWithFormat:@"TradeItStockOrEtfOrderInfo: action:%@ quantity:%d symbol:%@ price:%@ expiration:%@", self.action, self.quantity, self.symbol, self.price, self.expiration];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    TradeItStockOrEtfOrderInfo *copy = [super copyWithZone:zone];
+    if(copy){
+        copy.action = [self.action copyWithZone:zone];
+        copy.quantity = self.quantity;
+        copy.symbol = [self.symbol copyWithZone:zone];
+        copy.price = [self.price copyWithZone:zone];
+        copy.expiration = [self.expiration copyWithZone:zone];
+    }
+    return copy;
+}
+
+
+//private
++ (NSDictionary *)orderActionStrings
+{
+    return @{@(TradeItStockOrEtfOrderActionBuy) : @"buy",
+             @(TradeItStockOrEtfOrderActionSell) : @"sell",
+             @(TradeItStockOrEtfOrderActionSellShort) : @"sellShort",
+             @(TradeItStockOrEtfOrderActionBuyToCover): @"buyToCover"
+             };
+}
+
+
++ (NSString*) getActionString: (TradeItStockOrEtfOrderAction) action{
+    
+    if(action >= TradeItStockOrEtfOrderActionUnknown){
+        return @"unknownAction";
+    }
+    else{
+        return [[self class] orderActionStrings][@(action)];
+    }
+}
+
++ (NSDictionary *)orderExpirationStrings
+{
+    return @{@(TradeItStockOrEtfOrderExpirationDay) : @"day",
+             @(TradeItStockOrEtfOrderExpirationGtc) : @"gtc"
+             };
+}
+
++ (NSString*) getExpirationString:(TradeItStockOrEtfOrderExpiration) expiration{
+    
+    if(expiration >= TradeItStockOrEtfOrderExpirationUnknown){
+        return @"unknownExpiration";
+    }
+    else{
+        return [[self class] orderExpirationStrings][@(expiration)];
+    }
+}
+
 
 @end

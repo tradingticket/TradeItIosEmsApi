@@ -1,5 +1,5 @@
 //
-//  TradeItAuthenticationInfo.m
+//  TradeItRequestAuthenticationInfo.m
 //  TradeItIosEmsApi
 //
 //  Created by Serge Kreiker on 6/17/15.
@@ -25,6 +25,12 @@
 
 -(NSString*) description {
     return [NSString stringWithFormat:@"TradeItAuthenticationInfo: id:%@ password:%@", self.id, self.password];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id copy = [[[self class] alloc] initWithId:self.id andPassword:self.password];
+    return copy;
 }
 
 @end
