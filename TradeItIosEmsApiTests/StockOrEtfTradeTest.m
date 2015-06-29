@@ -19,7 +19,6 @@
 #import "TradeItStockOrEtfTradeReviewResult.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItMultipleAccountResult.h"
-#import "TradeItInProgressResult.h"
 #import "TradeItStockOrEtfAuthenticateAndTradeRequest.h"
 #import "JSONHTTPClient.h"
 #import <Foundation/NSURLConnection.h>
@@ -138,14 +137,12 @@
 //    TradeitStockOrEtfTradeSecurityQuestionResult *securityQuestionResult = [[TradeitStockOrEtfTradeSecurityQuestionResult alloc] initWithToken:@"token" andShortMessage:@"short message" andLongMessages:@[@"yo", @"yoyo"] andSecurityQuestion:@"What is your first name" andInformationShortMessage:@"info short message" andInformationLongMessage:@"info long message" andErrorFields:nil];
 //    
 //    TradeItStockOrEtfTradeMultipleAccountResult * multipleAccountResult = [[TradeItStockOrEtfTradeMultipleAccountResult alloc] initWithToken:@"toke" andShortMessage:@"short message" andLongMessages:@[@"yo"] andAccountList:@[@"acct 1", @"acct 2"]];
-//    TradeItStockOrEtfTradeInProgressResult *inProgressResult = [[TradeItStockOrEtfTradeInProgressResult alloc] initWithToken:@"token" andShortMessage:@"Connecting with your broker"];
    
     
 //    NSLog(@"%@", reviewResult);
 //    NSLog(@"%@", successResult);
 //    NSLog(@"%@", securityQuestionResult);
 //    NSLog(@"%@", multipleAccountResult);
-//    NSLog(@"%@", inProgressResult);
     
     NSLog(@"---------------------------End Test-----------------------------");
 }

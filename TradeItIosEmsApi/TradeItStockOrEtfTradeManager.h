@@ -12,7 +12,6 @@
 #import "TradeItAuthenticationInfo.h"
 
 #import "TradeitResult.h"
-#import "TradeItInProgressResult.h"
 #import "TradeItInformationNeededResult.h"
 #import "TradeItMultipleAccountResult.h"
 #import "TradeItSecurityQuestionResult.h"

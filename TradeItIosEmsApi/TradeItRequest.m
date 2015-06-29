@@ -16,7 +16,6 @@
     self = [super init];
     if (self) {
         self.broker = broker;
-        self.asynch = false;
 
     }
     return self;
@@ -27,7 +26,7 @@
 }
 
 - (NSString*) description{
-    return [NSString stringWithFormat:@" broker=%@ asynch=%d",self.broker, self.asynch];
+    return [NSString stringWithFormat:@" broker=%@",self.broker];
 }
 
 @end

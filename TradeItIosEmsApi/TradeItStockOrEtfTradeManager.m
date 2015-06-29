@@ -181,10 +181,6 @@
     else if ([tradeItResult.status isEqual:@"ERROR"]){
         return [self buildResult: [TradeItErrorResult alloc] fromJson:jsonResponse];
     }
-    else if ([tradeItResult.status isEqual:@"IN_PROGRESS"]){
-        return [self buildResult: [TradeItInProgressResult alloc] fromJson:jsonResponse];
-        
-    }
     else if ([tradeItResult.status isEqual:@"INFORMATION_NEEDED"]){
         TradeItResult *informationResult =  [self buildResult: [TradeItInformationNeededResult alloc] fromJson:jsonResponse];
         

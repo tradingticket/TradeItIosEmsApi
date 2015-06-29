@@ -11,7 +11,6 @@
 @interface TradeItRequest : JSONModel
 
 @property (copy) NSString * broker;
-@property BOOL asynch; //default value is false
 
 
 @end
