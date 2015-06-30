@@ -19,6 +19,7 @@
 @property (copy) NSString * publisherDomain;
 @property BOOL supportMultiAccounts; //default value is true
 @property BOOL skipReview; //default value is false
+@property (copy) NSString* broker;
 
 -(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*) orderInfo;
 

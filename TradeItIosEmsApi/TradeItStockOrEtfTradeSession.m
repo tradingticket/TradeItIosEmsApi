@@ -6,10 +6,15 @@
 //  Copyright (c) 2015 Serge Kreiker. All rights reserved.
 //
 
-#import "TradeItStockOrEtfTradeManager.h"
+#import "TradeItStockOrEtfTradeSession.h"
 #import "TradeItStockOrEtfAuthenticateAndTradeRequest.h"
 #import <Foundation/NSURLConnection.h>
 #import <Foundation/NSURL.h>
+
+#import "TradeItPlaceOrderRequest.h"
+#import "TradeItCloseSessionRequest.h"
+#import "TradeItSecurityQuestionRequest.h"
+#import "TradeItSelectAccountRequest.h"
 
 @interface TradeItStockOrEtfAuthenticateAndTradeRequest()
 
@@ -17,58 +22,73 @@
 - (NSMutableURLRequest *) buildJsonRequestwithData:(JSONModel*) requestObject forMethod:(NSString*)emsMethod;
 - (TradeItResult*) buildResult:(TradeItResult*) tradeItResult fromJson:(NSString*)jsonString ;
 - (TradeItResult* ) processRequest:(NSURLRequest*) request;
+- (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest;
 
 @end
 
-@implementation TradeItStockOrEtfTradeManager
+@implementation TradeItStockOrEtfTradeSession
 
-- (id)initWithPublisherApp:(NSString *)publisherApp {
+- (id)initWithpublisherApp:(NSString *)publisherApp {
     self = [super init];
     if (self) {
-        self.publisherApp = publisherApp;
+        self.publisherApp  = publisherApp;
         self.environment = TradeItEmsLocalEnv;
+        self.orderInfo = [TradeItStockOrEtfOrderInfo new];
+        self.authenticationInfo = [TradeItAuthenticationInfo new];
+        self.broker = nil;
+        self.sessionToken = nil;
     }
     return self;
 }
 
-
+- (void)reset{
+    self.orderInfo = [TradeItStockOrEtfOrderInfo new];
+    self.authenticationInfo = [TradeItAuthenticationInfo new];
+    self.broker = nil;
+    self.sessionToken = nil;
+}
 
 - (id)init {
-    // Forward to the "initWithPublisherApp" initialization method
-    return [self initWithPublisherApp:@""];
+    // Forward to the "initWithpublisherDomain" initialization method
+    return [self initWithpublisherApp:nil];
 }
+
 
 - (TradeItResult*) authenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andTrade:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker{
     
-    
-    TradeItStockOrEtfAuthenticateAndTradeRequest *authenticateAndtradeRequest = [[TradeItStockOrEtfAuthenticateAndTradeRequest alloc] initWithPublisherDomain:self.publisherApp andBroker:broker andAuthenticationInfo:authenticationInfo andOrderInfo:orderInfo];
-    return [self autheticateAndTradeWithRequest:authenticateAndtradeRequest];
+    self.authenticationInfo = authenticationInfo;
+    self.orderInfo = orderInfo;
+    self.broker = broker;
+    return [self authenticateAndTrade];
 }
 
-- (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest{
+- (TradeItResult*) authenticateAndTrade{
     
+    TradeItStockOrEtfAuthenticateAndTradeRequest *authenticateAndtradeRequest = [[TradeItStockOrEtfAuthenticateAndTradeRequest alloc] initWithPublisherDomain:self.publisherApp andBroker:self.broker andAuthenticationInfo:self.authenticationInfo andOrderInfo:self.orderInfo];
+    return [self autheticateAndTradeWithRequest:authenticateAndtradeRequest];
+
+}
+
+
+
+- (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest{
     
     NSMutableURLRequest *request = [self buildJsonRequestwithData:authenticateAndtradeRequest forMethod:@"authenticateAndTradeStocksOrEtfs"];
     
     return [self processRequest:request];
 }
 
-- (TradeItResult*) placeOrderForBroker:(NSString*) broker andToken:(NSString*) token{
+- (TradeItResult*) placeOrder{
     
-    TradeItPlaceOrderRequest * placeOrderRequest = [TradeItPlaceOrderRequest new];
-    placeOrderRequest.token = token;
-    placeOrderRequest.broker = broker;
+    TradeItPlaceOrderRequest * placeOrderRequest = [[TradeItPlaceOrderRequest alloc] initWithToken:self.sessionToken];
     
     NSMutableURLRequest *request = [self buildJsonRequestwithData:placeOrderRequest forMethod:@"placeTrade"];
     
     return [self processRequest:request];
 }
 
-- (TradeItResult*) answerSecurityQuestion: (NSString*)answer forBroker:(NSString*) broker andToken:(NSString*) token{
-    TradeItSecurityQuestionRequest* securityRequest = [TradeItSecurityQuestionRequest new];
-    securityRequest.token = token,
-    securityRequest.broker = broker;
-    securityRequest.securityAnswer = answer;
+- (TradeItResult*) answerSecurityQuestion: (NSString*)answer{
+    TradeItSecurityQuestionRequest* securityRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.sessionToken andAnswer:answer];
     
     NSMutableURLRequest *request = [self buildJsonRequestwithData:securityRequest forMethod:@"answerSecurityQuestion"];
     
@@ -77,12 +97,9 @@
     
 }
 
-- (TradeItResult*) selectAccount: (NSArray*) accountInfo forBroker:(NSString*) broker andToken:(NSString*) token{
+- (TradeItResult*) selectAccount: (NSArray*) accountInfo {
     
-    TradeItSelectAccountRequest* selectAccountRequest = [TradeItSelectAccountRequest new];
-    selectAccountRequest.broker = broker;
-    selectAccountRequest.token = token;
-    selectAccountRequest.accountInfo = accountInfo;
+    TradeItSelectAccountRequest* selectAccountRequest = [[TradeItSelectAccountRequest alloc]initWithToken:self.sessionToken andAccountInfo:accountInfo];
     
     NSMutableURLRequest *request = [self buildJsonRequestwithData:selectAccountRequest forMethod:@"selectAccount"];
     
@@ -90,15 +107,16 @@
 }
 
 
-- (BOOL) closeSessionForToken:(NSString*) token{
+- (BOOL) closeSession{
     
-    TradeItCloseSessionRequest * closeSessionRequest = [TradeItCloseSessionRequest new];
-    closeSessionRequest.token = token;
+    TradeItCloseSessionRequest * closeSessionRequest = [[TradeItCloseSessionRequest alloc]initWithToken:self.sessionToken];
     
     NSMutableURLRequest *request = [self buildJsonRequestwithData:closeSessionRequest forMethod:@"close"];
     
     TradeItResult * result = [self processRequest:request];
 
+    [self reset]; //reset data
+    
     if([result.status isEqualToString:@"success"])
     {
         return true;
@@ -173,20 +191,26 @@
     
     if([tradeItResult.status  isEqual: @"REVIEW_ORDER"])
     {
-        return [self buildResult: [TradeItStockOrEtfTradeReviewResult alloc] fromJson:jsonResponse];
+        TradeItStockOrEtfTradeReviewResult* reviewResult =  (TradeItStockOrEtfTradeReviewResult*)[self buildResult: [TradeItStockOrEtfTradeReviewResult alloc] fromJson:jsonResponse];
+        self.sessionToken =  reviewResult.token; //save token locally
+        return reviewResult;
     }
     else if ([tradeItResult.status isEqual:@"SUCCESS"]){
+        self.sessionToken = nil; //reset token
         return [self buildResult: [TradeItStockOrEtfTradeSuccessResult alloc] fromJson:jsonResponse];
     }
     else if ([tradeItResult.status isEqual:@"ERROR"]){
+        self.sessionToken = nil; //reset token
         return [self buildResult: [TradeItErrorResult alloc] fromJson:jsonResponse];
     }
     else if ([tradeItResult.status isEqual:@"INFORMATION_NEEDED"]){
         TradeItResult *informationResult =  [self buildResult: [TradeItInformationNeededResult alloc] fromJson:jsonResponse];
         
-        if([informationResult isKindOfClass: [TradeItErrorResult class]]){//if there was an erro parsing return
+        if([informationResult isKindOfClass: [TradeItErrorResult class]]){//if there was an error parsing return
             return informationResult; //return error
         }
+        
+        self.sessionToken = informationResult.token;
         
         //parse to either a security question or a multi account
         NSString *informationType =[informationResult valueForKey: @"informationType"];

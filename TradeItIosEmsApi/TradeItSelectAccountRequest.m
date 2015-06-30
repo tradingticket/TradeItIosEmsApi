@@ -10,4 +10,17 @@
 
 @implementation TradeItSelectAccountRequest
 
+-(id) initWithToken: (NSString*)token andAccountInfo:(NSArray*) accountInfo{
+    self = [super init];
+    if(self){
+        self.token = token;
+        self.accountInfo = accountInfo;
+    }
+    return self;
+}
+
+
+-(NSString*) description {
+    return [NSString stringWithFormat:@"TradeItSelectAccountRequest: %@ token:%@ accountInfo:%@", [super description], self.token, self.accountInfo];
+}
 @end

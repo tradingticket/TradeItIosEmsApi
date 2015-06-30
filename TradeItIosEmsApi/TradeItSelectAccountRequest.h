@@ -13,4 +13,6 @@
 @property NSString* token;
 @property NSArray* accountInfo;
 
+-(id) initWithToken: (NSString*)token andAccountInfo:(NSArray*) accountInfo;
+
 @end

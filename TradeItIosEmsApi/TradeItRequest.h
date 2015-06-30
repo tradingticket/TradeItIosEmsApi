@@ -10,7 +10,5 @@
 
 @interface TradeItRequest : JSONModel
 
-@property (copy) NSString * broker;
-
 
 @end

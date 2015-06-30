@@ -6,7 +6,33 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		0864CD211B41F107002F10A1 /* UniveralLib */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 0864CD241B41F107002F10A1 /* Build configuration list for PBXAggregateTarget "UniveralLib" */;
+			buildPhases = (
+				0864CD251B41F16E002F10A1 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = UniveralLib;
+			productName = UniveralLib;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		084794B11B43503300DA86AC /* TradeitStockOrEtfOrderPrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA21B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B21B43503700DA86AC /* TradeItStockOrEtfOrderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA11B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B31B43503C00DA86AC /* TradeItAuthenticationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B41B43505300DA86AC /* TradeItResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 0866079C1B39BEA800B66D81 /* TradeItResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B51B43505A00DA86AC /* TradeItStockOrEtfTradeSuccessResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 086607A01B39E04100B66D81 /* TradeItStockOrEtfTradeSuccessResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B61B43505E00DA86AC /* TradeItStockOrEtfTradeReviewResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 086607A31B39E78A00B66D81 /* TradeItStockOrEtfTradeReviewResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B71B43506900DA86AC /* TradeItStockOrEtfTradeReviewOrderDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 086607A61B39E83A00B66D81 /* TradeItStockOrEtfTradeReviewOrderDetails.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B81B43506F00DA86AC /* TradeItSecurityQuestionResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 086607A91B3B03AC00B66D81 /* TradeItSecurityQuestionResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794B91B43507200DA86AC /* TradeItMultipleAccountResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 086607AC1B3B2C0D00B66D81 /* TradeItMultipleAccountResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794BA1B43507500DA86AC /* TradeItErrorResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 08EDE0891B3DC64700D74866 /* TradeItErrorResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		084794BB1B43508F00DA86AC /* TradeItInformationNeededResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 08EDE08C1B3DE00C00D74866 /* TradeItInformationNeededResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0864CD281B4200D1002F10A1 /* TradeItStockOrEtfTradeSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0866079E1B39BEA800B66D81 /* TradeItResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0866079D1B39BEA800B66D81 /* TradeItResult.m */; };
 		086607A21B39E04100B66D81 /* TradeItStockOrEtfTradeSuccessResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 086607A11B39E04100B66D81 /* TradeItStockOrEtfTradeSuccessResult.m */; };
 		086607A51B39E78A00B66D81 /* TradeItStockOrEtfTradeReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 086607A41B39E78A00B66D81 /* TradeItStockOrEtfTradeReviewResult.m */; };
@@ -18,7 +44,7 @@
 		08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m */; };
 		08CD8BA81B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */; };
 		08CD8BA91B338B5A00F7E530 /* TradeItAuthenticationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */; };
-		08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */; };
+		08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */; };
 		08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */; };
 		08EDE08B1B3DC64700D74866 /* TradeItErrorResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08A1B3DC64700D74866 /* TradeItErrorResult.m */; };
 		08EDE08E1B3DE00C00D74866 /* TradeItInformationNeededResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08D1B3DE00C00D74866 /* TradeItInformationNeededResult.m */; };
@@ -76,9 +102,9 @@
 		08CD8BA11B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfOrderInfo.h; sourceTree = "<group>"; };
 		08CD8BA21B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeitStockOrEtfOrderPrice.h; sourceTree = "<group>"; };
 		08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItAuthenticationInfo.m; sourceTree = "<group>"; };
-		08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItStockOrEtfTradeManager.m; sourceTree = "<group>"; };
+		08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItStockOrEtfTradeSession.m; sourceTree = "<group>"; };
 		08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItAuthenticationInfo.h; sourceTree = "<group>"; };
-		08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfTradeManager.h; sourceTree = "<group>"; };
+		08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfTradeSession.h; sourceTree = "<group>"; };
 		08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockOrEtfTradeTest.m; sourceTree = "<group>"; };
 		08EDE0891B3DC64700D74866 /* TradeItErrorResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItErrorResult.h; sourceTree = "<group>"; };
 		08EDE08A1B3DC64700D74866 /* TradeItErrorResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItErrorResult.m; sourceTree = "<group>"; };
@@ -196,8 +222,8 @@
 			children = (
 				086607B21B3B3F0700B66D81 /* Request */,
 				0866079F1B39DF4900B66D81 /* Result */,
-				08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.h */,
-				08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m */,
+				08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */,
+				08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */,
 			);
 			path = TradeItIosEmsApi;
 			sourceTree = "<group>";
@@ -241,6 +267,28 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		0864CD271B4200B9002F10A1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0864CD281B4200D1002F10A1 /* TradeItStockOrEtfTradeSession.h in Headers */,
+				084794B11B43503300DA86AC /* TradeitStockOrEtfOrderPrice.h in Headers */,
+				084794B21B43503700DA86AC /* TradeItStockOrEtfOrderInfo.h in Headers */,
+				084794B31B43503C00DA86AC /* TradeItAuthenticationInfo.h in Headers */,
+				084794B41B43505300DA86AC /* TradeItResult.h in Headers */,
+				084794B51B43505A00DA86AC /* TradeItStockOrEtfTradeSuccessResult.h in Headers */,
+				084794B61B43505E00DA86AC /* TradeItStockOrEtfTradeReviewResult.h in Headers */,
+				084794B71B43506900DA86AC /* TradeItStockOrEtfTradeReviewOrderDetails.h in Headers */,
+				084794B81B43506F00DA86AC /* TradeItSecurityQuestionResult.h in Headers */,
+				084794B91B43507200DA86AC /* TradeItMultipleAccountResult.h in Headers */,
+				084794BA1B43507500DA86AC /* TradeItErrorResult.h in Headers */,
+				084794BB1B43508F00DA86AC /* TradeItInformationNeededResult.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		08CD8B841B338A7500F7E530 /* TradeItIosEmsApi */ = {
 			isa = PBXNativeTarget;
@@ -251,6 +299,7 @@
 				08CD8B821B338A7500F7E530 /* Frameworks */,
 				08CD8B831B338A7500F7E530 /* CopyFiles */,
 				8A5D60332B49E540357CADB5 /* Copy Pods Resources */,
+				0864CD271B4200B9002F10A1 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -290,6 +339,9 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = TradeIt;
 				TargetAttributes = {
+					0864CD211B41F107002F10A1 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
 					08CD8B841B338A7500F7E530 = {
 						CreatedOnToolsVersion = 6.3.2;
 					};
@@ -312,6 +364,7 @@
 			targets = (
 				08CD8B841B338A7500F7E530 /* TradeItIosEmsApi */,
 				08CD8B8F1B338A7500F7E530 /* TradeItIosEmsApiTests */,
+				0864CD211B41F107002F10A1 /* UniveralLib */,
 			);
 		};
 /* End PBXProject section */
@@ -327,6 +380,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0864CD251B41F16E002F10A1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target TradeitIosEmsApi ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target TradeitIosEmsApi -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Last touch. copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"";
+		};
 		4B21263B744C3119F6BAB89C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,7 +468,7 @@
 				086607A51B39E78A00B66D81 /* TradeItStockOrEtfTradeReviewResult.m in Sources */,
 				08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m in Sources */,
 				08EDE09A1B3E027900D74866 /* TradeItPlaceOrderRequest.m in Sources */,
-				08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeManager.m in Sources */,
+				08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m in Sources */,
 				0866079E1B39BEA800B66D81 /* TradeItResult.m in Sources */,
 				086607A81B39E83A00B66D81 /* TradeItStockOrEtfTradeReviewOrderDetails.m in Sources */,
 				086607AE1B3B2C0D00B66D81 /* TradeItMultipleAccountResult.m in Sources */,
@@ -434,6 +500,21 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0864CD221B41F107002F10A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0864CD231B41F107002F10A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		08CD8B971B338A7500F7E530 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -516,8 +597,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 839C17F4A7532133BF03B9D8 /* Pods-TradeItIosEmsApi.debug.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -526,8 +611,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6D11DB5621EA209753789103 /* Pods-TradeItIosEmsApi.release.xcconfig */;
 			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -569,6 +658,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0864CD241B41F107002F10A1 /* Build configuration list for PBXAggregateTarget "UniveralLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0864CD221B41F107002F10A1 /* Debug */,
+				0864CD231B41F107002F10A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		08CD8B801B338A7500F7E530 /* Build configuration list for PBXProject "TradeItIosEmsApi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

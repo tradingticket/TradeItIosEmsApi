@@ -12,4 +12,7 @@
 
 @property NSString* token;
 @property NSString* securityAnswer;
+
+-(id) initWithToken:(NSString*) token andAnswer:(NSString*)securityAnswer;
+
 @end

@@ -20,6 +20,7 @@
         self.orderInfo = orderInfo;
         self.supportMultiAccounts = true; //default value is false
         self.skipReview = false;
+        self.broker = broker;
     }
     return self;
 }

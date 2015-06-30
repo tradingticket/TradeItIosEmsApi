@@ -10,23 +10,4 @@
 
 @implementation TradeItRequest
 
-
--(id) initWithBroker:(NSString*)broker{
-    
-    self = [super init];
-    if (self) {
-        self.broker = broker;
-
-    }
-    return self;
-}
-
-- (id) init{
-    return [self initWithBroker:@""];
-}
-
-- (NSString*) description{
-    return [NSString stringWithFormat:@" broker=%@",self.broker];
-}
-
 @end

@@ -12,4 +12,6 @@
 
 @property NSString* token;
 
+-(id) initWithToken: (NSString*)token ;
+
 @end

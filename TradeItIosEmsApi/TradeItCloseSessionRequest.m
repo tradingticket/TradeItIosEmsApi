@@ -10,4 +10,16 @@
 
 @implementation TradeItCloseSessionRequest
 
+-(id) initWithToken: (NSString*)token {
+    self = [super init];
+    if(self){
+        self.token = token;
+    }
+    return self;
+}
+
+-(NSString*) description {
+    return [NSString stringWithFormat:@"TradeItCloseSessionRequest: token:%@ ", self.token];
+}
+
 @end

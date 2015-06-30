@@ -10,4 +10,17 @@
 
 @implementation TradeItPlaceOrderRequest
 
+-(id) initWithToken: (NSString*)token{
+    self = [super init];
+    if(self){
+        self.token = token;
+    }
+    return self;
+}
+
+
+-(NSString*) description {
+    return [NSString stringWithFormat:@"TradeItPlaceOrderRequest: %@ token:%@ ", [super description], self.token];
+}
+
 @end

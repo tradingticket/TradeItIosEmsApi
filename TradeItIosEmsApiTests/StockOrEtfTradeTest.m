@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "TradeItStockOrEtfTradeManager.h"
+#import "TradeItStockOrEtfTradeSession.h"
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeitStockOrEtfOrderPrice.h"
 #import "TradeItAuthenticationInfo.h"
@@ -19,7 +19,6 @@
 #import "TradeItStockOrEtfTradeReviewResult.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItMultipleAccountResult.h"
-#import "TradeItStockOrEtfAuthenticateAndTradeRequest.h"
 #import "JSONHTTPClient.h"
 #import <Foundation/NSURLConnection.h>
 //#import <Foundation/NSMutableURLRequest.h>
@@ -42,108 +41,27 @@
 }
 
 - (void)testExample {
-    // This is an example of a functional test case.
-    TradeItStockOrEtfTradeManager * tradeManager = [[TradeItStockOrEtfTradeManager alloc] initWithPublisherApp:@"StockTracker"];
+    NSLog(@"******************TESTING BASIC USE CASE");
+    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
     
-    TradeItStockOrEtfOrderInfo * orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
-                                              initWithAction:TradeItStockOrEtfOrderActionBuy
-                                              andQuantity:10 andSymbol:@"AAPL"
-                                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
-                                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
-
+    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
+    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
     
-    TradeItAuthenticationInfo *authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummyPassword"];
+    NSLog(@"******************TESTING MULI OPTION SECURITY QUESTION  USE CASE");
+    sendTestOrder(@"Dummy", @"dummyOptionLong", @"dummy", 10);
     
+    NSLog(@"******************TESTING MULI ACCOUNT USE CASE");
+    sendTestOrder(@"Dummy", @"dummyMultiple", @"dummy", 10);
     
-    NSLog(@"------------------------Review Revew Start------------------------------");
-    TradeItResult * result = [tradeManager authenticateUser:authenticationInfo andTrade:orderInfo withBroker:@"Dummy"];
-    NSLog(@"Review Test: %@", result);
+    NSLog(@"******************TESTING ERROR USE CASE");
+    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
     
-    NSLog(@"Placing Order Test: ");
-    result = [tradeManager placeOrderForBroker:@"Dummy" andToken:result.token];
-    NSLog(@"Place Order Result: %@", result);
-    
-    
-    NSLog(@"------------------------Security Test Start------------------------------");
-    authenticationInfo.id = @"dummySecurity";
-    result = [tradeManager authenticateUser:authenticationInfo andTrade:orderInfo withBroker:@"Dummy"];
-    NSLog(@"Security Test: %@", result);
-    
-    NSLog(@"Answering Security..... ");
-    result = [tradeManager answerSecurityQuestion:@"tradingticket" forBroker:@"Dummy" andToken:result.token];
-    NSLog(@"Answer Security Result: %@", result);
-    
-    NSLog(@"Send Close.... ");
-    NSLog(@"Session closed: %d", [tradeManager closeSessionForToken:result.token]);
+    NSLog(@"******************TESTING Warning USE CASE");
+    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
 
 
-    
-    NSLog(@"------------------------Security Options Test Start------------------------------");
-    authenticationInfo.id = @"dummyOptionLong";
-    result = [tradeManager authenticateUser:authenticationInfo andTrade:orderInfo withBroker:@"Dummy"];
-    NSLog(@"multiple account Test: %@", result);
-    
-    NSLog(@"Answering Security: ");
-    result = [tradeManager answerSecurityQuestion:@"option 1" forBroker:@"Dummy" andToken:result.token];
-    NSLog(@"Answer Security Result: %@", result);
-    
-    NSLog(@"Send Close.... ");
-    NSLog(@"Session closed: %d", [tradeManager closeSessionForToken:result.token]);
-
-    
-
-    NSLog(@"------------------------Security Multiple Accounts Test Start------------------------------");
-    authenticationInfo.id = @"dummyMultiple";
-    result = [tradeManager authenticateUser:authenticationInfo andTrade:orderInfo withBroker:@"Dummy"];
-    NSLog(@"multiple account Test: %@", result);
-    
-    NSLog(@"SelectingAccount: ");
-    TradeItMultipleAccountResult* multipleAccountResult = (TradeItMultipleAccountResult*)result;
-    result = [tradeManager selectAccount: multipleAccountResult.accountList[0] forBroker:@"Dummy" andToken:multipleAccountResult.token];
-    NSLog(@"Answer Security Result: %@", result);
-    
-    
-    NSLog(@"Send Close.... ");
-    NSLog(@"Session closed: %d", [tradeManager closeSessionForToken:result.token]);
-
-    
-    NSLog(@"------------------------Success Test------------------------------");
-    authenticationInfo.id = @"dummy";
-    TradeItStockOrEtfAuthenticateAndTradeRequest *tradeRequest = [[TradeItStockOrEtfAuthenticateAndTradeRequest alloc] initWithPublisherDomain:@"StockTracker" andBroker:@"Dummy" andAuthenticationInfo:authenticationInfo andOrderInfo:orderInfo];
-    tradeRequest.skipReview = true;
-    result = [tradeManager autheticateAndTradeWithRequest:tradeRequest];
-    NSLog(@"Success Test: %@", result);
 
 
-    
-//    if ((nil != data) && (200 == [response statusCode])) {
-//        // Process data
-//    }
-    
-    
-//    TradeitStockOrEtfTradeReviewResult *reviewResult = [[TradeitStockOrEtfTradeReviewResult alloc]
-//                                                        initWithToken:@"token95489048"
-//                                                        andShortMessage:@"succesful trade"
-//                                                        andLongMessages:@[@"yoy",@"yoyoyo"]
-//                                                        andOrderDetails: orderDetails
-//                                                        andWarnings:@[@"wanting 1",@"warning2"]
-//                                                        andAckWarnings:@[@"ack warning1", @"ack warning2"]];
-//    
-//    
-//    
-//    TradeItStockOrEtfTradeReviewOrderDetails * orderDetails = [TradeItStockOrEtfTradeReviewOrderDetails new];
-//    TradeitStockOrEtfTradeSuccessResult* successResult = [[TradeitStockOrEtfTradeSuccessResult alloc] initWithToken:@"token" andShortMessage:@"short message" andLongMessages:@[@"yoy",@"yoyoyo"] andOrderNumber:@"order number" andConfirmationMessage:@"confirmation" andTimestamp:@"12h34 EDT" andBroker:@"dummy"];
-//    
-//    TradeitStockOrEtfTradeSecurityQuestionResult *securityQuestionResult = [[TradeitStockOrEtfTradeSecurityQuestionResult alloc] initWithToken:@"token" andShortMessage:@"short message" andLongMessages:@[@"yo", @"yoyo"] andSecurityQuestion:@"What is your first name" andInformationShortMessage:@"info short message" andInformationLongMessage:@"info long message" andErrorFields:nil];
-//    
-//    TradeItStockOrEtfTradeMultipleAccountResult * multipleAccountResult = [[TradeItStockOrEtfTradeMultipleAccountResult alloc] initWithToken:@"toke" andShortMessage:@"short message" andLongMessages:@[@"yo"] andAccountList:@[@"acct 1", @"acct 2"]];
-   
-    
-//    NSLog(@"%@", reviewResult);
-//    NSLog(@"%@", successResult);
-//    NSLog(@"%@", securityQuestionResult);
-//    NSLog(@"%@", multipleAccountResult);
-    
     NSLog(@"---------------------------End Test-----------------------------");
 }
 
@@ -153,5 +71,83 @@
         // Put the code you want to measure the time of here.
     }];
 }
+
+void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quantity){
+    
+    // This is an example of a functional test case.
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    
+
+    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
+                                              initWithAction:TradeItStockOrEtfOrderActionBuy
+                                              andQuantity:quantity andSymbol:@"AAPL"
+                                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
+                                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
+    
+    
+    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
+    
+    tradeSession.broker = broker;
+    
+    TradeItResult *result = [tradeSession authenticateAndTrade ];
+    return processResult(tradeSession,result);
+
+}
+
+void processResult(TradeItStockOrEtfTradeSession* tradeSession, TradeItResult * result){
+    
+    if(result == nil){
+        NSLog(@"Received nil result returning");
+    }
+    else if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
+        //process review result
+        
+        NSLog(@"Received review result: %@", result);
+        
+        NSLog(@"Placing Order...: ");
+        result = [tradeSession placeOrder];
+        return processResult(tradeSession, result);
+        
+    }
+    else if([result isKindOfClass:[TradeItStockOrEtfTradeSuccessResult class]]){
+        //process success result
+        NSLog(@"Great!!!!, Received Success result: %@", result);
+
+    }
+    else if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
+        //process security question
+        TradeItSecurityQuestionResult *securityQuestionResult = (TradeItSecurityQuestionResult *) result; //cast result
+       
+        NSLog(@"Received security result: %@", securityQuestionResult);
+        
+        if(securityQuestionResult.securityQuestionOptions != nil && securityQuestionResult.securityQuestionOptions.count > 0 ){
+            result = [tradeSession answerSecurityQuestion:@"option 1" ];
+            return processResult(tradeSession, result);
+        }
+        else if(securityQuestionResult.challengeImage !=nil){
+            result = [tradeSession answerSecurityQuestion:@"tradingticket"];
+            return processResult(tradeSession, result);
+        }
+        else if(securityQuestionResult.securityQuestion != nil){
+            //answer security question
+            result = [tradeSession answerSecurityQuestion:@"tradingticket" ];
+            return processResult(tradeSession, result);
+        }
+    }
+    else if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
+        //process mutli account
+        //cast result
+        TradeItMultipleAccountResult * multiAccountResult = (TradeItMultipleAccountResult* ) result;
+        result = [tradeSession selectAccount:multiAccountResult.accountList[0]];
+        return processResult(tradeSession, result);
+        
+    }
+    else if([result isKindOfClass:[TradeItErrorResult class]]){
+        //Received an error
+        NSLog(@"Bummer!!!!, Received Error result: %@", result);
+    }
+
+}
+
 
 @end
