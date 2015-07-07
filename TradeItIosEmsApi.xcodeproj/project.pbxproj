@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		083115051B4C4A8500F20E99 /* JSONModelLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 083115041B4C4A8500F20E99 /* JSONModelLib.h */; };
 		084794B11B43503300DA86AC /* TradeitStockOrEtfOrderPrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA21B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		084794B21B43503700DA86AC /* TradeItStockOrEtfOrderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA11B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		084794B31B43503C00DA86AC /* TradeItAuthenticationInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,6 +41,13 @@
 		086607AB1B3B03AC00B66D81 /* TradeItSecurityQuestionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 086607AA1B3B03AC00B66D81 /* TradeItSecurityQuestionResult.m */; };
 		086607AE1B3B2C0D00B66D81 /* TradeItMultipleAccountResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 086607AD1B3B2C0D00B66D81 /* TradeItMultipleAccountResult.m */; };
 		086607B81B3B3FFF00B66D81 /* TradeItStockOrEtfAuthenticateAndTradeRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 086607B71B3B3FFF00B66D81 /* TradeItStockOrEtfAuthenticateAndTradeRequest.m */; };
+		087A79381B4C4E800083E804 /* JSONModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79371B4C4E800083E804 /* JSONModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A793A1B4C4EAA0083E804 /* JSONValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79391B4C4EAA0083E804 /* JSONValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A793C1B4C4EBF0083E804 /* NSArray+JSONModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A793B1B4C4EBF0083E804 /* NSArray+JSONModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A793E1B4C4ECF0083E804 /* JSONModelClassProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A793D1B4C4ECF0083E804 /* JSONModelClassProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A79401B4C4EDE0083E804 /* JSONModelError.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A793F1B4C4EDE0083E804 /* JSONModelError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A79431B4C4F560083E804 /* JSONKeyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79421B4C4F560083E804 /* JSONKeyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		087A79451B4C4F650083E804 /* JSONModelArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79441B4C4F650083E804 /* JSONModelArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08CD8B911B338A7500F7E530 /* libTradeItIosEmsApi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */; };
 		08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m */; };
 		08CD8BA81B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */; };
@@ -80,6 +88,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		083115041B4C4A8500F20E99 /* JSONModelLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModelLib.h; path = Pods/JSONModel/JSONModel/JSONModelLib.h; sourceTree = "<group>"; };
 		0866079C1B39BEA800B66D81 /* TradeItResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItResult.h; sourceTree = "<group>"; };
 		0866079D1B39BEA800B66D81 /* TradeItResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItResult.m; sourceTree = "<group>"; };
 		086607A01B39E04100B66D81 /* TradeItStockOrEtfTradeSuccessResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfTradeSuccessResult.h; sourceTree = "<group>"; };
@@ -94,6 +103,14 @@
 		086607AD1B3B2C0D00B66D81 /* TradeItMultipleAccountResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItMultipleAccountResult.m; sourceTree = "<group>"; };
 		086607B61B3B3FFF00B66D81 /* TradeItStockOrEtfAuthenticateAndTradeRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfAuthenticateAndTradeRequest.h; sourceTree = "<group>"; };
 		086607B71B3B3FFF00B66D81 /* TradeItStockOrEtfAuthenticateAndTradeRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItStockOrEtfAuthenticateAndTradeRequest.m; sourceTree = "<group>"; };
+		087A79371B4C4E800083E804 /* JSONModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModel.h; path = Pods/JSONModel/JSONModel/JSONModel/JSONModel.h; sourceTree = "<group>"; };
+		087A79391B4C4EAA0083E804 /* JSONValueTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONValueTransformer.h; path = Pods/JSONModel/JSONModel/JSONModelTransformations/JSONValueTransformer.h; sourceTree = "<group>"; };
+		087A793B1B4C4EBF0083E804 /* NSArray+JSONModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSArray+JSONModel.h"; path = "Pods/JSONModel/JSONModel/JSONModelCategories/NSArray+JSONModel.h"; sourceTree = "<group>"; };
+		087A793D1B4C4ECF0083E804 /* JSONModelClassProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModelClassProperty.h; path = Pods/JSONModel/JSONModel/JSONModel/JSONModelClassProperty.h; sourceTree = "<group>"; };
+		087A793F1B4C4EDE0083E804 /* JSONModelError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModelError.h; path = Pods/JSONModel/JSONModel/JSONModel/JSONModelError.h; sourceTree = "<group>"; };
+		087A79411B4C4F460083E804 /* JSONModelError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModelError.h; path = Pods/JSONModel/JSONModel/JSONModel/JSONModelError.h; sourceTree = "<group>"; };
+		087A79421B4C4F560083E804 /* JSONKeyMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONKeyMapper.h; path = Pods/JSONModel/JSONModel/JSONModelTransformations/JSONKeyMapper.h; sourceTree = "<group>"; };
+		087A79441B4C4F650083E804 /* JSONModelArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JSONModelArray.h; path = Pods/JSONModel/JSONModel/JSONModel/JSONModelArray.h; sourceTree = "<group>"; };
 		08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTradeItIosEmsApi.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		08CD8B901B338A7500F7E530 /* TradeItIosEmsApiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TradeItIosEmsApiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08CD8B961B338A7500F7E530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -200,6 +217,15 @@
 		08CD8B7C1B338A7500F7E530 = {
 			isa = PBXGroup;
 			children = (
+				087A79441B4C4F650083E804 /* JSONModelArray.h */,
+				087A79421B4C4F560083E804 /* JSONKeyMapper.h */,
+				087A79411B4C4F460083E804 /* JSONModelError.h */,
+				087A793F1B4C4EDE0083E804 /* JSONModelError.h */,
+				087A793D1B4C4ECF0083E804 /* JSONModelClassProperty.h */,
+				087A793B1B4C4EBF0083E804 /* NSArray+JSONModel.h */,
+				087A79391B4C4EAA0083E804 /* JSONValueTransformer.h */,
+				087A79371B4C4E800083E804 /* JSONModel.h */,
+				083115041B4C4A8500F20E99 /* JSONModelLib.h */,
 				08CD8B871B338A7500F7E530 /* TradeItIosEmsApi */,
 				08CD8B941B338A7500F7E530 /* TradeItIosEmsApiTests */,
 				08CD8B861B338A7500F7E530 /* Products */,
@@ -284,6 +310,14 @@
 				084794B91B43507200DA86AC /* TradeItMultipleAccountResult.h in Headers */,
 				084794BA1B43507500DA86AC /* TradeItErrorResult.h in Headers */,
 				084794BB1B43508F00DA86AC /* TradeItInformationNeededResult.h in Headers */,
+				087A79381B4C4E800083E804 /* JSONModel.h in Headers */,
+				087A793A1B4C4EAA0083E804 /* JSONValueTransformer.h in Headers */,
+				087A793C1B4C4EBF0083E804 /* NSArray+JSONModel.h in Headers */,
+				087A79401B4C4EDE0083E804 /* JSONModelError.h in Headers */,
+				087A793E1B4C4ECF0083E804 /* JSONModelClassProperty.h in Headers */,
+				087A79431B4C4F560083E804 /* JSONKeyMapper.h in Headers */,
+				087A79451B4C4F650083E804 /* JSONModelArray.h in Headers */,
+				083115051B4C4A8500F20E99 /* JSONModelLib.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +425,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target TradeitIosEmsApi ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target TradeitIosEmsApi -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Last touch. copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"";
+			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target TradeitIosEmsApi ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target TradeitIosEmsApi -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\"  \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/libPods-${PROJECT_NAME}-JSONModel.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/libPods-${PROJECT_NAME}-JSONModel.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/libPods-${PROJECT_NAME}-JSONModel.a\"\n\n# Last touch. copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"";
 		};
 		4B21263B744C3119F6BAB89C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
