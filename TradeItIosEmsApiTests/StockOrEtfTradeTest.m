@@ -13,16 +13,8 @@
 #import "TradeitStockOrEtfOrderPrice.h"
 #import "TradeItAuthenticationInfo.h"
 
-#import "TradeItResult.h"
-#import "TradeItStockOrEtfTradeSuccessResult.h"
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
-#import "TradeItStockOrEtfTradeReviewResult.h"
-#import "TradeItSecurityQuestionResult.h"
-#import "TradeItMultipleAccountResult.h"
-#import "JSONHTTPClient.h"
-#import <Foundation/NSURLConnection.h>
-//#import <Foundation/NSMutableURLRequest.h>
-#import <Foundation/NSURL.h>
+#import "TradeItIosEmsApiLib.h"
+
 
 @interface StockOrEtfTradeTest : XCTestCase
 
@@ -41,28 +33,41 @@
 }
 
 - (void)testExample {
+    
     NSLog(@"******************TESTING BASIC USE CASE");
-    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
+    //asyncBasicTest();
+    asyncSecurityAnswerTest();
+    NSLog(@"Done");
+
     
-    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
-    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
-    
-    NSLog(@"******************TESTING MULI OPTION SECURITY QUESTION  USE CASE");
-    sendTestOrder(@"Dummy", @"dummyOptionLong", @"dummy", 10);
-    
-    NSLog(@"******************TESTING MULI ACCOUNT USE CASE");
-    sendTestOrder(@"Dummy", @"dummyMultiple", @"dummy", 10);
-    
-    NSLog(@"******************TESTING ERROR USE CASE");
-    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-    
-    NSLog(@"******************TESTING Warning USE CASE");
-    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
+//
+//    NSLog(@"******************TESTING BASIC USE CASE");
+//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
+//    
+//    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
+//    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
+//    
+//    NSLog(@"******************TESTING MULI OPTION SECURITY QUESTION  USE CASE");
+//    sendTestOrder(@"Dummy", @"dummyOptionLong", @"dummy", 10);
+//    
+//    NSLog(@"******************TESTING MULI ACCOUNT USE CASE");
+//    sendTestOrder(@"Dummy", @"dummyMultiple", @"dummy", 10);
+//    
+//    NSLog(@"******************TESTING ERROR USE CASE");
+//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
+//    
+//    NSLog(@"******************TESTING Warning USE CASE");
+//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
+//    
+//    NSLog(@"******************TESTING closing session USE CASE");
+//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
+//
+//    testClose();
 
 
 
 
-    NSLog(@"---------------------------End Test-----------------------------");
+   
 }
 
 - (void)testPerformanceExample {
@@ -70,6 +75,35 @@
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
     }];
+}
+
+void testClose(){
+
+    //send Request
+    // This is an example of a functional test case.
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    
+    
+    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
+                              initWithAction:TradeItStockOrEtfOrderActionBuy
+                              andQuantity:12 andSymbol:@"AAPL"
+                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
+                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
+    
+    
+    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy"];
+    
+    tradeSession.broker = @"Dummy";
+    
+    TradeItResult *result = [tradeSession authenticateAndReview ];
+    
+    NSLog(@"Received result: %@", result);
+    
+    //Do not place order but istead close session
+    if(![result isKindOfClass:[TradeItErrorResult class]]){ //if error result is sent back the server automatically closes the session
+    NSLog(@"Session Closed %d", [tradeSession closeSession]);
+        
+    }
 }
 
 void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quantity){
@@ -89,7 +123,7 @@ void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quan
     
     tradeSession.broker = broker;
     
-    TradeItResult *result = [tradeSession authenticateAndTrade ];
+    TradeItResult *result = [tradeSession authenticateAndReview ];
     return processResult(tradeSession,result);
 
 }
@@ -135,6 +169,7 @@ void processResult(TradeItStockOrEtfTradeSession* tradeSession, TradeItResult * 
         }
     }
     else if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
+        NSLog(@"Received TradeItMultipleAccountResult result: %@", result);
         //process mutli account
         //cast result
         TradeItMultipleAccountResult * multiAccountResult = (TradeItMultipleAccountResult* ) result;
@@ -148,6 +183,91 @@ void processResult(TradeItStockOrEtfTradeSession* tradeSession, TradeItResult * 
     }
 
 }
+
+// This is an example of a functional test case.
+
+TradeItResult* sendAsyncAuthenticateAndReviewRequest(NSString* broker, NSString * id, NSString* password, int quantity, TradeItStockOrEtfTradeSession * tradeSession){
+    
+
+    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
+                              initWithAction:TradeItStockOrEtfOrderActionBuy
+                              andQuantity:quantity andSymbol:@"AAPL"
+                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
+                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
+    
+    
+    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
+    
+    tradeSession.broker = broker;
+    __block TradeItResult * authenticateAndReviewResult = nil;
+   [tradeSession asyncAuthenticateAndReviewWithCompletionBlock:^(TradeItResult* result){
+       NSLog(@"Received Result in completion block%@", result);
+       authenticateAndReviewResult = result;
+    }];
+   
+     while (!authenticateAndReviewResult) {}
+    return authenticateAndReviewResult;
+}
+
+TradeItResult* sendAsyncPlaceOrder( TradeItStockOrEtfTradeSession * tradeSession){
+    
+    __block TradeItResult * placeOrderResult = nil;
+    [tradeSession asyncPlaceOrderWithCompletionBlock:^(TradeItResult* result){
+        NSLog(@"Received Result in completion block%@", result);
+        placeOrderResult = result;
+    }];
+    
+    while (!placeOrderResult) {}
+    return placeOrderResult;
+}
+
+TradeItResult* sendAsyncSecurityAnswer( TradeItStockOrEtfTradeSession * tradeSession){
+    __block TradeItResult * securityAnswerResult = nil;
+    [tradeSession asyncAnswerSecurityQuestion:@"tradingticket" andCompletionBlock:^(TradeItResult* result){
+        NSLog(@"Received Result in completion block%@", result);
+        securityAnswerResult = result;
+    }];
+    
+    while (!securityAnswerResult) {}
+    return securityAnswerResult;
+}
+
+
+void asyncBasicTest(){
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
+    if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
+        NSLog(@"Received review result %@", result);
+        NSLog(@"placing order");
+        result = sendAsyncPlaceOrder(tradeSession);
+        NSLog(@"After placing order Received result%@", result);
+    }
+    else{
+        NSLog(@"Received result %@", result);
+
+    }
+}
+
+
+
+void asyncSecurityAnswerTest(){
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummySecurity", @"dummy", 10, tradeSession);
+    if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
+        NSLog(@"Received security question result %@", result);
+        NSLog(@"Answering security question");
+        result = sendAsyncSecurityAnswer(tradeSession);
+        NSLog(@"Received result %@", result);
+        NSLog(@"placing order");
+        result = sendAsyncPlaceOrder(tradeSession);
+        NSLog(@"After placing order Received result%@", result);
+    }
+    else{
+        NSLog(@"Received result %@", result);
+        
+    }
+}
+
 
 
 @end

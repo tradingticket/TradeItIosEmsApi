@@ -15,14 +15,17 @@
 #import "TradeItCloseSessionRequest.h"
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSelectAccountRequest.h"
+#import <dispatch/dispatch.h>
 
-@interface TradeItStockOrEtfAuthenticateAndTradeRequest()
+@interface TradeItStockOrEtfTradeSession()
 
 - (NSURL*) getEmsBaseUrl;
 - (NSMutableURLRequest *) buildJsonRequestwithData:(JSONModel*) requestObject forMethod:(NSString*)emsMethod;
 - (TradeItResult*) buildResult:(TradeItResult*) tradeItResult fromJson:(NSString*)jsonString ;
 - (TradeItResult* ) processRequest:(NSURLRequest*) request;
 - (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest;
+
+@property (copy) NSString* sessionToken;
 
 @end
 
@@ -37,6 +40,7 @@
         self.authenticationInfo = [TradeItAuthenticationInfo new];
         self.broker = nil;
         self.sessionToken = nil;
+        self.postbackURL = nil;
     }
     return self;
 }
@@ -54,17 +58,30 @@
 }
 
 
-- (TradeItResult*) authenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andTrade:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker{
+- (TradeItResult*) authenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andReview:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker{
     
     self.authenticationInfo = authenticationInfo;
     self.orderInfo = orderInfo;
     self.broker = broker;
-    return [self authenticateAndTrade];
+    return [self authenticateAndReview];
 }
 
-- (TradeItResult*) authenticateAndTrade{
+- (TradeItResult*) authenticateAndReview{
     
-    TradeItStockOrEtfAuthenticateAndTradeRequest *authenticateAndtradeRequest = [[TradeItStockOrEtfAuthenticateAndTradeRequest alloc] initWithPublisherDomain:self.publisherApp andBroker:self.broker andAuthenticationInfo:self.authenticationInfo andOrderInfo:self.orderInfo];
+    if (self.authenticationInfo == nil) {
+        return [TradeItErrorResult tradeErrorWithSystemMessage:@"authenticationInfo cannot be null please set authenticationInfo before calling this method"];
+    }
+    else if (self.orderInfo== nil )
+    {
+        return [TradeItErrorResult tradeErrorWithSystemMessage:@"orderInfo cannot be null please set orderInfo before calling this method"];
+
+    }
+    else if ([self.broker  isEqual: @""] || self.broker==nil){
+        return [TradeItErrorResult tradeErrorWithSystemMessage:@"broker cannot be null please set broker before calling this method"];
+
+    }
+    
+    TradeItStockOrEtfAuthenticateAndTradeRequest *authenticateAndtradeRequest = [[TradeItStockOrEtfAuthenticateAndTradeRequest alloc] initWithPublisherDomain:self.publisherApp andBroker:self.broker andAuthenticationInfo:self.authenticationInfo andOrderInfo:self.orderInfo andPostbackUrl:self.postbackURL];
     return [self autheticateAndTradeWithRequest:authenticateAndtradeRequest];
 
 }
@@ -126,6 +143,74 @@
         return false;
     }
 }
+
+- (void) asyncAuthenticateAndReviewWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        TradeItResult * result= [self authenticateAndReview];
+        if (completionBlock) {
+            completionBlock(result);
+        }
+    });
+}
+
+//asynch methodes
+
+- (void) asyncAuthenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andReview:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        TradeItResult * result= [self authenticateUser:authenticationInfo andReview:orderInfo withBroker:broker];
+        
+        if (completionBlock) {
+            completionBlock(result);
+        }
+    });
+
+}
+
+- (void) asyncAnswerSecurityQuestion: (NSString*)answer andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        TradeItResult * result= [self answerSecurityQuestion:answer];
+        
+        if (completionBlock) {
+            completionBlock(result);
+        }
+    });
+
+}
+- (void) asyncSelectAccount: (NSArray*) accountInfo andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        TradeItResult * result= [self selectAccount:accountInfo];
+        
+        if (completionBlock) {
+            completionBlock(result);
+        }
+    });
+}
+
+- (void) asyncPlaceOrderWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        TradeItResult * result= [self placeOrder];
+        
+        if (completionBlock) {
+            completionBlock(result);
+        }
+    });
+
+}
+
+- (void) asyncCloseSession{
+    
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+         BOOL sessionClosed = [self closeSession];
+        
+        if(!sessionClosed){
+            NSLog(@"Failed closing trade it session");
+        }
+    });
+    
+}
+
 
 //private methods
 - (NSURL*) getEmsBaseUrl{

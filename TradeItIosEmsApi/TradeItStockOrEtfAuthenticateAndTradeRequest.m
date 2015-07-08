@@ -10,7 +10,7 @@
 
 @implementation TradeItStockOrEtfAuthenticateAndTradeRequest
 
--(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*)orderInfo{
+-(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*)orderInfo  andPostbackUrl:(NSString*) postbackURL;{
     
     self = [super init];
     if (self) {
@@ -21,6 +21,7 @@
         self.supportMultiAccounts = true; //default value is false
         self.skipReview = false;
         self.broker = broker;
+        self.postbackURL = postbackURL;
     }
     return self;
 }
@@ -28,7 +29,7 @@
 
 
 - (id) init{
-    return [self initWithPublisherDomain:@"" andBroker:@"" andAuthenticationInfo:nil andOrderInfo:nil ];
+    return [self initWithPublisherDomain:@"" andBroker:@"" andAuthenticationInfo:nil andOrderInfo:nil andPostbackUrl:nil];
 }
 
 @end

@@ -8,10 +8,23 @@
 
 #import "TradeItResult.h"
 
+
+/**
+ *  Returned if an error occured interacting with the Execution Management System (EMS) server
+ * @see TradeItResult for the shortMessage and long Messages fields as those are mainly relevant to the TradeItErrorResult class
+ */
 @interface TradeItErrorResult : TradeItResult
 
+/**
+ *  Contains more information on the error to be used for debugging purpose only
+ */
 @property (copy) NSString<Optional> *systemMessage;
+
+/**
+ *  An array with the request parameters that should be fixed before resending a new request. Fields could be authenticationInfo or orderInfo or both
+ */
 @property (copy) NSArray<Optional>* errorFields;
+
 
 +(TradeItErrorResult*) tradeErrorWithSystemMessage:(NSString*) systemMessage;
 

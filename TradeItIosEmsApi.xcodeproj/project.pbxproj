@@ -54,6 +54,7 @@
 		08CD8BA91B338B5A00F7E530 /* TradeItAuthenticationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */; };
 		08CD8BAA1B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */; };
 		08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */; };
+		08D4616F1B4D5E6F001F50E8 /* TradeItIosEmsApiLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D4616E1B4D5DE9001F50E8 /* TradeItIosEmsApiLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08EDE08B1B3DC64700D74866 /* TradeItErrorResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08A1B3DC64700D74866 /* TradeItErrorResult.m */; };
 		08EDE08E1B3DE00C00D74866 /* TradeItInformationNeededResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08D1B3DE00C00D74866 /* TradeItInformationNeededResult.m */; };
 		08EDE0911B3DFFEF00D74866 /* TradeItRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE0901B3DFFEF00D74866 /* TradeItRequest.m */; };
@@ -123,6 +124,7 @@
 		08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItAuthenticationInfo.h; sourceTree = "<group>"; };
 		08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItStockOrEtfTradeSession.h; sourceTree = "<group>"; };
 		08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockOrEtfTradeTest.m; sourceTree = "<group>"; };
+		08D4616E1B4D5DE9001F50E8 /* TradeItIosEmsApiLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TradeItIosEmsApiLib.h; sourceTree = "<group>"; };
 		08EDE0891B3DC64700D74866 /* TradeItErrorResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItErrorResult.h; sourceTree = "<group>"; };
 		08EDE08A1B3DC64700D74866 /* TradeItErrorResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItErrorResult.m; sourceTree = "<group>"; };
 		08EDE08C1B3DE00C00D74866 /* TradeItInformationNeededResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItInformationNeededResult.h; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				0866079F1B39DF4900B66D81 /* Result */,
 				08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */,
 				08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */,
+				08D4616E1B4D5DE9001F50E8 /* TradeItIosEmsApiLib.h */,
 			);
 			path = TradeItIosEmsApi;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D4616F1B4D5E6F001F50E8 /* TradeItIosEmsApiLib.h in Headers */,
 				0864CD281B4200D1002F10A1 /* TradeItStockOrEtfTradeSession.h in Headers */,
 				084794B11B43503300DA86AC /* TradeitStockOrEtfOrderPrice.h in Headers */,
 				084794B21B43503700DA86AC /* TradeItStockOrEtfOrderInfo.h in Headers */,

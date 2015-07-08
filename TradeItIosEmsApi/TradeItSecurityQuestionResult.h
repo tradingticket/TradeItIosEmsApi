@@ -6,12 +6,28 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
+
 #import "TradeItInformationNeededResult.h"
 
+/**
+ *  Returned if the user needs to answer a security question before interacting with her account.
+ */
 @interface TradeItSecurityQuestionResult : TradeItInformationNeededResult
 
+/**
+ *  The security question to ask the user
+ */
 @property (copy) NSString* securityQuestion;
-@property (copy) NSArray<Optional>* securityQuestionOptions; //nil if broker does not provide options
+
+/**
+ *  An array of options if it's a multiple choice question. nil or emtpy array if broker does not provide any options
+ */
+@property (copy) NSArray<Optional>* securityQuestionOptions;
+
+/**
+ *  A base64 encoded image to be displayed to the user for security code card lookup (like a captcha)
+ *  nil or empty string if broker does not provide challenge image
+ */
 @property (copy) NSString<Optional>* challengeImage; //nil if broker does not provide challenge image
 
 @end

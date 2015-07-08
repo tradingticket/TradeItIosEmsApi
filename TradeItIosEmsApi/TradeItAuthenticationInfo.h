@@ -11,8 +11,27 @@
 
 @interface TradeItAuthenticationInfo : JSONModel<NSCopying>
 
+/**
+ * The user brokerage account login id
+ * The API takes the same id field for all brokers, but some call it username, some call it user id, and some call it account number.\
+ * When building a UI, you should use the same nomenclature brokers use. Below is a recap of what each broker uses for the id field.
+ * - TD	User Id
+ * - Etrade	User Id
+ * - Scottrade	Account #
+ * - Fidelity	Username
+ * - Schwab	User Id
+ * - TradeStation	Username
+ * - Robinhood	Username
+ * - OptionsHouse	User Id
+ * - Interactive Brokers	Username
+ */
 @property (copy) NSString *id;
+
+/**
+ *  The user brokerage account login password
+ */
 @property (copy) NSString *password;
+
 
 - (id) initWithId:(NSString *)id andPassword:(NSString*) password;
 

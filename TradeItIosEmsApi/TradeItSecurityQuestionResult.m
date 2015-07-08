@@ -8,6 +8,7 @@
 
 #import "TradeItSecurityQuestionResult.h"
 
+
 @implementation TradeItSecurityQuestionResult
 
 - (id) init{

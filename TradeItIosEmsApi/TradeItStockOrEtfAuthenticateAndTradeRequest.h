@@ -20,8 +20,9 @@
 @property BOOL supportMultiAccounts; //default value is true
 @property BOOL skipReview; //default value is false
 @property (copy) NSString* broker;
+@property (copy) NSString<Optional>* postbackURL;
 
--(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*) orderInfo;
+-(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*) orderInfo andPostbackUrl:(NSString*) postbackURL;
 
 
 @end
