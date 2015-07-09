@@ -17,7 +17,7 @@
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeItAuthenticationInfo.h"
 
-//Result classes from an authentication and trade request
+//Result classes from the requests sent the to EMS server
 #import "TradeItResult.h"
 #import "TradeItStockOrEtfTradeSuccessResult.h"
 #import "TradeItStockOrEtfTradeReviewResult.h"

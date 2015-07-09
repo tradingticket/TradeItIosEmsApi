@@ -66,6 +66,11 @@ typedef enum {
  */
 @property (copy) NSString * postbackURL;
 
+/**
+ *  init a session with you app name provided by Trade it
+ *
+ *  @param publisherApp
+ */
 - (id) initWithpublisherApp:(NSString *) publisherApp;
 
 /**
@@ -98,18 +103,18 @@ typedef enum {
 /**
  *  Use this method to select an account to trade in after the ems server sent a TradeItMultipleAccountResult
  *
- *  @param accountInfo should be the exact same account info object retruned by the ems server in the TradeItMultipleAccountResult
+ *  @param accountInfo should be the exact same account info object retruned by the ems server in the TradeItMultipleAccountResult, shich is an NSDictionary with a value and name field
  *
- *  @return TradeItResult. Can either be TradeItStockOrEtfTradeReviewResult or TradeItErrorResult. Caller need to cast the result to the appropriate sub-class depending on the result status value. Session should be reset or if TradeItErrorResult is returned
+ *  @return TradeItResult. Can either be TradeItStockOrEtfTradeReviewResult or TradeItErrorResult. Caller needs to cast the result to the appropriate sub-class depending on the result status value. Session should be reset or if TradeItErrorResult is returned
  */
-- (TradeItResult*) selectAccount: (NSArray*) accountInfo;
+- (TradeItResult*) selectAccount: (NSDictionary*) accountInfo;
 
 /**
  *  Use this method to place the order after the ems server sent back a TradeItStockOrEtfTradeReviewResult
  *
  *  @param accountInfo should be the exact same account info object retruned by the ems server in the TradeItMultipleAccountResult
  *
- *  @return TradeItResult. Can either be TradeItStockOrEtfTradeSuccessResult or TradeItErrorResult. Caller need to cast the result to the appropriate sub-class depending on the result status value. Session should be reset after this call.
+ *  @return TradeItResult. Can either be TradeItStockOrEtfTradeSuccessResult or TradeItErrorResult. Caller needs to cast the result to the appropriate sub-class depending on the result status value. Session should be reset after this call.
  */
 - (TradeItResult*) placeOrder;
 
@@ -132,7 +137,7 @@ typedef enum {
 - (void) asyncAuthenticateAndReviewWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
 - (void) asyncAuthenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andReview:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
 - (void) asyncAnswerSecurityQuestion: (NSString*)answer andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
-- (void) asyncSelectAccount: (NSArray*) accountInfo andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
+- (void) asyncSelectAccount: (NSDictionary*) accountInfo andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
 - (void) asyncPlaceOrderWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock;
-- (void) asyncCloseSession;
+- (void) asyncCloseSessionWithCompletionBlock:(void (^)(BOOL)) completionBlock;
 @end

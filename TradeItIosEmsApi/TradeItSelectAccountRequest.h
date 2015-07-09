@@ -11,8 +11,8 @@
 @interface TradeItSelectAccountRequest : TradeItRequest
 
 @property NSString* token;
-@property NSArray* accountInfo;
+@property NSDictionary* accountInfo;
 
--(id) initWithToken: (NSString*)token andAccountInfo:(NSArray*) accountInfo;
+-(id) initWithToken: (NSString*)token andAccountInfo:(NSDictionary*) accountInfo;
 
 @end

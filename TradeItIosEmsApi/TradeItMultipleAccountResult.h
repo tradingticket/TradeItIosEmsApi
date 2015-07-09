@@ -14,7 +14,7 @@
 @interface TradeItMultipleAccountResult : TradeItInformationNeededResult
 
 /**
- *  An array of objects, where each object has a "name" and "value" property corresponding to the account.
+ *  An array of NSDictionary objects, where each object has a "name" and "value" property corresponding to the account.
  *  The name should be displayed to the user. The whole object for the account should be sent back to the server when calling
  *  the selectAccount method of the TradeItStockOrEtfTradeSession
  */

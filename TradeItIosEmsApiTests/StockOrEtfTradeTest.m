@@ -36,7 +36,9 @@
     
     NSLog(@"******************TESTING BASIC USE CASE");
     //asyncBasicTest();
-    asyncSecurityAnswerTest();
+    //asyncSecurityAnswerTest();
+    //asyncMultiAccountTest();
+    asyncCloseSessionTest();
     NSLog(@"Done");
 
     
@@ -233,6 +235,30 @@ TradeItResult* sendAsyncSecurityAnswer( TradeItStockOrEtfTradeSession * tradeSes
 }
 
 
+TradeItResult* sendAsyncSelectAccount( TradeItStockOrEtfTradeSession * tradeSession, NSDictionary* accountInfo){
+    __block TradeItResult * selectAccountResult = nil;
+    [tradeSession asyncSelectAccount:accountInfo andCompletionBlock:^(TradeItResult* result){
+        NSLog(@"Received Result in completion block%@", result);
+        selectAccountResult = result;
+    }];
+    
+    while (!selectAccountResult) {}
+    return selectAccountResult;
+}
+
+
+void sendAsyncCloseSession( TradeItStockOrEtfTradeSession * tradeSession){
+    __block BOOL done = NO;
+    [tradeSession asyncCloseSessionWithCompletionBlock:^(BOOL sessionClosed){
+        NSLog(@"Session CLosed %d", sessionClosed);
+        done = YES;
+    }];
+    
+    while (!done) {}
+}
+
+
+
 void asyncBasicTest(){
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
@@ -249,13 +275,32 @@ void asyncBasicTest(){
 }
 
 
+void asyncMultiAccountTest(){
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
+    if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
+        TradeItMultipleAccountResult* multiAcctResult = (TradeItMultipleAccountResult*) result;
+        NSLog(@"Received Multi Account result %@", multiAcctResult);
+        NSLog(@"Selecting Account");
+        result = sendAsyncSelectAccount(tradeSession, multiAcctResult.accountList[0]);
+        NSLog(@"Received result %@", result);
+        NSLog(@"placing order");
+        result = sendAsyncPlaceOrder(tradeSession);
+        NSLog(@"After placing order Received result%@", result);
+    }
+    else{
+        NSLog(@"Received result %@", result);
+        
+    }
+}
+
 
 void asyncSecurityAnswerTest(){
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummySecurity", @"dummy", 10, tradeSession);
+    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
     if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
-        NSLog(@"Received security question result %@", result);
-        NSLog(@"Answering security question");
+        NSLog(@"Received Security Question Result result %@", result);
+        NSLog(@"Answering question");
         result = sendAsyncSecurityAnswer(tradeSession);
         NSLog(@"Received result %@", result);
         NSLog(@"placing order");
@@ -267,6 +312,22 @@ void asyncSecurityAnswerTest(){
         
     }
 }
+
+void asyncCloseSessionTest(){
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
+    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
+    if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
+        NSLog(@"Received review result %@", result);
+        NSLog(@"Close Sessiom session");
+        sendAsyncCloseSession(tradeSession);
+    }
+    else{
+        NSLog(@"Received result %@", result);
+        
+    }
+}
+
+
 
 
 

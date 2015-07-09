@@ -10,7 +10,7 @@
 
 @implementation TradeItSelectAccountRequest
 
--(id) initWithToken: (NSString*)token andAccountInfo:(NSArray*) accountInfo{
+-(id) initWithToken: (NSString*)token andAccountInfo:(NSDictionary*) accountInfo{
     self = [super init];
     if(self){
         self.token = token;

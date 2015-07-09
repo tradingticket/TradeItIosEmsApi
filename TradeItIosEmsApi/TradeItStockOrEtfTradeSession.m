@@ -35,7 +35,7 @@
     self = [super init];
     if (self) {
         self.publisherApp  = publisherApp;
-        self.environment = TradeItEmsLocalEnv;
+        self.environment = TradeItEmsProductionEnv;
         self.orderInfo = [TradeItStockOrEtfOrderInfo new];
         self.authenticationInfo = [TradeItAuthenticationInfo new];
         self.broker = nil;
@@ -114,7 +114,7 @@
     
 }
 
-- (TradeItResult*) selectAccount: (NSArray*) accountInfo {
+- (TradeItResult*) selectAccount: (NSDictionary*) accountInfo {
     
     TradeItSelectAccountRequest* selectAccountRequest = [[TradeItSelectAccountRequest alloc]initWithToken:self.sessionToken andAccountInfo:accountInfo];
     
@@ -176,7 +176,7 @@
     });
 
 }
-- (void) asyncSelectAccount: (NSArray*) accountInfo andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+- (void) asyncSelectAccount: (NSDictionary*) accountInfo andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
         TradeItResult * result= [self selectAccount:accountInfo];
         
@@ -198,14 +198,14 @@
 
 }
 
-- (void) asyncCloseSession{
+- (void) asyncCloseSessionWithCompletionBlock:(void (^)(BOOL)) completionBlock{
     
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
          BOOL sessionClosed = [self closeSession];
         
-        if(!sessionClosed){
-            NSLog(@"Failed closing trade it session");
+        if (completionBlock) {
+            completionBlock(sessionClosed);
         }
     });
     
