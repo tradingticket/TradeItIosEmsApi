@@ -29,12 +29,13 @@
         self.estimatedOrderValue = nil;
         self.estimatedOrderCommission = nil;
         self.estimatedTotalValue = nil;
+        self.orderValueLabel = @"";
     }
     return self;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"TradeItStockOrEtfReviewOrderDetails: orderSymbol=%@ orderAction=%@ orderPrice=%@ orderExpiration=%@ longHoldings=%@ shortHoldings=%@ orderQuantity=%d buyingPower=%@ availableCash=%@ estimatedOrderValue=%@ estimatedOrderCommission=%@ estimatedTotalValue=%@ orderMessage=%@", self.orderSymbol,self.orderAction,self.orderPrice,self.orderExpiration,self.longHoldings,self.shortHoldings,self.orderQuantity,self.buyingPower,self.availableCash,self.estimatedOrderValue,self.estimatedOrderCommission,self.estimatedTotalValue,self.orderMessage];
+    return [NSString stringWithFormat: @"TradeItStockOrEtfReviewOrderDetails: orderSymbol=%@ orderAction=%@ orderPrice=%@ orderExpiration=%@ longHoldings=%@ shortHoldings=%@ orderQuantity=%d buyingPower=%@ availableCash=%@ estimatedOrderValue=%@ estimatedOrderCommission=%@ estimatedTotalValue=%@ orderMessage=%@ orderValueLabel=%@", self.orderSymbol,self.orderAction,self.orderPrice,self.orderExpiration,self.longHoldings,self.shortHoldings,self.orderQuantity,self.buyingPower,self.availableCash,self.estimatedOrderValue,self.estimatedOrderCommission,self.estimatedTotalValue,self.orderMessage, self.orderValueLabel];
 }
 
 - (id)copyWithZone:(NSZone *)zone

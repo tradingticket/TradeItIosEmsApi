@@ -58,8 +58,10 @@
  */
 @property (copy) NSNumber<Optional>* shortHoldings;
 
-
-//
+/**
+ *  "Estimated Proceeds" or "Estimated Cost" depending on the order action
+ */
+@property (copy) NSString * orderValueLabel;
 
 /**
  *  The user buying power (pre-trade)
