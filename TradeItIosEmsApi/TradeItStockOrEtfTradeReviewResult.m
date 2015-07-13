@@ -17,7 +17,7 @@
     self = [super init];
     
     if(self){
-        self.orderDetails = nil;
+        self.orderDetails = [TradeItStockOrEtfTradeReviewOrderDetails new];
         self.warningsList = nil;
         self.ackWarningsList = nil;
     }
