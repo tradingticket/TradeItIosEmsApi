@@ -14,7 +14,7 @@
     self =  [super init];
     if(self){
         self.errorFields = nil;
-        self.errorFields = nil;
+        self.systemMessage = nil;
     }
     return self;
 }

@@ -17,17 +17,9 @@
 #import "TradeItStockOrEtfTradeReviewResult.h"
 #import "TradeItStockOrEtfTradeSuccessResult.h"
 #import "TradeItErrorResult.h"
+#import "TradeItTypeDefs.h"
 
 
-typedef void (^TradeItRequestCompletionBlock)(TradeItResult* result);
-/**
- Determine which server to send the request to.
- */
-typedef enum {
-    TradeItEmsProductionEnv,
-    TradeItEmsTestEnv,
-    TradeItEmsLocalEnv
-} TradeitEmsEnvironments;
 
 /**
  *  Main class to manage authenticating sending orders to the Trade It Execution Management System (EMS). For each order a new session needs to be instantiated or reset should be called on the current session in order to clear the session order broker and authentication information.

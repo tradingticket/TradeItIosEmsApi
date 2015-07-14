@@ -16,12 +16,11 @@
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSelectAccountRequest.h"
 #import <dispatch/dispatch.h>
+#import "TradeItEmsUtils.h"
 
 @interface TradeItStockOrEtfTradeSession()
 
-- (NSURL*) getEmsBaseUrl;
-- (NSMutableURLRequest *) buildJsonRequestwithData:(JSONModel*) requestObject forMethod:(NSString*)emsMethod;
-- (TradeItResult*) buildResult:(TradeItResult*) tradeItResult fromJson:(NSString*)jsonString ;
+
 - (TradeItResult* ) processRequest:(NSURLRequest*) request;
 - (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest;
 
@@ -90,7 +89,7 @@
 
 - (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest{
     
-    NSMutableURLRequest *request = [self buildJsonRequestwithData:authenticateAndtradeRequest forMethod:@"authenticateAndTradeStocksOrEtfs"];
+    NSMutableURLRequest *request = buildJsonRequest(authenticateAndtradeRequest, @"authenticateAndTradeStocksOrEtfs", self.environment);
     
     return [self processRequest:request];
 }
@@ -99,7 +98,7 @@
     
     TradeItPlaceOrderRequest * placeOrderRequest = [[TradeItPlaceOrderRequest alloc] initWithToken:self.sessionToken];
     
-    NSMutableURLRequest *request = [self buildJsonRequestwithData:placeOrderRequest forMethod:@"placeTrade"];
+    NSMutableURLRequest *request = buildJsonRequest(placeOrderRequest, @"placeTrade", self.environment);
     
     return [self processRequest:request];
 }
@@ -107,7 +106,7 @@
 - (TradeItResult*) answerSecurityQuestion: (NSString*)answer{
     TradeItSecurityQuestionRequest* securityRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.sessionToken andAnswer:answer];
     
-    NSMutableURLRequest *request = [self buildJsonRequestwithData:securityRequest forMethod:@"answerSecurityQuestion"];
+    NSMutableURLRequest *request = buildJsonRequest(securityRequest, @"answerSecurityQuestion", self.environment);
     
     return [self processRequest:request];
 
@@ -118,7 +117,7 @@
     
     TradeItSelectAccountRequest* selectAccountRequest = [[TradeItSelectAccountRequest alloc]initWithToken:self.sessionToken andAccountInfo:accountInfo];
     
-    NSMutableURLRequest *request = [self buildJsonRequestwithData:selectAccountRequest forMethod:@"selectAccount"];
+    NSMutableURLRequest *request = buildJsonRequest(selectAccountRequest, @"selectAccount", self.environment);
     
     return [self processRequest:request];
 }
@@ -128,7 +127,7 @@
     
     TradeItCloseSessionRequest * closeSessionRequest = [[TradeItCloseSessionRequest alloc]initWithToken:self.sessionToken];
     
-    NSMutableURLRequest *request = [self buildJsonRequestwithData:closeSessionRequest forMethod:@"close"];
+    NSMutableURLRequest *request = buildJsonRequest(closeSessionRequest, @"close", self.environment);
     
     TradeItResult * result = [self processRequest:request];
 
@@ -213,40 +212,6 @@
 
 
 //private methods
-- (NSURL*) getEmsBaseUrl{
-    switch (self.environment) {
-        case TradeItEmsProductionEnv:
-            return [NSURL URLWithString:@"https://ems.tradingticket.com/universalTradingTicket/"];
-        case TradeItEmsTestEnv:
-            return [NSURL URLWithString:@"https://ems.qa.tradingticket.com/universalTradingTicket/"];
-        case TradeItEmsLocalEnv:
-            return [NSURL URLWithString:@"http://localhost:8080/ems/universalTradingTicket/"];
-        default:
-            NSLog(@"Invalid environment %d - directing to production by default", self.environment);
-            return [NSURL URLWithString:@"https://ems.tradingticket.com/universalTradingTicket/"];
-    }
-}
-
-
-- (NSMutableURLRequest *) buildJsonRequestwithData:(JSONModel*)requestObject forMethod:(NSString*)emsMethod
-{
-    NSData *requestData = [[requestObject toJSONString] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    //NSLog(@"requestdata is %@", requestData);
-    NSURL * url = [NSURL URLWithString:emsMethod relativeToURL:[self getEmsBaseUrl]];
-    
-    //NSLog(@"ems url is %@",url);
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody: requestData];
-    
-    return request;
-
-}
 
 - (TradeItResult* ) processRequest:(NSURLRequest* ) request{
     
@@ -266,7 +231,7 @@
     // NSLog(@"Json response:%@", stringData);
     
     //first convert to a generic result to check the type
-    TradeItResult * tradeItResult = [self buildResult:[TradeItResult alloc] fromJson:jsonResponse];
+    TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
     //NSLog(@"Generic Result:%@", tradeItResult);
     
     
@@ -276,20 +241,21 @@
     
     if([tradeItResult.status  isEqual: @"REVIEW_ORDER"])
     {
-        TradeItStockOrEtfTradeReviewResult* reviewResult =  (TradeItStockOrEtfTradeReviewResult*)[self buildResult: [TradeItStockOrEtfTradeReviewResult alloc] fromJson:jsonResponse];
+        TradeItStockOrEtfTradeReviewResult* reviewResult =  (TradeItStockOrEtfTradeReviewResult*)buildResult([TradeItStockOrEtfTradeReviewResult alloc],jsonResponse);
+        
         self.sessionToken =  reviewResult.token; //save token locally
         return reviewResult;
     }
     else if ([tradeItResult.status isEqual:@"SUCCESS"]){
         self.sessionToken = nil; //reset token
-        return [self buildResult: [TradeItStockOrEtfTradeSuccessResult alloc] fromJson:jsonResponse];
+        return buildResult([TradeItStockOrEtfTradeSuccessResult alloc],jsonResponse);
     }
     else if ([tradeItResult.status isEqual:@"ERROR"]){
         self.sessionToken = nil; //reset token
-        return [self buildResult: [TradeItErrorResult alloc] fromJson:jsonResponse];
+        return buildResult([TradeItErrorResult alloc],jsonResponse);
     }
     else if ([tradeItResult.status isEqual:@"INFORMATION_NEEDED"]){
-        TradeItResult *informationResult =  [self buildResult: [TradeItInformationNeededResult alloc] fromJson:jsonResponse];
+        TradeItResult *informationResult = buildResult([TradeItInformationNeededResult alloc],jsonResponse);
         
         if([informationResult isKindOfClass: [TradeItErrorResult class]]){//if there was an error parsing return
             return informationResult; //return error
@@ -300,10 +266,10 @@
         //parse to either a security question or a multi account
         NSString *informationType =[informationResult valueForKey: @"informationType"];
         if([informationType isEqual:@"SECURITY_QUESTION"]){
-            return [self buildResult: [TradeItSecurityQuestionResult alloc] fromJson:jsonResponse];
+            return  buildResult([TradeItSecurityQuestionResult alloc],jsonResponse);
         }
         else if ([informationType isEqual:@"SELECT_ACCOUNT"]){
-            return [self buildResult: [TradeItMultipleAccountResult alloc] fromJson:jsonResponse];
+            return buildResult([TradeItMultipleAccountResult alloc],jsonResponse);
         }
         else{
             NSLog(@"Unsupported information type %@, upgrade apis", informationType);
@@ -315,17 +281,4 @@
     return tradeItResult;
 }
 
-- (TradeItResult*) buildResult:(TradeItResult*) tradeItResult fromJson:(NSString*)jsonString {
-    
-    JSONModelError* jsonModelError = nil;
-    TradeItResult * resultFromJson = [tradeItResult initWithString:jsonString error:&jsonModelError];
-    
-    if(jsonModelError!=nil)
-    {
-        NSLog(@"Received invalid json from ems server error=%@ response=%@", jsonModelError, jsonString);
-        return [TradeItErrorResult tradeErrorWithSystemMessage:@"error parsing json response"];
-    }
-    
-    return resultFromJson;
-}
 @end

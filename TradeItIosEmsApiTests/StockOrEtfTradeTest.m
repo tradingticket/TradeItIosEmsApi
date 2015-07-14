@@ -34,18 +34,22 @@
 
 - (void)testExample {
     
+    NSLog(@"******************TESTING VERIFY CREDENTIALS");
+    testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+    testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+    
 //    NSLog(@"******************TESTING BASIC USE CASE");
-    //asyncBasicTest();
-    //asyncSecurityAnswerTest();
-    //asyncMultiAccountTest();
+//    asyncBasicTest();
+//    asyncSecurityAnswerTest();
+//    asyncMultiAccountTest();
 //    asyncCloseSessionTest();
 //    NSLog(@"Done");
-
-    
-
-    NSLog(@"******************TESTING BASIC USE CASE");
-    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
-    
+//
+//    
+//
+//    NSLog(@"******************TESTING BASIC USE CASE");
+//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
+//    
 //    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
 //    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
 //    
@@ -65,7 +69,7 @@
 //    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
 //
 //    testClose();
-
+//
 
 
 
@@ -78,6 +82,39 @@
         // Put the code you want to measure the time of here.
     }];
 }
+
+void testVerifyCredentials(NSString* broker, NSString * id, NSString* password){
+    
+    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
+    
+    tradeSession.environment = TradeItEmsTestEnv;
+    
+    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
+    
+    
+    TradeItResult *result = [tradeSession verifyUser:authenticationInfo withBroker:broker ];
+    
+    NSLog(@"Received result: %@", result);
+}
+
+TradeItResult* testAsyncVerifyCredentials(NSString* broker, NSString * id, NSString* password){
+    
+    __block TradeItResult * verifyCredentialsResult = nil;
+    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
+    
+    tradeSession.environment = TradeItEmsTestEnv;
+
+    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
+    
+    [tradeSession verifyUser:authenticationInfo withBroker:broker WithCompletionBlock:^(TradeItResult* result){
+        NSLog(@"Received Result in completion block%@", result);
+        verifyCredentialsResult = result;
+    }];
+    
+    while (!verifyCredentialsResult) {}
+    return verifyCredentialsResult;
+}
+
 
 void testClose(){
 
@@ -210,7 +247,9 @@ TradeItResult* sendAsyncAuthenticateAndReviewRequest(NSString* broker, NSString 
        authenticateAndReviewResult = result;
     }];
    
-     while (!authenticateAndReviewResult) {}
+     while (!authenticateAndReviewResult) {
+         //NSLog(@"Aurthenticating & Reviewing ..Asynch.");
+     }
     return authenticateAndReviewResult;
 }
 
@@ -222,7 +261,9 @@ TradeItResult* sendAsyncPlaceOrder( TradeItStockOrEtfTradeSession * tradeSession
         placeOrderResult = result;
     }];
     
-    while (!placeOrderResult) {}
+    while (!placeOrderResult) {
+        //NSLog(@"Placing Order ..Asynch.");
+    }
     return placeOrderResult;
 }
 

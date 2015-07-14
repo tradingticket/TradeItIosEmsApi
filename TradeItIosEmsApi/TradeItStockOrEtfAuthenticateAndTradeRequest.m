@@ -10,7 +10,7 @@
 
 @implementation TradeItStockOrEtfAuthenticateAndTradeRequest
 
--(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*)orderInfo  andPostbackUrl:(NSString*) postbackURL;{
+-(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*)orderInfo  andPostbackUrl:(NSString*) postbackURL{
     
     self = [super init];
     if (self) {
