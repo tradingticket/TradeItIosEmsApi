@@ -28,5 +28,6 @@
 #import "TradeItErrorResult.h"
 #import "TradeItInformationNeededResult.h"
 #import "TradeItTypeDefs.h"
+#import "TradeItSuccessAuthenticationResult.h"
 
 #endif
