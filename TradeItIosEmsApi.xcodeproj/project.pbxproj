@@ -48,6 +48,7 @@
 		087A79401B4C4EDE0083E804 /* JSONModelError.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A793F1B4C4EDE0083E804 /* JSONModelError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		087A79431B4C4F560083E804 /* JSONKeyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79421B4C4F560083E804 /* JSONKeyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		087A79451B4C4F650083E804 /* JSONModelArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 087A79441B4C4F650083E804 /* JSONModelArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08B1D49E1B6290A900759D8D /* TradeItTypeDefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3DFCE1B55A14B0094BC61 /* TradeItTypeDefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08CD8B911B338A7500F7E530 /* libTradeItIosEmsApi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */; };
 		08CD8BA71B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8B9F1B338B5A00F7E530 /* TradeitStockOrEtfOrderPrice.m */; };
 		08CD8BA81B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BA01B338B5A00F7E530 /* TradeItStockOrEtfOrderInfo.m */; };
@@ -61,7 +62,6 @@
 		08D3DFC91B5598830094BC61 /* TradeItVerifyCredentialRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3DFC71B5598830094BC61 /* TradeItVerifyCredentialRequest.h */; };
 		08D3DFCA1B5598830094BC61 /* TradeItVerifyCredentialRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3DFC81B5598830094BC61 /* TradeItVerifyCredentialRequest.m */; };
 		08D3DFCD1B55A0520094BC61 /* TradeItEmsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3DFCC1B55A0520094BC61 /* TradeItEmsUtils.m */; };
-		08D3DFCF1B55B3B10094BC61 /* TradeItTypeDefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3DFCE1B55A14B0094BC61 /* TradeItTypeDefs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D4616F1B4D5E6F001F50E8 /* TradeItIosEmsApiLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D4616E1B4D5DE9001F50E8 /* TradeItIosEmsApiLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08EDE08B1B3DC64700D74866 /* TradeItErrorResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08A1B3DC64700D74866 /* TradeItErrorResult.m */; };
 		08EDE08E1B3DE00C00D74866 /* TradeItInformationNeededResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EDE08D1B3DE00C00D74866 /* TradeItInformationNeededResult.m */; };
@@ -206,7 +206,6 @@
 				08EDE08D1B3DE00C00D74866 /* TradeItInformationNeededResult.m */,
 				08D3DFC31B55977F0094BC61 /* TradeItSuccessAuthenticationResult.h */,
 				08D3DFC41B55977F0094BC61 /* TradeItSuccessAuthenticationResult.m */,
-				08D3DFCE1B55A14B0094BC61 /* TradeItTypeDefs.h */,
 			);
 			name = Result;
 			sourceTree = "<group>";
@@ -274,6 +273,7 @@
 				0866079F1B39DF4900B66D81 /* Result */,
 				08CD8BA61B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.h */,
 				08CD8BA41B338B5A00F7E530 /* TradeItStockOrEtfTradeSession.m */,
+				08D3DFCE1B55A14B0094BC61 /* TradeItTypeDefs.h */,
 				08D3DFCB1B55A0010094BC61 /* TradeItEmsUtils.h */,
 				08D3DFCC1B55A0520094BC61 /* TradeItEmsUtils.m */,
 				08D3DFBF1B5595B00094BC61 /* TradeItVerifyCredentialSession.h */,
@@ -343,15 +343,15 @@
 				08D3DFC51B55977F0094BC61 /* TradeItSuccessAuthenticationResult.h in Headers */,
 				087A79381B4C4E800083E804 /* JSONModel.h in Headers */,
 				087A793A1B4C4EAA0083E804 /* JSONValueTransformer.h in Headers */,
-				08D3DFC91B5598830094BC61 /* TradeItVerifyCredentialRequest.h in Headers */,
 				087A793C1B4C4EBF0083E804 /* NSArray+JSONModel.h in Headers */,
+				08B1D49E1B6290A900759D8D /* TradeItTypeDefs.h in Headers */,
 				087A79401B4C4EDE0083E804 /* JSONModelError.h in Headers */,
 				087A793E1B4C4ECF0083E804 /* JSONModelClassProperty.h in Headers */,
-				08D3DFCF1B55B3B10094BC61 /* TradeItTypeDefs.h in Headers */,
 				08D3DFC11B5595B00094BC61 /* TradeItVerifyCredentialSession.h in Headers */,
 				087A79431B4C4F560083E804 /* JSONKeyMapper.h in Headers */,
-				087A79451B4C4F650083E804 /* JSONModelArray.h in Headers */,
+				08D3DFC91B5598830094BC61 /* TradeItVerifyCredentialRequest.h in Headers */,
 				083115051B4C4A8500F20E99 /* JSONModelLib.h in Headers */,
+				087A79451B4C4F650083E804 /* JSONModelArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

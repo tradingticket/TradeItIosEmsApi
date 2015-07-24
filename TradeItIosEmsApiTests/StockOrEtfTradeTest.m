@@ -35,14 +35,14 @@
 - (void)testExample {
     
     NSLog(@"******************TESTING VERIFY CREDENTIALS");
-    testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+    //testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
     testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
-//    asyncBasicTest();
-//    asyncSecurityAnswerTest();
-//    asyncMultiAccountTest();
-//    asyncCloseSessionTest();
+//        asyncBasicTest();
+//        asyncSecurityAnswerTest();
+//        asyncMultiAccountTest();
+//        asyncCloseSessionTest();
 //    NSLog(@"Done");
 //
 //    

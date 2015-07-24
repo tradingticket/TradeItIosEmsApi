@@ -159,7 +159,7 @@
         TradeItResult * result= [self authenticateUser:authenticationInfo andReview:orderInfo withBroker:broker];
         
         if (completionBlock) {
-            completionBlock(result);
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
         }
     });
 
@@ -170,8 +170,7 @@
         TradeItResult * result= [self answerSecurityQuestion:answer];
         
         if (completionBlock) {
-            completionBlock(result);
-        }
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});        }
     });
 
 }
@@ -180,18 +179,16 @@
         TradeItResult * result= [self selectAccount:accountInfo];
         
         if (completionBlock) {
-            completionBlock(result);
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
         }
     });
 }
 
 - (void) asyncPlaceOrderWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
-    
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
         TradeItResult * result= [self placeOrder];
-        
         if (completionBlock) {
-            completionBlock(result);
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
         }
     });
 
@@ -204,7 +201,7 @@
          BOOL sessionClosed = [self closeSession];
         
         if (completionBlock) {
-            completionBlock(sessionClosed);
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(sessionClosed);});
         }
     });
     
