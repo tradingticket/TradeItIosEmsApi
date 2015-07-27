@@ -147,7 +147,7 @@
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
         TradeItResult * result= [self authenticateAndReview];
         if (completionBlock) {
-            completionBlock(result);
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
         }
     });
 }
