@@ -10,6 +10,10 @@
 #import "TradeItVerifyCredentialRequest.h"
 #import "TradeItEmsUtils.h"
 
+@interface TradeItVerifyCredentialSession()
+- (dispatch_queue_t) getAsyncQueue;
+@end
+
 @implementation TradeItVerifyCredentialSession
 
 
@@ -18,6 +22,7 @@
     if (self) {
         self.publisherApp  = publisherApp;
         self.environment = TradeItEmsProductionEnv;
+        self.runAsyncCompletionBlockOnMainThread = true;
     }
     return self;
 }
@@ -79,12 +84,21 @@
         TradeItResult * result= [self verifyUser:authenticationInfo withBroker:broker];
         
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});
         }
     });
 
     
 }
 
+
+//private methods
+
+- (dispatch_queue_t) getAsyncQueue{
+    if (self.runAsyncCompletionBlockOnMainThread)
+        return dispatch_get_main_queue();
+    else
+        return dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+}
 
 @end

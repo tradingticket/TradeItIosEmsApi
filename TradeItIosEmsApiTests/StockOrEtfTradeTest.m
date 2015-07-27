@@ -102,6 +102,7 @@ TradeItResult* testAsyncVerifyCredentials(NSString* broker, NSString * id, NSStr
     __block TradeItResult * verifyCredentialsResult = nil;
     TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
     
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
     tradeSession.environment = TradeItEmsTestEnv;
 
     TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
@@ -238,6 +239,8 @@ TradeItResult* sendAsyncAuthenticateAndReviewRequest(NSString* broker, NSString 
                               andExpiration:TradeItStockOrEtfOrderExpirationGtc];
     
     
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
+    
     tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
     
     tradeSession.broker = broker;
@@ -304,9 +307,11 @@ void sendAsyncCloseSession( TradeItStockOrEtfTradeSession * tradeSession){
 
 
 void asyncBasicTest(){
+    
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     tradeSession.environment = TradeItEmsTestEnv;
-
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
+    
     TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
     if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
         NSLog(@"Received review result %@", result);
@@ -322,9 +327,11 @@ void asyncBasicTest(){
 
 
 void asyncMultiAccountTest(){
+    
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     tradeSession.environment = TradeItEmsTestEnv;
-
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
+    
     TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
     if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
         TradeItMultipleAccountResult* multiAcctResult = (TradeItMultipleAccountResult*) result;
@@ -344,9 +351,11 @@ void asyncMultiAccountTest(){
 
 
 void asyncSecurityAnswerTest(){
+    
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     tradeSession.environment = TradeItEmsTestEnv;
-
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
+    
     TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
     if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
         NSLog(@"Received Security Question Result result %@", result);
@@ -364,9 +373,11 @@ void asyncSecurityAnswerTest(){
 }
 
 void asyncCloseSessionTest(){
+    
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     tradeSession.environment = TradeItEmsTestEnv;
-
+    tradeSession.runAsyncCompletionBlockOnMainThread = false;
+    
     TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
     if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
         NSLog(@"Received review result %@", result);

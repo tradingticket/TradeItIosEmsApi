@@ -27,6 +27,12 @@
  */
 @property TradeitEmsEnvironments environment;
 
+/**
+ *  Determine wethere or not to call the completion block for async functions on main thread or background thread.
+ *  Default value is true
+ *  set to false if the completion block is not making any UI changes otherwise it will need to be set to true
+ */
+@property BOOL runAsyncCompletionBlockOnMainThread;
 
 /**
  *  init a session with you app name provided by Trade it

@@ -23,6 +23,7 @@
 
 - (TradeItResult* ) processRequest:(NSURLRequest*) request;
 - (TradeItResult*) autheticateAndTradeWithRequest: (TradeItStockOrEtfAuthenticateAndTradeRequest *) authenticateAndtradeRequest;
+- (dispatch_queue_t) getAsyncQueue;
 
 @property (copy) NSString* sessionToken;
 
@@ -40,6 +41,7 @@
         self.broker = nil;
         self.sessionToken = nil;
         self.postbackURL = nil;
+        self.runAsyncCompletionBlockOnMainThread = true;
     }
     return self;
 }
@@ -144,10 +146,11 @@
 }
 
 - (void) asyncAuthenticateAndReviewWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
+    
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
         TradeItResult * result= [self authenticateAndReview];
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});
         }
     });
 }
@@ -159,7 +162,7 @@
         TradeItResult * result= [self authenticateUser:authenticationInfo andReview:orderInfo withBroker:broker];
         
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});
         }
     });
 
@@ -170,7 +173,7 @@
         TradeItResult * result= [self answerSecurityQuestion:answer];
         
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});        }
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});        }
     });
 
 }
@@ -179,7 +182,7 @@
         TradeItResult * result= [self selectAccount:accountInfo];
         
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});
         }
     });
 }
@@ -188,7 +191,7 @@
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
         TradeItResult * result= [self placeOrder];
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(result);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(result);});
         }
     });
 
@@ -201,7 +204,7 @@
          BOOL sessionClosed = [self closeSession];
         
         if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(sessionClosed);});
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(sessionClosed);});
         }
     });
     
@@ -209,6 +212,13 @@
 
 
 //private methods
+
+- (dispatch_queue_t) getAsyncQueue{
+    if (self.runAsyncCompletionBlockOnMainThread)
+        return dispatch_get_main_queue();
+    else
+        return dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+}
 
 - (TradeItResult* ) processRequest:(NSURLRequest* ) request{
     
