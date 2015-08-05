@@ -34,9 +34,12 @@
 
 - (void)testExample {
     
+    //testFetchBrokerList(@"thestreet");
+    testAsyncFetchBrokerList(@"thestreet");
+    
     NSLog(@"******************TESTING VERIFY CREDENTIALS");
     //testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
-    testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+   // testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
 //        asyncBasicTest();
@@ -83,6 +86,7 @@
     }];
 }
 
+
 void testVerifyCredentials(NSString* broker, NSString * id, NSString* password){
     
     TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
@@ -114,6 +118,34 @@ TradeItResult* testAsyncVerifyCredentials(NSString* broker, NSString * id, NSStr
     
     while (!verifyCredentialsResult) {}
     return verifyCredentialsResult;
+}
+
+
+void testFetchBrokerList(NSString* publisherDomain){
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
+    
+    tradeSession.environment = TradeItEmsLocalEnv;
+    
+    NSArray *brokerList = tradeSession.getBrokerList;
+    NSLog(@"Received broker list %@", brokerList);
+    
+}
+
+
+void testAsyncFetchBrokerList(NSString* publisherDomain){
+    __block BOOL done = NO;
+    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
+    
+    tradeSession.environment = TradeItEmsTestEnv;
+    tradeSession.runAsyncCompletionBlockOnMainThread=false;
+    
+    [tradeSession asyncGetBrokerListWithCompletionBlock:^(NSArray *brokerList){
+        NSLog(@"Received brokerlist %@", brokerList);
+        done = YES;
+    }];
+    
+    while (!done) {}
+
 }
 
 

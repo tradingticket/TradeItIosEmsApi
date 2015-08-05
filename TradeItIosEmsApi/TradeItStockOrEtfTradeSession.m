@@ -15,8 +15,10 @@
 #import "TradeItCloseSessionRequest.h"
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSelectAccountRequest.h"
+#import "TradeItStockOrEtfBrokerListRequest.h"
 #import <dispatch/dispatch.h>
 #import "TradeItEmsUtils.h"
+#import "TradeItBrokerListSuccessResult.h"
 
 @interface TradeItStockOrEtfTradeSession()
 
@@ -145,6 +147,53 @@
     }
 }
 
+
+
+- (NSArray *) getBrokerList{
+    
+    TradeItStockOrEtfBrokerListRequest * brokerListRequest = [[TradeItStockOrEtfBrokerListRequest alloc]initWithPublisherDomain:self.publisherApp];
+    
+    NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"getStocksOrEtfsBrokerList", self.environment);
+    
+    NSHTTPURLResponse *response;
+    NSError *error;
+    NSData *responseJsonData = [NSURLConnection sendSynchronousRequest:request
+                                                     returningResponse:&response
+                                                                 error:&error];
+    
+    if ((responseJsonData==nil) || ([response statusCode]!=200)) {
+        //error occured
+        NSLog(@"Could not send authenticateAndTradeRequest to ems server response=%@ error=%@", response, error);
+        return nil;
+    }
+    
+    NSMutableString *jsonResponse = [[NSMutableString alloc] initWithData:responseJsonData encoding:NSUTF8StringEncoding];
+
+    //first convert to a generic result to check the type
+    TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
+    //NSLog(@"Generic Result:%@", tradeItResult);
+    
+    
+    if([tradeItResult isKindOfClass: [TradeItErrorResult class]]){//if there was an erro parsing return
+        NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
+        return nil;
+    }
+    
+    if ([tradeItResult.status isEqual:@"SUCCESS"]){
+        TradeItBrokerListSuccessResult* successResult = (TradeItBrokerListSuccessResult*) buildResult([TradeItBrokerListSuccessResult alloc],jsonResponse);
+        return successResult.brokerList;
+    }
+    else if ([tradeItResult.status isEqual:@"ERROR"]){
+        NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
+        return nil;
+    }
+
+    return nil;
+
+}
+
+//asynch methodes
+
 - (void) asyncAuthenticateAndReviewWithCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
     
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
@@ -154,8 +203,6 @@
         }
     });
 }
-
-//asynch methodes
 
 - (void) asyncAuthenticateUser:(TradeItAuthenticationInfo*) authenticationInfo andReview:(TradeItStockOrEtfOrderInfo*) orderInfo withBroker:(NSString*) broker andCompletionBlock:(TradeItRequestCompletionBlock) completionBlock{
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
@@ -208,6 +255,16 @@
         }
     });
     
+}
+
+- (void) asyncGetBrokerListWithCompletionBlock:(void (^)(NSArray* )) completionBlock{
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0),  ^(void){
+        NSArray* brokerList  = [self getBrokerList];
+        
+        if (completionBlock) {
+            dispatch_async([self getAsyncQueue],^(void){completionBlock(brokerList);});
+        }
+    });
 }
 
 
