@@ -130,6 +130,14 @@
  */
 - (void) reset;
 
+/**
+ *   Return an array with all the broker that support stockOrEtfTrading and are enabled for a given publisher
+ *
+ *  @param publisherApp
+ *
+ *  @return An array of Brokers
+ */
++ (NSArray *) getBrokerListForPublisherApp: (NSString* )publisherApp;
 
 /** @name async version of the apis @see synchronous version for description */
 
