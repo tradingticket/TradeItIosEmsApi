@@ -13,7 +13,7 @@
 #import "TradeItResult.h"
 
 NSURL* getEmsBaseUrl(TradeitEmsEnvironments env);
-NSMutableURLRequest * buildJsonRequest(JSONModel* requestObject, NSString*emsMethod, TradeitEmsEnvironments env);
+NSMutableURLRequest * buildJsonRequest(TIEMSJSONModel* requestObject, NSString*emsMethod, TradeitEmsEnvironments env);
 TradeItResult* buildResult (TradeItResult* tradeItResult, NSString* jsonString) ;
 
 #endif

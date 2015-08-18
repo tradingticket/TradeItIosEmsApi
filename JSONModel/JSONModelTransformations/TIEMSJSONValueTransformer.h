@@ -15,7 +15,7 @@
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
 #import <Foundation/Foundation.h>
-#import "JSONModelArray.h"
+#import "TIEMSJSONModelArray.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +24,7 @@
  * Boolean function to check for null values. Handy when you need to both check
  * for nil and [NSNUll null]
  */
-extern BOOL isNull(id value);
+extern BOOL TIEMSisNull(id value);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +42,7 @@ extern BOOL isNull(id value);
  * JSON types into your target class property classes, and vice versa.
  * One static copy is create and store in the JSONModel class scope.
  */
-@interface JSONValueTransformer : NSObject
+@interface TIEMSJSONValueTransformer : NSObject
 
 @property (strong, nonatomic, readonly) NSDictionary* primitivesNames;
 
@@ -79,8 +79,8 @@ extern BOOL isNull(id value);
  * @param array incoming array
  * @return JSONModelArray
  */
--(NSArray*)NSArrayFromJSONModelArray:(JSONModelArray*)array;
--(NSMutableArray*)NSMutableArrayFromJSONModelArray:(JSONModelArray*)array;
+-(NSArray*)NSArrayFromJSONModelArray:(TIEMSJSONModelArray*)array;
+-(NSMutableArray*)NSMutableArrayFromJSONModelArray:(TIEMSJSONModelArray*)array;
 
 #pragma mark - NSMutableDictionary <-> NSDictionary
 /**

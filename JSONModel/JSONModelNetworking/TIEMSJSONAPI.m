@@ -14,29 +14,29 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONAPI.h"
+#import "TIEMSJSONAPI.h"
 
 #pragma mark - helper error model class
-@interface JSONAPIRPCErrorModel: JSONModel
+@interface TIEMSJSONAPIRPCErrorModel: TIEMSJSONModel
 @property (assign, nonatomic) int code;
 @property (strong, nonatomic) NSString* message;
-@property (strong, nonatomic) id<Optional> data;
+@property (strong, nonatomic) id<TIEMSOptional> data;
 @end
 
 #pragma mark - static variables
 
-static JSONAPI* sharedInstance = nil;
+static TIEMSJSONAPI* sharedInstance = nil;
 static long jsonRpcId = 0;
 
 #pragma mark - JSONAPI() private interface
 
-@interface JSONAPI ()
+@interface TIEMSJSONAPI ()
 @property (strong, nonatomic) NSString* baseURLString;
 @end
 
 #pragma mark - JSONAPI implementation
 
-@implementation JSONAPI
+@implementation TIEMSJSONAPI
 
 #pragma mark - initialize
 
@@ -44,7 +44,7 @@ static long jsonRpcId = 0;
 {
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        sharedInstance = [[JSONAPI alloc] init];
+        sharedInstance = [[TIEMSJSONAPI alloc] init];
     });
 }
 
@@ -57,7 +57,7 @@ static long jsonRpcId = 0;
 
 +(void)setContentType:(NSString*)ctype
 {
-    [JSONHTTPClient setRequestContentType: ctype];
+    [TIEMSJSONHTTPClient setRequestContentType: ctype];
 }
 
 #pragma mark - GET methods
@@ -65,7 +65,7 @@ static long jsonRpcId = 0;
 {
     NSString* fullURL = [NSString stringWithFormat:@"%@%@", sharedInstance.baseURLString, path];
     
-    [JSONHTTPClient getJSONFromURLWithString: fullURL params:params completion:^(NSDictionary *json, JSONModelError *e) {
+    [TIEMSJSONHTTPClient getJSONFromURLWithString: fullURL params:params completion:^(NSDictionary *json, TIEMSJSONModelError *e) {
         completeBlock(json, e);
     }];
 }
@@ -75,7 +75,7 @@ static long jsonRpcId = 0;
 {
     NSString* fullURL = [NSString stringWithFormat:@"%@%@", sharedInstance.baseURLString, path];
     
-    [JSONHTTPClient postJSONFromURLWithString: fullURL params:params completion:^(NSDictionary *json, JSONModelError *e) {
+    [TIEMSJSONHTTPClient postJSONFromURLWithString: fullURL params:params completion:^(NSDictionary *json, TIEMSJSONModelError *e) {
         completeBlock(json, e);
     }];
 }
@@ -90,25 +90,25 @@ static long jsonRpcId = 0;
     NSString* jsonRequestString = [[NSString alloc] initWithData:jsonRequestData encoding: NSUTF8StringEncoding];
 
     NSAssert(sharedInstance.baseURLString, @"API base URL not set");
-    [JSONHTTPClient postJSONFromURLWithString: sharedInstance.baseURLString
+    [TIEMSJSONHTTPClient postJSONFromURLWithString: sharedInstance.baseURLString
                                    bodyString: jsonRequestString
-                                   completion:^(NSDictionary *json, JSONModelError* e) {
+                                   completion:^(NSDictionary *json, TIEMSJSONModelError* e) {
 
                                        if (completeBlock) {
                                            //handle the rpc response
                                            NSDictionary* result = json[@"result"];
 
                                            if (!result) {
-                                               JSONAPIRPCErrorModel* error = [[JSONAPIRPCErrorModel alloc] initWithDictionary:json[@"error"] error:nil];
+                                               TIEMSJSONAPIRPCErrorModel* error = [[TIEMSJSONAPIRPCErrorModel alloc] initWithDictionary:json[@"error"] error:nil];
                                                if (error) {
                                                    //custom server error
                                                    if (!error.message) error.message = @"Generic json rpc error";
-                                                   e = [JSONModelError errorWithDomain:JSONModelErrorDomain
+                                                   e = [TIEMSJSONModelError errorWithDomain:TIEMSJSONModelErrorDomain
                                                                                   code:error.code
                                                                               userInfo: @{ NSLocalizedDescriptionKey : error.message}];
                                                } else {
                                                    //generic error
-                                                   e = [JSONModelError errorBadResponse];
+                                                   e = [TIEMSJSONModelError errorBadResponse];
                                                }
                                            }
                                            
@@ -148,5 +148,5 @@ static long jsonRpcId = 0;
 @end
 
 #pragma mark - helper rpc error model class implementation
-@implementation JSONAPIRPCErrorModel
+@implementation TIEMSJSONAPIRPCErrorModel
 @end

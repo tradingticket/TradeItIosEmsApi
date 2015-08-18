@@ -18,12 +18,12 @@
 /**
  *  Contains more information on the error to be used for debugging purpose only
  */
-@property (copy) NSString<Optional> *systemMessage;
+@property (copy) NSString<TIEMSOptional> *systemMessage;
 
 /**
  *  An array with the request parameters that should be fixed before resending a new request. Fields could be authenticationInfo or orderInfo or both
  */
-@property (copy) NSArray<Optional>* errorFields;
+@property (copy) NSArray<TIEMSOptional>* errorFields;
 
 
 +(TradeItErrorResult*) tradeErrorWithSystemMessage:(NSString*) systemMessage;

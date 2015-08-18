@@ -15,7 +15,7 @@
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
 #import <Foundation/Foundation.h>
-#import "JSONHTTPClient.h"
+#import "TIEMSJSONHTTPClient.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +24,7 @@
  * and facilitates making requests to the same web host. Also features helper
  * method for making calls to a JSON RPC service
  */
-@interface JSONAPI : NSObject
+@interface TIEMSJSONAPI : NSObject
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

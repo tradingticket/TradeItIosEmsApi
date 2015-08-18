@@ -14,15 +14,15 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONHTTPClient.h"
+#import "TIEMSJSONHTTPClient.h"
 
 #pragma mark - constants
-NSString* const kHTTPMethodGET = @"GET";
-NSString* const kHTTPMethodPOST = @"POST";
+NSString* const TIEMSkHTTPMethodGET = @"GET";
+NSString* const TIEMSkHTTPMethodPOST = @"POST";
 
-NSString* const kContentTypeAutomatic    = @"jsonmodel/automatic";
-NSString* const kContentTypeJSON         = @"application/json";
-NSString* const kContentTypeWWWEncoded   = @"application/x-www-form-urlencoded";
+NSString* const TIEMSkContentTypeAutomatic    = @"jsonmodel/automatic";
+NSString* const TIEMSkContentTypeJSON         = @"application/json";
+NSString* const TIEMSkContentTypeWWWEncoded   = @"application/x-www-form-urlencoded";
 
 #pragma mark - static variables
 
@@ -45,7 +45,7 @@ static NSMutableDictionary* requestHeaders = nil;
 static NSString* requestContentType = nil;
 
 #pragma mark - implementation
-@implementation JSONHTTPClient
+@implementation TIEMSJSONHTTPClient
 
 #pragma mark - initialization
 +(void)initialize
@@ -53,7 +53,7 @@ static NSString* requestContentType = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         requestHeaders = [NSMutableDictionary dictionary];
-        requestContentType = kContentTypeAutomatic;
+        requestContentType = TIEMSkContentTypeAutomatic;
     });
 }
 
@@ -89,7 +89,7 @@ static NSString* requestContentType = nil;
     //fetch the charset name from the default string encoding
     NSString* contentType = requestContentType;
 
-    if (requestString.length>0 && [contentType isEqualToString:kContentTypeAutomatic]) {
+    if (requestString.length>0 && [contentType isEqualToString:TIEMSkContentTypeAutomatic]) {
         //check for "eventual" JSON array or dictionary
         NSString* firstAndLastChar = [NSString stringWithFormat:@"%@%@",
                                       [requestString substringToIndex:1],
@@ -98,10 +98,10 @@ static NSString* requestContentType = nil;
         
         if ([firstAndLastChar isEqualToString:@"{}"] || [firstAndLastChar isEqualToString:@"[]"]) {
             //guessing for a JSON request
-            contentType = kContentTypeJSON;
+            contentType = TIEMSkContentTypeJSON;
         } else {
             //fallback to www form encoded params
-            contentType = kContentTypeWWWEncoded;
+            contentType = TIEMSkContentTypeWWWEncoded;
         }
     }
 
@@ -128,14 +128,14 @@ static NSString* requestContentType = nil;
 }
 
 #pragma mark - networking worker methods
-+(NSData*)syncRequestDataFromURL:(NSURL*)url method:(NSString*)method requestBody:(NSData*)bodyData headers:(NSDictionary*)headers etag:(NSString**)etag error:(JSONModelError**)err
++(NSData*)syncRequestDataFromURL:(NSURL*)url method:(NSString*)method requestBody:(NSData*)bodyData headers:(NSDictionary*)headers etag:(NSString**)etag error:(TIEMSJSONModelError**)err
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: url
                                                                 cachePolicy: defaultCachePolicy
                                                             timeoutInterval: defaultTimeoutInSeconds];
 	[request setHTTPMethod:method];
 
-    if ([requestContentType isEqualToString:kContentTypeAutomatic]) {
+    if ([requestContentType isEqualToString:TIEMSkContentTypeAutomatic]) {
         //automatic content type
         if (bodyData) {
             NSString *bodyString = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
@@ -171,7 +171,7 @@ static NSString* requestContentType = nil;
     //convert an NSError to a JSONModelError
     if (*err != nil) {
         NSError* errObj = *err;
-        *err = [JSONModelError errorWithDomain:errObj.domain code:errObj.code userInfo:errObj.userInfo];
+        *err = [TIEMSJSONModelError errorWithDomain:errObj.domain code:errObj.code userInfo:errObj.userInfo];
     }
     
     //special case for http error code 401
@@ -185,7 +185,7 @@ static NSString* requestContentType = nil;
     //if not OK status set the err to a JSONModelError instance
 	if (response.statusCode >= 300 || response.statusCode < 200) {
         //create a new error
-        if (*err==nil) *err = [JSONModelError errorBadResponse];
+        if (*err==nil) *err = [TIEMSJSONModelError errorBadResponse];
     }
     
     //if there was an error, include the HTTP response and return
@@ -203,7 +203,7 @@ static NSString* requestContentType = nil;
     return responseData;
 }
 
-+(NSData*)syncRequestDataFromURL:(NSURL*)url method:(NSString*)method params:(NSDictionary*)params headers:(NSDictionary*)headers etag:(NSString**)etag error:(JSONModelError**)err
++(NSData*)syncRequestDataFromURL:(NSURL*)url method:(NSString*)method params:(NSDictionary*)params headers:(NSDictionary*)headers etag:(NSString**)etag error:(TIEMSJSONModelError**)err
 {
     //create the request body
     NSMutableString* paramsString = nil;
@@ -220,7 +220,7 @@ static NSString* requestContentType = nil;
     }
     
     //set the request params
-    if ([method isEqualToString:kHTTPMethodGET] && params) {
+    if ([method isEqualToString:TIEMSkHTTPMethodGET] && params) {
 
         //add GET params to the query string
         url = [NSURL URLWithString:[NSString stringWithFormat: @"%@%@%@",
@@ -233,7 +233,7 @@ static NSString* requestContentType = nil;
     //call the more general synq request method
     return [self syncRequestDataFromURL: url
                                  method: method
-                            requestBody: [method isEqualToString:kHTTPMethodPOST]?[paramsString dataUsingEncoding:NSUTF8StringEncoding]:nil
+                            requestBody: [method isEqualToString:TIEMSkHTTPMethodPOST]?[paramsString dataUsingEncoding:NSUTF8StringEncoding]:nil
                                 headers: headers
                                    etag: etag
                                   error: err];
@@ -267,7 +267,7 @@ static NSString* requestContentType = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         id jsonObject = nil;
-        JSONModelError* error = nil;
+        TIEMSJSONModelError* error = nil;
         NSData* responseData = nil;
         NSString* etag = nil;
         
@@ -289,13 +289,13 @@ static NSString* requestContentType = nil;
             }
         }
         @catch (NSException *exception) {
-            error = [JSONModelError errorBadResponse];
+            error = [TIEMSJSONModelError errorBadResponse];
         }
         
         //step 3: if there's no response so far, return a basic error
         if (!responseData && !error) {
             //check for false response, but no network error
-            error = [JSONModelError errorBadResponse];
+            error = [TIEMSJSONModelError errorBadResponse];
         }
 
         //step 4: if there's a response at this and no errors, convert to object
@@ -326,27 +326,27 @@ static NSString* requestContentType = nil;
 #pragma mark - request aliases
 +(void)getJSONFromURLWithString:(NSString*)urlString completion:(JSONObjectBlock)completeBlock
 {
-    [self JSONFromURLWithString:urlString method:kHTTPMethodGET
+    [self JSONFromURLWithString:urlString method:TIEMSkHTTPMethodGET
                          params:nil
-                   orBodyString:nil completion:^(id json, JSONModelError* e) {
+                   orBodyString:nil completion:^(id json, TIEMSJSONModelError* e) {
                        if (completeBlock) completeBlock(json, e);
                    }];
 }
 
 +(void)getJSONFromURLWithString:(NSString*)urlString params:(NSDictionary*)params completion:(JSONObjectBlock)completeBlock
 {
-    [self JSONFromURLWithString:urlString method:kHTTPMethodGET
+    [self JSONFromURLWithString:urlString method:TIEMSkHTTPMethodGET
                          params:params
-                   orBodyString:nil completion:^(id json, JSONModelError* e) {
+                   orBodyString:nil completion:^(id json, TIEMSJSONModelError* e) {
                        if (completeBlock) completeBlock(json, e);
                    }];
 }
 
 +(void)postJSONFromURLWithString:(NSString*)urlString params:(NSDictionary*)params completion:(JSONObjectBlock)completeBlock
 {
-    [self JSONFromURLWithString:urlString method:kHTTPMethodPOST
+    [self JSONFromURLWithString:urlString method:TIEMSkHTTPMethodPOST
                          params:params
-                   orBodyString:nil completion:^(id json, JSONModelError* e) {
+                   orBodyString:nil completion:^(id json, TIEMSJSONModelError* e) {
                        if (completeBlock) completeBlock(json, e);
                    }];
 
@@ -354,19 +354,19 @@ static NSString* requestContentType = nil;
 
 +(void)postJSONFromURLWithString:(NSString*)urlString bodyString:(NSString*)bodyString completion:(JSONObjectBlock)completeBlock
 {
-    [self JSONFromURLWithString:urlString method:kHTTPMethodPOST
+    [self JSONFromURLWithString:urlString method:TIEMSkHTTPMethodPOST
                          params:nil
-                   orBodyString:bodyString completion:^(id json, JSONModelError* e) {
+                   orBodyString:bodyString completion:^(id json, TIEMSJSONModelError* e) {
                        if (completeBlock) completeBlock(json, e);
                    }];
 }
 
 +(void)postJSONFromURLWithString:(NSString*)urlString bodyData:(NSData*)bodyData completion:(JSONObjectBlock)completeBlock
 {
-    [self JSONFromURLWithString:urlString method:kHTTPMethodPOST
+    [self JSONFromURLWithString:urlString method:TIEMSkHTTPMethodPOST
                          params:nil
                    orBodyString:[[NSString alloc] initWithData:bodyData encoding:defaultTextEncoding]
-                                 completion:^(id json, JSONModelError* e) {
+                                 completion:^(id json, TIEMSJSONModelError* e) {
                        if (completeBlock) completeBlock(json, e);
                    }];
 }

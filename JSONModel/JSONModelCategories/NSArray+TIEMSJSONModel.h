@@ -1,7 +1,7 @@
 //
-//  JSONModelArray.h
+//  NSArray+JSONModel.h
 //
-//  @version 0.8.0
+//  @version 1.0.2
 //  @author Marin Todorov, http://www.touch-code-magazine.com
 //
 
@@ -14,46 +14,26 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
+
 #import <Foundation/Foundation.h>
+#import "TIEMSJSONModel.h"
 
 /**
- * **Don't make instances of JSONModelArray yourself, except you know what you are doing.**
- *
- * You get automatically JSONModelArray instances, when you declare a convert on demand property, like so:
- * 
- * @property (strong, nonatomic) NSArray&lt;JSONModel, ConvertOnDemand&gt;* list;
- *
- * The class stores its contents as they come from JSON, and upon the first request
- * of each of the objects stored in the array, it'll be converted to the target model class.
- * Thus saving time upon the very first model creation.
+ * Exposes invisible JSONModelArray methods
  */
-@interface JSONModelArray : NSObject <NSFastEnumeration>
-
-/**
- * Don't make instances of JSONModelArray yourself, except you know what you are doing.
- * 
- * @param array an array of NSDictionary objects
- * @param cls the JSONModel sub-class you'd like the NSDictionaries to be converted to on demand
- */
-- (id)initWithArray:(NSArray *)array modelClass:(Class)cls;
-
-- (id)objectAtIndex:(NSUInteger)index;
-- (id)objectAtIndexedSubscript:(NSUInteger)index;
-- (void)forwardInvocation:(NSInvocation *)anInvocation;
-- (NSUInteger)count;
-- (id)firstObject;
-- (id)lastObject;
+@interface NSArray(TIEMSJSONModel)
 
 /**
  * Looks up the array's contents and tries to find a JSONModel object
  * with matching index property value to the indexValue param.
- *
- * Will return nil if no matching model is found. Will return nil if there's no index property
- * defined on the models found in the array (will sample the first object, assuming the array
+ * 
+ * Will return nil if no matching model is found. Will return nil if there's no index property 
+ * defined on the models found in the array (will sample the first object, assuming the array 
  * contains homogenous collection of objects)
  *
  * @param indexValue the id value to search for
  * @return the found model or nil
+ * @exception NSException throws exception if you call this method on an instance, which is not actually a JSONModelArray
  */
 - (id)modelWithIndexValue:(id)indexValue;
 

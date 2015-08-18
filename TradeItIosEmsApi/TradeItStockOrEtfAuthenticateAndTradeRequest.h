@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeItRequest.h"
@@ -20,7 +20,7 @@
 @property BOOL supportMultiAccounts; //default value is true
 @property BOOL skipReview; //default value is false
 @property (copy) NSString* broker;
-@property (copy) NSString<Optional>* postbackURL;
+@property (copy) NSString<TIEMSOptional>* postbackURL;
 
 -(id) initWithPublisherDomain:(NSString*)publisherDomain andBroker:(NSString*)broker andAuthenticationInfo:(TradeItAuthenticationInfo*)authenticationInfo andOrderInfo:(TradeItStockOrEtfOrderInfo*) orderInfo andPostbackUrl:(NSString*) postbackURL;
 

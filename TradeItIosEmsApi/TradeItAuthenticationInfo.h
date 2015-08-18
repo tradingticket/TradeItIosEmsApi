@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 
-@interface TradeItAuthenticationInfo : JSONModel<NSCopying>
+@interface TradeItAuthenticationInfo : TIEMSJSONModel<NSCopying>
 
 /**
  * The user brokerage account login id

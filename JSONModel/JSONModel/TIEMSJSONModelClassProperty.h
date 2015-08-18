@@ -16,14 +16,14 @@
 
 #import <Foundation/Foundation.h>
 
-enum kCustomizationTypes {
+enum TIEMSkCustomizationTypes {
     kNotInspected = 0,
     kCustom,
     kNo
     };
 
-typedef enum kCustomizationTypes PropertySetterType;
-typedef enum kCustomizationTypes PropertyGetterType;
+typedef enum TIEMSkCustomizationTypes PropertySetterType;
+typedef enum TIEMSkCustomizationTypes PropertyGetterType;
 
 /**
  * **You do not need to instantiate this class yourself.** This class is used internally by JSONModel
@@ -33,7 +33,7 @@ typedef enum kCustomizationTypes PropertyGetterType;
  * It features the property's name, type, whether it's a required property, 
  * and (optionally) the class protocol
  */
-@interface JSONModelClassProperty : NSObject
+@interface TIEMSJSONModelClassProperty : NSObject
 
 /** The name of the declared property (not the ivar name) */
 @property (copy, nonatomic) NSString* name;

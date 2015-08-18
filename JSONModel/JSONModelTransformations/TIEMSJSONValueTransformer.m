@@ -14,11 +14,11 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONValueTransformer.h"
-#import "JSONModelArray.h"
+#import "TIEMSJSONValueTransformer.h"
+#import "TIEMSJSONModelArray.h"
 
 #pragma mark - functions
-extern BOOL isNull(id value)
+extern BOOL TIEMSisNull(id value)
 {
     if (!value) return YES;
     if ([value isKindOfClass:[NSNull class]]) return YES;
@@ -26,7 +26,7 @@ extern BOOL isNull(id value)
     return NO;
 }
 
-@implementation JSONValueTransformer
+@implementation TIEMSJSONValueTransformer
 
 -(id)init
 {
@@ -82,7 +82,7 @@ extern BOOL isNull(id value)
 #pragma mark - NSMutableArray <-> NSArray
 -(NSMutableArray*)NSMutableArrayFromNSArray:(NSArray*)array
 {
-    if ([array isKindOfClass:[JSONModelArray class]]) {
+    if ([array isKindOfClass:[TIEMSJSONModelArray class]]) {
         //it's a jsonmodelarray already, just return it
         return (id)array;
     }
@@ -91,12 +91,12 @@ extern BOOL isNull(id value)
 }
 
 #pragma mark - NS(Mutable)Array <- JSONModelArray
--(NSArray*)NSArrayFromJSONModelArray:(JSONModelArray*)array
+-(NSArray*)NSArrayFromJSONModelArray:(TIEMSJSONModelArray*)array
 {
     return (NSMutableArray*)array;
 }
 
--(NSMutableArray*)NSMutableArrayFromJSONModelArray:(JSONModelArray*)array
+-(NSMutableArray*)NSMutableArrayFromJSONModelArray:(TIEMSJSONModelArray*)array
 {
     return (NSMutableArray*)array;
 }
@@ -136,7 +136,7 @@ extern BOOL isNull(id value)
 #pragma mark - BOOL <-> number/string
 -(NSNumber*)BOOLFromNSNumber:(NSNumber*)number
 {
-    if (isNull(number)) return [NSNumber numberWithBool:NO];
+    if (TIEMSisNull(number)) return [NSNumber numberWithBool:NO];
     return [NSNumber numberWithBool: number.intValue==0?NO:YES];
 }
 
