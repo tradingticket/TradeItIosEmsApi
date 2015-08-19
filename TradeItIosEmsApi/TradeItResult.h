@@ -24,20 +24,20 @@
 /**
  *  Thes Session token that is used to identify the session when sending security answer, selectin and account or placing an order
  */
-@property (copy) NSString<TIEMSOptional> * token;
+@property (copy) NSString<Optional> * token;
 
 /**
  *
  *  Should be displayed if an error is returned. Usually contains a description of the error
  *  For other type of results this field usually contains a more user friendly description of the status such.
  */
-@property (copy) NSString<TIEMSOptional> * shortMessage;
+@property (copy) NSString<Optional> * shortMessage;
 
 /**
  *  Should be displayed if an error is returned. Usually provides more information about the error
  *  For other type of results this field is nil
  */
-@property (copy) NSArray<TIEMSOptional> * longMessages;
+@property (copy) NSArray<Optional> * longMessages;
 
 
 @end

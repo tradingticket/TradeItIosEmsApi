@@ -23,10 +23,10 @@
 /**
  *  Set limit price for limit, and stopLimit orders
  */
-@property (copy) NSNumber<TIEMSOptional>* limitPrice;
+@property (copy) NSNumber<Optional>* limitPrice;
 
 // Set stop price for stopLimit and and stopMarket
-@property (copy) NSNumber<TIEMSOptional>* stopPrice;
+@property (copy) NSNumber<Optional>* stopPrice;
 
 
 /**

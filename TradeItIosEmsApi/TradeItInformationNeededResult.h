@@ -10,8 +10,8 @@
 
 @interface TradeItInformationNeededResult : TradeItResult
 @property (copy) NSString* informationType;
-@property (copy) NSString<TIEMSOptional>* informationShortMessage;
-@property (copy) NSString<TIEMSOptional>* informationLongMessage;
-@property (copy) NSArray<TIEMSOptional>* errorFields;
+@property (copy) NSString<Optional>* informationShortMessage;
+@property (copy) NSString<Optional>* informationLongMessage;
+@property (copy) NSArray<Optional>* errorFields;
 
 @end

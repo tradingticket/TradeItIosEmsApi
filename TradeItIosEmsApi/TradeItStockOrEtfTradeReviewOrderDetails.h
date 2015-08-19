@@ -50,13 +50,13 @@
  *  The number of shares held long by the user (pre-trade)
  *  If value is -1 then server was not able to pull value
  */
-@property (copy) NSNumber<TIEMSOptional>* longHoldings;
+@property (copy) NSNumber<Optional>* longHoldings;
 
 /**
  *  The number of shares held short by the user (pre-trade)
  *  If value is -1 then server was not able to pull value
  */
-@property (copy) NSNumber<TIEMSOptional>* shortHoldings;
+@property (copy) NSNumber<Optional>* shortHoldings;
 
 /**
  *  "Estimated Proceeds" or "Estimated Cost" depending on the order action
@@ -67,28 +67,28 @@
  *  The user buying power (pre-trade)
  *  Note: tradestation and IB return buyingPower for all account types. Other brokers return buyingPower for margin accounts and availableCash for cash accounts
  */
-@property (copy) NSNumber<TIEMSOptional>* buyingPower; //if nil ignore field as not available
+@property (copy) NSNumber<Optional>* buyingPower; //if nil ignore field as not available
 
 /**
  *  The user available cash (pre-trade). If nil ignore field as not available
  */
-@property (copy) NSNumber<TIEMSOptional>* availableCash;
+@property (copy) NSNumber<Optional>* availableCash;
 
 /**
  *  Estimated value of the order, does not include fees. If nil ignore field as not available
  */
-@property (copy) NSNumber<TIEMSOptional>* estimatedOrderValue; //
+@property (copy) NSNumber<Optional>* estimatedOrderValue; //
 
 
 /**
  *  The estimated cost of fees and commissions for the order. If nil ignore field as not available
  */
-@property (copy) NSNumber<TIEMSOptional>* estimatedOrderCommission;
+@property (copy) NSNumber<Optional>* estimatedOrderCommission;
 
 
 /**
  *  The estimated total cost of the order including fees. If nil ignore field as not available
  */
-@property (copy) NSNumber<TIEMSOptional>* estimatedTotalValue;
+@property (copy) NSNumber<Optional>* estimatedTotalValue;
 
 @end

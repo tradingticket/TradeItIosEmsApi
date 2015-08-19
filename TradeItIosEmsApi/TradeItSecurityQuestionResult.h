@@ -22,12 +22,12 @@
 /**
  *  An array of options if it's a multiple choice question. nil or emtpy array if broker does not provide any options
  */
-@property (copy) NSArray<TIEMSOptional>* securityQuestionOptions;
+@property (copy) NSArray<Optional>* securityQuestionOptions;
 
 /**
  *  A base64 encoded image to be displayed to the user for security code card lookup (like a captcha)
  *  nil or empty string if broker does not provide challenge image
  */
-@property (copy) NSString<TIEMSOptional>* challengeImage; //nil if broker does not provide challenge image
+@property (copy) NSString<Optional>* challengeImage; //nil if broker does not provide challenge image
 
 @end

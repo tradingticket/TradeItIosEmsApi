@@ -37,7 +37,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  * @property (strong, nonatomic) NSString&lt;Ignore&gt;* propertyName;
  *
  */
-@protocol TIEMSIgnore
+@protocol Ignore
 @end
 
 /**
@@ -47,7 +47,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  * @property (strong, nonatomic) NSString&lt;Optional&gt;* propertyName;
  *
  */
-@protocol TIEMSOptional
+@protocol Optional
 @end
 
 /**
@@ -57,13 +57,13 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  * @property (strong, nonatomic) NSString&lt;Index&gt;* propertyName;
  *
  */
-@protocol TIEMSIndex
+@protocol Index
 @end
 
 /**
  * Make all objects Optional compatible to avoid compiler warnings
  */
-@interface NSObject(TIEMSJSONModelPropertyCompatibility)<TIEMSOptional, TIEMSIndex, TIEMSIgnore>
+@interface NSObject(TIEMSJSONModelPropertyCompatibility)<Optional, Index, Ignore>
 @end
 
 /**
