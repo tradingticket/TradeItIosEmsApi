@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JSONModelError.h"
-#import "JSONValueTransformer.h"
-#import "JSONKeyMapper.h"
+#import "TIEMSJSONModelError.h"
+#import "TIEMSJSONValueTransformer.h"
+#import "TIEMSJSONKeyMapper.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 #if TARGET_IPHONE_SIMULATOR
@@ -63,7 +63,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 /**
  * Make all objects Optional compatible to avoid compiler warnings
  */
-@interface NSObject(JSONModelPropertyCompatibility)<Optional, Index, Ignore>
+@interface NSObject(TIEMSJSONModelPropertyCompatibility)<Optional, Index, Ignore>
 @end
 
 /**
@@ -71,13 +71,13 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  *
  * @property (strong, nonatomic) NSArray&lt;JSONModel, ConvertOnDemand&gt;* propertyName;
  */
-@protocol ConvertOnDemand
+@protocol TIEMSConvertOnDemand
 @end
 
 /**
  * Make all arrays ConvertOnDemand compatible to avoid compiler warnings
  */
-@interface NSArray(JSONModelPropertyCompatibility)<ConvertOnDemand>
+@interface NSArray(TIEMSJSONModelPropertyCompatibility)<TIEMSConvertOnDemand>
 @end
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  * A protocol describing an abstract JSONModel class
  * JSONModel conforms to this protocol, so it can use itself abstractly
  */
-@protocol AbstractJSONModelProtocol <NSCopying, NSCoding>
+@protocol TIEMSAbstractJSONModelProtocol <NSCopying, NSCoding>
 
 @required
   /**
@@ -144,7 +144,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  * Instead you should subclass it, and define the properties you want your data model
  * to have as properties of your own class.
  */
-@interface JSONModel : NSObject <AbstractJSONModelProtocol, NSSecureCoding>
+@interface TIEMSJSONModel : NSObject <TIEMSAbstractJSONModelProtocol, NSSecureCoding>
 
 /** @name Creating and initializing models */
 
@@ -156,7 +156,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    * @see initWithString:usingEncoding:error: for use of custom text encodings
    */
-  -(instancetype)initWithString:(NSString*)string error:(JSONModelError**)err;
+  -(instancetype)initWithString:(NSString*)string error:(TIEMSJSONModelError**)err;
 
   /**
    * Create a new model instance and initialize it with the JSON from a text parameter using the given encoding.
@@ -166,7 +166,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
    * @exception JSONModelTypeNotAllowedException thrown when unsported type is found in the incoming JSON, 
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    */
-  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(JSONModelError**)err;
+  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(TIEMSJSONModelError**)err;
 
   -(instancetype)initWithDictionary:(NSDictionary*)dict error:(NSError **)err;
 
@@ -292,7 +292,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
    * Overwrite in your models if your property names don't match your JSON key names.
    * Lookup JSONKeyMapper docs for more details.
    */
-+(JSONKeyMapper*)keyMapper;
++(TIEMSJSONKeyMapper*)keyMapper;
 
 /**
  * Sets a key mapper which affects ALL the models in your project. Use this if you need only one mapper to work
@@ -303,7 +303,7 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  *
  * Lookup JSONKeyMapper docs for more details.
  */
-+(void)setGlobalKeyMapper:(JSONKeyMapper*)globalKeyMapper;
++(void)setGlobalKeyMapper:(TIEMSJSONKeyMapper*)globalKeyMapper;
 
 /**
  * Indicates whether the property with the given name is Optional.

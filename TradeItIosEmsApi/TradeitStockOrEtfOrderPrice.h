@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Serge Kreiker. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 
 /**
  *  use this class to set the order price
  */
-@interface TradeitStockOrEtfOrderPrice : JSONModel<NSCopying>
+@interface TradeitStockOrEtfOrderPrice : TIEMSJSONModel<NSCopying>
 
 /**
  *  Set the type of the Order, possible values are market, limit, stopMarket or stopLimit.

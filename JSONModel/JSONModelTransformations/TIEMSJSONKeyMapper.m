@@ -14,14 +14,14 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONKeyMapper.h"
+#import "TIEMSJSONKeyMapper.h"
 
-@interface JSONKeyMapper()
+@interface TIEMSJSONKeyMapper()
 @property (nonatomic, strong) NSMutableDictionary *toModelMap;
 @property (nonatomic, strong) NSMutableDictionary *toJSONMap;
 @end
 
-@implementation JSONKeyMapper
+@implementation TIEMSJSONKeyMapper
 
 -(instancetype)init
 {
@@ -40,7 +40,7 @@
     self = [self init];
     
     if (self) {
-        __weak JSONKeyMapper *myself = self;
+        __weak TIEMSJSONKeyMapper *myself = self;
         //the json to model convertion block
         _JSONToModelKeyBlock = ^NSString*(NSString* keyName) {
 

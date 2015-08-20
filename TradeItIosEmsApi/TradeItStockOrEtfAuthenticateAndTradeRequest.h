@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeItRequest.h"

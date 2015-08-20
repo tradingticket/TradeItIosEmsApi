@@ -1,5 +1,5 @@
 //
-//  NSArray+JSONModel.m
+//  JSONModelLib.h
 //
 //  @version 1.0.2
 //  @author Marin Todorov, http://www.touch-code-magazine.com
@@ -14,15 +14,22 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
+#import <Foundation/Foundation.h>
 
-#import "NSArray+JSONModel.h"
+//JSONModel transformations
+#import "TIEMSJSONValueTransformer.h"
+#import "TIEMSJSONKeyMapper.h"
 
-@implementation NSArray(JSONModel)
+//basic JSONModel classes
+#import "TIEMSJSONModelError.h"
+#import "TIEMSJSONModelClassProperty.h"
+#import "TIEMSJSONModel.h"
 
-- (id)modelWithIndexValue:(id)indexValue
-{
-    NSAssert(NO, @"call modelWithIndexValue: on a ConvertOnDemand property, which is defined like that: @property (strong, nonatomic) NSArray<MyModel, ConvertOnDemand>* list;");
-    return nil;
-}
+//network classes
+#import "TIEMSJSONHTTPClient.h"
+#import "TIEMSJSONModel+networking.h"
+#import "TIEMSJSONAPI.h"
 
-@end
+//models array
+#import "NSArray+TIEMSJSONModel.h"
+#import "TIEMSJSONModelArray.h"

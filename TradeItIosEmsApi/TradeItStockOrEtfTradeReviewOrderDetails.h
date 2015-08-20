@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 /**
  *  Class containing the Order details contained in the TradeItStockOrEtfTradeReviewResult
  */
-@interface TradeItStockOrEtfTradeReviewOrderDetails : JSONModel<NSCopying>
+@interface TradeItStockOrEtfTradeReviewOrderDetails : TIEMSJSONModel<NSCopying>
 
 /**
  *  The symbol passed into the order

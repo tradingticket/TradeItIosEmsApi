@@ -25,7 +25,7 @@ NSURL* getEmsBaseUrl(TradeitEmsEnvironments env){
 }
 
 
-NSMutableURLRequest * buildJsonRequest(JSONModel* requestObject, NSString*emsMethod, TradeitEmsEnvironments env){
+NSMutableURLRequest * buildJsonRequest(TIEMSJSONModel* requestObject, NSString*emsMethod, TradeitEmsEnvironments env){
     NSData *requestData = [[requestObject toJSONString] dataUsingEncoding:NSUTF8StringEncoding];
     
     //NSLog(@"requestdata is %@", requestData);
@@ -46,7 +46,7 @@ NSMutableURLRequest * buildJsonRequest(JSONModel* requestObject, NSString*emsMet
 
 TradeItResult* buildResult (TradeItResult* tradeItResult, NSString* jsonString){
     
-    JSONModelError* jsonModelError = nil;
+    TIEMSJSONModelError* jsonModelError = nil;
     TradeItResult * resultFromJson = [tradeItResult initWithString:jsonString error:&jsonModelError];
     
     if(jsonModelError!=nil)

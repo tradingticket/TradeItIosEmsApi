@@ -14,22 +14,22 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 
 #pragma mark - definitions
 
 /**
  * HTTP Request methods
  */
-extern NSString* const kHTTPMethodGET;
-extern NSString* const kHTTPMethodPOST;
+extern NSString* const TIEMSkHTTPMethodGET;
+extern NSString* const TIEMSkHTTPMethodPOST;
 
 /**
  * Content-type strings
  */
-extern NSString* const kContentTypeAutomatic;
-extern NSString* const kContentTypeJSON;
-extern NSString* const kContentTypeWWWEncoded;
+extern NSString* const TIEMSkContentTypeAutomatic;
+extern NSString* const TIEMSkContentTypeJSON;
+extern NSString* const TIEMSkContentTypeWWWEncoded;
 
 /**
  * A block type to handle incoming JSON object and an error. 
@@ -39,7 +39,7 @@ extern NSString* const kContentTypeWWWEncoded;
  * @param json object derived from a JSON string
  * @param err JSONModelError or nil
  */
-typedef void (^JSONObjectBlock)(id json, JSONModelError* err);
+typedef void (^JSONObjectBlock)(id json, TIEMSJSONModelError* err);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - configuration methods
@@ -48,7 +48,7 @@ typedef void (^JSONObjectBlock)(id json, JSONModelError* err);
  * @discussion A very thin HTTP client that can do GET and POST HTTP requests.
  * It fetches only JSON data and also deserializes it using NSJSONSerialization.
  */
-@interface JSONHTTPClient : NSObject
+@interface TIEMSJSONHTTPClient : NSObject
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

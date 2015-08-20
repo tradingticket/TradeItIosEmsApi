@@ -14,12 +14,12 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONModel+networking.h"
-#import "JSONHTTPClient.h"
+#import "TIEMSJSONModel+networking.h"
+#import "TIEMSJSONHTTPClient.h"
 
 BOOL _isLoading;
 
-@implementation JSONModel(Networking)
+@implementation TIEMSJSONModel(Networking)
 
 @dynamic isLoading;
 
@@ -42,10 +42,10 @@ BOOL _isLoading;
         //initialization
         self.isLoading = YES;
         
-        [JSONHTTPClient getJSONFromURLWithString:urlString
-                                      completion:^(NSDictionary *json, JSONModelError* e) {
+        [TIEMSJSONHTTPClient getJSONFromURLWithString:urlString
+                                      completion:^(NSDictionary *json, TIEMSJSONModelError* e) {
                                           
-                                          JSONModelError* initError = nil;
+                                          TIEMSJSONModelError* initError = nil;
                                           blockSelf = [self initWithDictionary:json error:&initError];
                                           
                                           if (completeBlock) {
@@ -63,10 +63,10 @@ BOOL _isLoading;
 
 + (void)getModelFromURLWithString:(NSString*)urlString completion:(JSONModelBlock)completeBlock
 {
-	[JSONHTTPClient getJSONFromURLWithString:urlString
-								  completion:^(NSDictionary* jsonDict, JSONModelError* err)
+	[TIEMSJSONHTTPClient getJSONFromURLWithString:urlString
+								  completion:^(NSDictionary* jsonDict, TIEMSJSONModelError* err)
 	{
-		JSONModel* model = nil;
+		TIEMSJSONModel* model = nil;
 
 		if(err == nil)
 		{
@@ -83,13 +83,13 @@ BOOL _isLoading;
     }];
 }
 
-+ (void)postModel:(JSONModel*)post toURLWithString:(NSString*)urlString completion:(JSONModelBlock)completeBlock
++ (void)postModel:(TIEMSJSONModel*)post toURLWithString:(NSString*)urlString completion:(JSONModelBlock)completeBlock
 {
-	[JSONHTTPClient postJSONFromURLWithString:urlString
+	[TIEMSJSONHTTPClient postJSONFromURLWithString:urlString
 								   bodyString:[post toJSONString]
-								   completion:^(NSDictionary* jsonDict, JSONModelError* err)
+								   completion:^(NSDictionary* jsonDict, TIEMSJSONModelError* err)
 	{
-		JSONModel* model = nil;
+		TIEMSJSONModel* model = nil;
 
 		if(err == nil)
 		{

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Serge Kreiker. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 #import "TradeitStockOrEtfOrderPrice.h"
 
 typedef NS_ENUM(NSUInteger, TradeItStockOrEtfOrderAction){
@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, TradeItStockOrEtfOrderExpiration){
 /**
  *  Use this Class to create an order that can be sent to the Trade It Execution Management System (EMS) server
  */
-@interface TradeItStockOrEtfOrderInfo : JSONModel<NSCopying>
+@interface TradeItStockOrEtfOrderInfo : TIEMSJSONModel<NSCopying>
 
 /**
  *  The order action. Possible values are buy, sell, sellShort or buyToCover. Setting any orther value will result with the Exexution Management System (EMS) server returning an error

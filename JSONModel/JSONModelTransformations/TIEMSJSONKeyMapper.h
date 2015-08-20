@@ -48,7 +48,7 @@ typedef NSString* (^JSONModelKeyMapBlock)(NSString* keyName);
  * }
  * </pre>
  */
-@interface JSONKeyMapper : NSObject
+@interface TIEMSJSONKeyMapper : NSObject
 
 /** @name Name convertors */
 /** Block, which takes in a JSON key and converts it to the corresponding property name */

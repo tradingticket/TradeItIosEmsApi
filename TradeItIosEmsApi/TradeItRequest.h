@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "JSONModel.h"
+#import "TIEMSJSONModel.h"
 
-@interface TradeItRequest : JSONModel
+@interface TradeItRequest : TIEMSJSONModel
 
 
 @end

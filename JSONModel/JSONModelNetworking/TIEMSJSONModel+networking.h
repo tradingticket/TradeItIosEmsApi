@@ -14,10 +14,10 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONModel.h"
-#import "JSONHTTPClient.h"
+#import "TIEMSJSONModel.h"
+#import "TIEMSJSONHTTPClient.h"
 
-typedef void (^JSONModelBlock)(id model, JSONModelError* err);
+typedef void (^JSONModelBlock)(id model, TIEMSJSONModelError* err);
 
 /**
  * The JSONModel(networking) class category adds networking to JSONModel.
@@ -25,7 +25,7 @@ typedef void (^JSONModelBlock)(id model, JSONModelError* err);
  * to the URL given and initializes the model with the returned JSON.
  * Use #import "JSONModel+networking.h" to import networking capabilities.
  */
-@interface JSONModel(Networking)
+@interface TIEMSJSONModel(Networking)
 
 @property (assign, nonatomic) BOOL isLoading;
 /** @name Asynchroniously create a model over the network */
@@ -60,7 +60,7 @@ typedef void (^JSONModelBlock)(id model, JSONModelError* err);
  *							The first parameter is the initialized model (of the same JSONModel sub-class as the receiver) or nil if there was an error;
  * 							The second parameter is the initialization error, if any.
  */
-+ (void)postModel:(JSONModel*)post toURLWithString:(NSString*)urlString completion:(JSONModelBlock)completeBlock;
++ (void)postModel:(TIEMSJSONModel*)post toURLWithString:(NSString*)urlString completion:(JSONModelBlock)completeBlock;
 
 
 @end
