@@ -65,6 +65,13 @@
  */
 @property BOOL runAsyncCompletionBlockOnMainThread;
 
+
+/**
+ *  grab the global reference to the session
+ *
+ */
++ (id)globalSession;
+
 /**
  *  init a session with you app name provided by Trade it
  *

@@ -33,6 +33,21 @@
 
 @implementation TradeItStockOrEtfTradeSession
 
++ (id)globalSession {
+    static TradeItStockOrEtfTradeSession *globalSessionInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        globalSessionInstance = [[self alloc] initWithpublisherApp:nil];
+    });
+
+    return globalSessionInstance;
+}
+
+- (id)init {
+    // Forward to the "initWithpublisherDomain" initialization method
+    return [self initWithpublisherApp:nil];
+}
+
 - (id)initWithpublisherApp:(NSString *)publisherApp {
     self = [super init];
     if (self) {
@@ -53,11 +68,6 @@
     self.authenticationInfo = [TradeItAuthenticationInfo new];
     self.broker = nil;
     self.sessionToken = nil;
-}
-
-- (id)init {
-    // Forward to the "initWithpublisherDomain" initialization method
-    return [self initWithpublisherApp:nil];
 }
 
 
