@@ -13,6 +13,8 @@
 #import "TradeitStockOrEtfOrderPrice.h"
 #import "TradeItAuthenticationInfo.h"
 
+#import "TradeItConnector.h"
+
 #import "TradeItIosEmsApiLib.h"
 
 
@@ -34,12 +36,12 @@
 
 - (void)testExample {
     
-    //testFetchBrokerList(@"thestreet");
-    testAsyncFetchBrokerList(@"thestreet");
+    NSLog(@"******************Testing Fetch Broker List");
+    testAuthLink(@"tradeit-test-api-key");
     
-    NSLog(@"******************TESTING VERIFY CREDENTIALS");
-    //testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
-   // testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+    NSLog(@"******************Testing Fetch Broker List");
+    [self testFetchBrokerList: @"tradeit-test-api-key"];
+    
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
 //        asyncBasicTest();
@@ -73,9 +75,6 @@
 //
 //    testClose();
 //
-
-
-
    
 }
 
@@ -86,54 +85,23 @@
     }];
 }
 
-
-void testVerifyCredentials(NSString* broker, NSString * id, NSString* password){
+-(void) testFetchBrokerList: (NSString *) apiKey{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to get broker list should succeed"];
     
-    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
+    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
     
-    tradeSession.environment = TradeItEmsTestEnv;
-    
-    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    
-    TradeItResult *result = [tradeSession verifyUser:authenticationInfo withBroker:broker ];
-    
-    NSLog(@"Received result: %@", result);
-}
-
-TradeItResult* testAsyncVerifyCredentials(NSString* broker, NSString * id, NSString* password){
-    
-    __block TradeItResult * verifyCredentialsResult = nil;
-    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
-    
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    tradeSession.environment = TradeItEmsTestEnv;
-
-    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    [tradeSession verifyUser:authenticationInfo withBroker:broker WithCompletionBlock:^(TradeItResult* result){
-        NSLog(@"Received Result in completion block%@", result);
-        verifyCredentialsResult = result;
+    [connector getAvailableBrokersWithCompletionBlock:^(NSArray * brokers) {
+        NSLog(@"Brokers: %@", brokers);
+        [expectation fulfill];
     }];
     
-    while (!verifyCredentialsResult) {}
-    return verifyCredentialsResult;
-}
-
-
-void testFetchBrokerList(NSString* publisherDomain){
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    /*
     
-    tradeSession.environment = TradeItEmsLocalEnv;
-    
-    NSArray *brokerList = tradeSession.getBrokerList;
-    NSLog(@"Received broker list %@", brokerList);
-    
-}
-
-
-void testAsyncFetchBrokerList(NSString* publisherDomain){
-    __block BOOL done = NO;
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
     
     tradeSession.environment = TradeItEmsTestEnv;
@@ -141,13 +109,14 @@ void testAsyncFetchBrokerList(NSString* publisherDomain){
     
     [tradeSession asyncGetBrokerListWithCompletionBlock:^(NSArray *brokerList){
         NSLog(@"Received brokerlist %@", brokerList);
-        done = YES;
     }];
-    
-    while (!done) {}
-
+     */
 }
 
+void testAuthLink(NSString * apiKey) {
+    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
+    
+}
 
 void testClose(){
 

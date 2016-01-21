@@ -13,14 +13,14 @@
 NSURL* getEmsBaseUrl(TradeitEmsEnvironments env){
     switch (env) {
         case TradeItEmsProductionEnv:
-            return [NSURL URLWithString:@"https://ems.tradingticket.com/universalTradingTicket/"];
+            return [NSURL URLWithString:@"https://ems.tradingticket.com/api/v1/"];
         case TradeItEmsTestEnv:
-            return [NSURL URLWithString:@"https://ems.qa.tradingticket.com/universalTradingTicket/"];
+            return [NSURL URLWithString:@"https://ems.qa.tradingticket.com/api/v1/"];
         case TradeItEmsLocalEnv:
-            return [NSURL URLWithString:@"http://localhost:8080/ems/universalTradingTicket/"];
+            return [NSURL URLWithString:@"http://localhost:8080/ems/api/v1/"];
         default:
             NSLog(@"Invalid environment %d - directing to production by default", env);
-            return [NSURL URLWithString:@"https://ems.tradingticket.com/universalTradingTicket/"];
+            return [NSURL URLWithString:@"https://ems.tradingticket.com/api/v1/"];
     }
 }
 
@@ -57,3 +57,6 @@ TradeItResult* buildResult (TradeItResult* tradeItResult, NSString* jsonString){
     
     return resultFromJson;
 }
+
+
+

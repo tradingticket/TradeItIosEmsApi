@@ -10,9 +10,8 @@
 
 @interface TradeItStockOrEtfBrokerListRequest : TradeItRequest
 
-@property (copy) NSString *publisherDomain;
+@property (copy) NSString * apiKey;
 
-- (id) initWithPublisherDomain:(NSString *)publisherDomain;
-
+- (id) initWithApiKey:(NSString *) apiKey;
 
 @end

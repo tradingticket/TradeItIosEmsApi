@@ -160,7 +160,7 @@
 
 
 - (NSArray *) getBrokerList{
-    
+    /*
     TradeItStockOrEtfBrokerListRequest * brokerListRequest = [[TradeItStockOrEtfBrokerListRequest alloc]initWithPublisherDomain:self.publisherApp];
     
     NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"getStocksOrEtfsBrokerList", self.environment);
@@ -197,7 +197,7 @@
         NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
         return nil;
     }
-
+*/
     return nil;
 
 }

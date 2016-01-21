@@ -10,19 +10,17 @@
 
 @implementation TradeItStockOrEtfBrokerListRequest
 
--(id) initWithPublisherDomain:(NSString*)publisherDomain{
+-(id) initWithApiKey:(NSString *) apiKey{
     
     self = [super init];
     if (self) {
-        self.publisherDomain = publisherDomain;
+        self.apiKey = apiKey;
     }
     return self;
 }
 
-
-
 - (id) init{
-    return [self initWithPublisherDomain:@""];
+    return [self initWithApiKey:@""];
 }
 
 @end

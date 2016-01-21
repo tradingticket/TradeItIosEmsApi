@@ -11,7 +11,6 @@
 
 //class that manages sending orders to the TradeIt Execution Management System (EMS)
 #import "TradeItStockOrEtfTradeSession.h"
-#import "TradeItVerifyCredentialSession.h"
 
 //Authentication and Order Information classes
 #import "TradeItStockOrEtfOrderPrice.h"

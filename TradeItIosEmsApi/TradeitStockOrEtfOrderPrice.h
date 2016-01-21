@@ -16,7 +16,7 @@
 /**
  *  Set the type of the Order, possible values are market, limit, stopMarket or stopLimit.
  *  You should not set the type directly but instead use the appropriate init method. Setting any orther value will result with the Exexution Management System (EMS) server returning an error
- *  Note that if the broker is Robinhood then only market and limitOrder are supported. Setting any other order type for Robinhood will result with the EMS server returning an error.
+ *
  */
 @property (copy) NSString*  type;
 
