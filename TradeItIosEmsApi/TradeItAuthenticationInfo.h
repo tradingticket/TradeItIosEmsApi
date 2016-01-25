@@ -23,7 +23,6 @@
  * - TradeStation	Username
  * - Robinhood	Username
  * - OptionsHouse	User Id
- * - Interactive Brokers	Username
  */
 @property (copy) NSString *id;
 
@@ -32,7 +31,12 @@
  */
 @property (copy) NSString *password;
 
+/**
+ *  The broker
+ */
+@property (copy) NSString *broker;
 
-- (id) initWithId:(NSString *)id andPassword:(NSString*) password;
+
+- (id) initWithId:(NSString *)id andPassword:(NSString*) password andBroker:(NSString *) broker;
 
 @end

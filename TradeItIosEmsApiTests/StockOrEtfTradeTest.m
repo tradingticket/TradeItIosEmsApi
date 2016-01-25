@@ -37,11 +37,10 @@
 - (void)testExample {
     
     NSLog(@"******************Testing Fetch Broker List");
-    testAuthLink(@"tradeit-test-api-key");
-    
-    NSLog(@"******************Testing Fetch Broker List");
     [self testFetchBrokerList: @"tradeit-test-api-key"];
     
+    NSLog(@"******************Testing oAuth Link to Dummy broker");
+    [self testAuthLink: @"tradeit-test-api-key"];
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
 //        asyncBasicTest();
@@ -89,6 +88,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Request to get broker list should succeed"];
     
     TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
+    connector.environment = TradeItEmsTestEnv;
     
     [connector getAvailableBrokersWithCompletionBlock:^(NSArray * brokers) {
         NSLog(@"Brokers: %@", brokers);
@@ -100,28 +100,34 @@
             NSLog(@"Timeout Error: %@", error);
         }
     }];
-    /*
-    
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
-    
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread=false;
-    
-    [tradeSession asyncGetBrokerListWithCompletionBlock:^(NSArray *brokerList){
-        NSLog(@"Received brokerlist %@", brokerList);
-    }];
-     */
 }
 
-void testAuthLink(NSString * apiKey) {
-    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
+-(void) testAuthLink: (NSString *) apiKey {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
     
+    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
+    connector.environment = TradeItEmsTestEnv;
+    
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy" andBroker:@"Dummy"];
+    
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlack:^(TradeItResult * result) {
+        NSLog(@"Auth link repsonse: %@", result);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+
 }
 
 void testClose(){
 
     //send Request
     // This is an example of a functional test case.
+    /*
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
 
     tradeSession.environment = TradeItEmsTestEnv;
@@ -146,11 +152,13 @@ void testClose(){
     NSLog(@"Session Closed %d", [tradeSession closeSession]);
         
     }
+     */
 }
 
 void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quantity){
     
     // This is an example of a functional test case.
+    /*
     TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
     
 
@@ -168,7 +176,7 @@ void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quan
     
     TradeItResult *result = [tradeSession authenticateAndReview ];
     return processResult(tradeSession,result);
-
+     */
 }
 
 void processResult(TradeItStockOrEtfTradeSession* tradeSession, TradeItResult * result){
@@ -242,7 +250,7 @@ TradeItResult* sendAsyncAuthenticateAndReviewRequest(NSString* broker, NSString 
     
     tradeSession.runAsyncCompletionBlockOnMainThread = false;
     
-    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
+    ///tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
     
     tradeSession.broker = broker;
     __block TradeItResult * authenticateAndReviewResult = nil;

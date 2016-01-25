@@ -12,6 +12,8 @@
 #import "TradeItAccount.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItResult.h"
+#import "TradeItAuthLinkRequest.h"
+#import "TradeItAuthLinkResult.h"
 
 /**
    Main class to manage the connection (token) to the Trade It Execution Management System (EMS).
@@ -47,7 +49,7 @@
 
 /**
  */
-- (TradeItResult *) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo;
+-(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlack:(void (^)(TradeItResult *)) completionBlock;
 
 /**
  */
