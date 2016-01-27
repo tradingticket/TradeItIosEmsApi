@@ -12,6 +12,7 @@
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeitStockOrEtfOrderPrice.h"
 #import "TradeItAuthenticationInfo.h"
+#import "TradeItAuthLinkResult.h"
 
 #import "TradeItConnector.h"
 
@@ -35,12 +36,25 @@
 }
 
 - (void)testExample {
+    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:@"tradeit-test-api-key"];
+    connector.environment = TradeItEmsTestEnv;
     
-    NSLog(@"******************Testing Fetch Broker List");
-    [self testFetchBrokerList: @"tradeit-test-api-key"];
+    //NSLog(@"******************Testing Fetch Broker List");
+    //[self testFetchBrokerList: connector];
     
     NSLog(@"******************Testing oAuth Link to Dummy broker");
-    [self testAuthLink: @"tradeit-test-api-key"];
+    TradeItAuthLinkResult * authLink = [self testAuthLink: connector];
+    
+    /*
+    if(![authLink.status isEqualToString:@"SUCCESS"]) {
+        NSLog(@"Something failed during auth link, unable to proceed");
+        return;
+    }
+    
+    NSLog(@"*******************Testing saving/removing token into keychain");
+    [self testLinkingAccount: connector withLink:authLink];
+    */
+    
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
 //        asyncBasicTest();
@@ -84,11 +98,8 @@
     }];
 }
 
--(void) testFetchBrokerList: (NSString *) apiKey{
+-(void) testFetchBrokerList: (TradeItConnector *) connector{
     XCTestExpectation *expectation = [self expectationWithDescription:@"Request to get broker list should succeed"];
-    
-    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
-    connector.environment = TradeItEmsTestEnv;
     
     [connector getAvailableBrokersWithCompletionBlock:^(NSArray * brokers) {
         NSLog(@"Brokers: %@", brokers);
@@ -102,16 +113,49 @@
     }];
 }
 
--(void) testAuthLink: (NSString *) apiKey {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
+-(void) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
+    [connector saveLinkToKeychain:link withBroker:@"Dummy" andDescription:@"Dummy Test Save"];
     
-    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:apiKey];
-    connector.environment = TradeItEmsTestEnv;
+    NSArray * accounts = [connector getLinkedAccounts];
+    BOOL found = NO;
+    for (NSDictionary * account in accounts) {
+        if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
+            found = YES;
+        }
+    }
+    
+    if(!found) {
+        XCTFail(@"Failed finding stored linked account");
+    }
+    
+    [connector unlinkBroker:@"Dummy"];
+    
+    NSArray * accounts2 = [connector getLinkedAccounts];
+    found = NO;
+    for (NSDictionary * account in accounts2) {
+        if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
+            found = YES;
+        }
+    }
+    
+    if(found) {
+        XCTFail(@"Failed removing stored linked account");
+    }
+}
+
+-(TradeItAuthLinkResult *) testAuthLink: (TradeItConnector *) connector {
+    NSLog(@"********Testing oAuth Invalid Case");
+    [self testAuthLinkInvalid: connector];
+
+    NSLog(@"********Testing oAuth Valid Case");
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
+    __block TradeItAuthLinkResult * resultToReturn;
     
     TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy" andBroker:@"Dummy"];
     
     [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlack:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
+        resultToReturn = (TradeItAuthLinkResult *) result;
         [expectation fulfill];
     }];
     
@@ -121,6 +165,31 @@
         }
     }];
 
+    return resultToReturn;
+}
+
+-(void) testAuthLinkInvalid:(TradeItConnector *) connector {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Request to link broker should fail"];
+    
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"fail" andPassword:@"dummy" andBroker:@"Dummy"];
+    
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlack:^(TradeItResult * result) {
+        NSLog(@"Auth link repsonse: %@", result);
+        
+        if([result isKindOfClass: [TradeItErrorResult class]] &&
+           [[(TradeItErrorResult *)result code] intValue]  == 300) {
+            
+            [expectation fulfill];
+        } else {
+            XCTFail(@"Invalid credentials did not return expected response: %@", result);
+        }
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
 }
 
 void testClose(){

@@ -12,11 +12,10 @@
 #import "TradeItAccount.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItResult.h"
-#import "TradeItAuthLinkRequest.h"
 #import "TradeItAuthLinkResult.h"
 
 /**
-   Main class to manage the connection (token) to the Trade It Execution Management System (EMS).
+   Main class to manage the connection settings to the Trade It Execution Management System (EMS). And the account linking and storing of the userToken used for establishing the session
  */
 @interface TradeItConnector : NSObject
 
@@ -44,16 +43,33 @@
 - (void) getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *)) completionBlock;
 
 /**
- */
-- (NSArray *) getLinkedAccounts;
-
-/**
+ *  A user oAuth token is generated given credentials for a broker. The token may be used to authenticate the user in the future without them having to re-enter their credentials.
+ *  This token should be treated and stored like a password.
+ *  It's recommended to use the saveLinkToKeychain method to hold onto the token, and use either touchId or a short password like a 4 digit pen before retrieving the token for the user
+ *  
+ *  @return TradeItResult returned into the completion block will indicate success/failure of the credentials
  */
 -(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlack:(void (^)(TradeItResult *)) completionBlock;
 
 /**
  */
-- (TradeItResult *) unlinkBroker: (NSString *) broker;
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker;
+
+/**
+ */
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc;
+
+/**
+ @"description":desc,
+ @"broker":broker,
+ @"userId":link.userId,
+ @"keychainId
+ */
+- (NSArray *) getLinkedAccounts;
+
+/**
+ */
+- (void) unlinkBroker: (NSString *) broker;
 
 /**
  */

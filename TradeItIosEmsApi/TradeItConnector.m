@@ -11,10 +11,15 @@
 #import "TradeItEmsUtils.h"
 #import "TradeItErrorResult.h"
 #import "TradeItBrokerListSuccessResult.h"
+#import "TradeItKeychain.h"
+#import "TradeItAuthLinkRequest.h"
 
 @implementation TradeItConnector {
     BOOL runAsyncCompletionBlockOnMainThread;
 }
+
+NSString * BROKER_LIST_KEYNAME = @"TRADEIT_BROKERS";
+NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
 - (id)initWithApiKey:(NSString *) apiKey {
     self = [super init];
@@ -57,21 +62,60 @@
     
     [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString * jsonResponse) {
         
-        if([tradeItResult isKindOfClass: [TradeItErrorResult class]]){//if there was an erro parsing return
-            NSLog(@"Could not link broker, got error result%@ ", tradeItResult);
-        }
-        else if ([tradeItResult.status isEqual:@"SUCCESS"]){
+        if ([tradeItResult.status isEqual:@"SUCCESS"]){
             TradeItAuthLinkResult* successResult = (TradeItAuthLinkResult*) buildResult([TradeItAuthLinkResult alloc],jsonResponse);
             
-            completionBlock(successResult);
-            
-            return;
+            tradeItResult = successResult;
         }
-        else if ([tradeItResult.status isEqual:@"ERROR"]){
-            NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
+        
+        completionBlock(tradeItResult);
+    }];
+    
+}
+
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker {
+    return [self saveLinkToKeychain:link withBroker:broker andDescription:broker];
+}
+
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc {
+    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedAccounts]];
+    NSString * keychainId = [[NSUUID UUID] UUIDString];
+    
+    NSDictionary * newRecord = @{@"description":desc,
+                                 @"broker":broker,
+                                 @"userId":link.userId,
+                                 @"keychainId":keychainId};
+    [accounts addObject:newRecord];
+    
+    [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
+    
+    [TradeItKeychain saveString:link.userToken forKey:keychainId];
+}
+
+- (NSArray *) getLinkedAccounts {
+    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSArray * linkedAccounts = [standardUserDefaults arrayForKey:BROKER_LIST_KEYNAME];
+    
+    if(!linkedAccounts) {
+        linkedAccounts = [[NSArray alloc] init];
+    }
+    
+    return linkedAccounts;
+}
+
+- (void) unlinkBroker: (NSString *) broker {
+    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedAccounts]];
+    
+    [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary * account = (NSDictionary *) obj;
+        if([account[@"broker"] isEqualToString:broker]) {
+            [accounts removeObjectAtIndex:idx];
         }
     }];
     
+    [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
 }
 
 -(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
@@ -93,6 +137,18 @@
         
         //first convert to a generic result to check the type
         TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
+        
+        if([tradeItResult.status isEqual:@"ERROR"]){
+            TradeItErrorResult * errorResult;
+            
+            if(![tradeItResult isKindOfClass: [TradeItErrorResult class]]) {
+                errorResult = (TradeItErrorResult *) buildResult([TradeItErrorResult alloc],jsonResponse); //this is an error as served directly from the EMS server
+            } else {
+                errorResult = (TradeItErrorResult *) tradeItResult; //this type of error caused by something wrong parsing the response
+            }
+            
+            tradeItResult = errorResult;
+        }
         
         dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(tradeItResult, jsonResponse);});
     });
