@@ -44,7 +44,7 @@
 
 /**
  *  A user oAuth token is generated given credentials for a broker. The token may be used to authenticate the user in the future without them having to re-enter their credentials.
- *  This token should be treated and stored like a password.
+ * **** This token should be treated and stored like a password.  *****
  *  It's recommended to use the saveLinkToKeychain method to hold onto the token, and use either touchId or a short password like a 4 digit pen before retrieving the token for the user
  *  
  *  @return TradeItResult returned into the completion block will indicate success/failure of the credentials
@@ -52,27 +52,43 @@
 -(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlack:(void (^)(TradeItResult *)) completionBlock;
 
 /**
+ *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
  */
 -(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker;
 
 /**
+ *  Same as above, but with a custom description. Useful if allowing users to link to more than one login per broker. The default, in the above method, is just the broker name.
  */
 -(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc;
 
 /**
- @"description":desc,
- @"broker":broker,
- @"userId":link.userId,
- @"keychainId
+ *  Retrieve a list of stored linkedLogins
+ * @return a Dictionary:
+    @"description"
+    @"broker"
+    @"userId"
+    @"keychainId"
  */
-- (NSArray *) getLinkedAccounts;
+- (NSArray *) getLinkedLogins;
 
 /**
+ *  Exchange the keychainId for the userToken associated with it.
+ *  This is the last chance to protect the user, retrieving this token should be protected by a pin, password or touchId.
+ *
+ *  @return token, to establish a session with the associated user and broker
+ */
+-(NSString *) userTokenFromKeychainId:(NSString *) keychainId;
+
+/**
+ *  Used to unlink the linked account. Should be exposed to the user via the app settings.
  */
 - (void) unlinkBroker: (NSString *) broker;
 
 /**
+ *  If the oAuth token becomes stale, we can issue a new token by the previous linked login. This will replace the occurrence, if any, in the keychain/userprofile
+ *
+ *  @return TradeItResult if successful will include a new userId and userToken
  */
-- (TradeItResult *) updateUserToken: (NSString *) token;
+- (TradeItResult *) updateUserToken: (NSDictionary *) linkedLogin;
 
 @end

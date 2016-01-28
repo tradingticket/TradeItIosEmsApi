@@ -79,7 +79,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
 -(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedAccounts]];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLogins]];
     NSString * keychainId = [[NSUUID UUID] UUIDString];
     
     NSDictionary * newRecord = @{@"description":desc,
@@ -93,7 +93,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     [TradeItKeychain saveString:link.userToken forKey:keychainId];
 }
 
-- (NSArray *) getLinkedAccounts {
+- (NSArray *) getLinkedLogins {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
     NSArray * linkedAccounts = [standardUserDefaults arrayForKey:BROKER_LIST_KEYNAME];
     
@@ -106,7 +106,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
 - (void) unlinkBroker: (NSString *) broker {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedAccounts]];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLogins]];
     
     [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary * account = (NSDictionary *) obj;
@@ -116,6 +116,15 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     }];
     
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
+}
+
+-(NSString *) userTokenFromKeychainId:(NSString *) keychainId {
+    return [TradeItKeychain getStringForKey:keychainId];
+}
+
+- (TradeItResult *) updateUserToken: (NSDictionary *) linkedLogin {
+    NSLog(@"Implement Me");
+    return [[TradeItResult alloc] init];
 }
 
 -(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
