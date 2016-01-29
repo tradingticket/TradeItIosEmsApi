@@ -103,6 +103,8 @@
 		A9F565BE1C56DC9F00AB879D /* TradeItAuthLinkResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A9F565BC1C56DC9F00AB879D /* TradeItAuthLinkResult.m */; };
 		A9F565C21C581D7B00AB879D /* TradeItKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = A9F565C01C581D7B00AB879D /* TradeItKeychain.h */; };
 		A9F565C31C581D7B00AB879D /* TradeItKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A9F565C11C581D7B00AB879D /* TradeItKeychain.m */; };
+		A9F565C61C5AE76F00AB879D /* TradeItLinkedLogin.h in Headers */ = {isa = PBXBuildFile; fileRef = A9F565C41C5AE76F00AB879D /* TradeItLinkedLogin.h */; };
+		A9F565C71C5AE76F00AB879D /* TradeItLinkedLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = A9F565C51C5AE76F00AB879D /* TradeItLinkedLogin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +232,8 @@
 		A9F565BC1C56DC9F00AB879D /* TradeItAuthLinkResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItAuthLinkResult.m; sourceTree = "<group>"; };
 		A9F565C01C581D7B00AB879D /* TradeItKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItKeychain.h; sourceTree = "<group>"; };
 		A9F565C11C581D7B00AB879D /* TradeItKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItKeychain.m; sourceTree = "<group>"; };
+		A9F565C41C5AE76F00AB879D /* TradeItLinkedLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItLinkedLogin.h; sourceTree = "<group>"; };
+		A9F565C51C5AE76F00AB879D /* TradeItLinkedLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItLinkedLogin.m; sourceTree = "<group>"; };
 		D44B291CDB1F82D18ACB4ECD /* Pods-TradeItIosEmsApiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TradeItIosEmsApiTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TradeItIosEmsApiTests/Pods-TradeItIosEmsApiTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -412,6 +416,8 @@
 				08D3DFCC1B55A0520094BC61 /* TradeItEmsUtils.m */,
 				08D4616E1B4D5DE9001F50E8 /* TradeItIosEmsApiLib.h */,
 				A91F424B1C45BEEC008A0D07 /* TradeItAccount.h */,
+				A9F565C41C5AE76F00AB879D /* TradeItLinkedLogin.h */,
+				A9F565C51C5AE76F00AB879D /* TradeItLinkedLogin.m */,
 			);
 			path = TradeItIosEmsApi;
 			sourceTree = "<group>";
@@ -510,6 +516,7 @@
 				A9F565BD1C56DC9F00AB879D /* TradeItAuthLinkResult.h in Headers */,
 				A955C3B71B83A8090049794E /* TIEMSJSONModelLib.h in Headers */,
 				084794B71B43506900DA86AC /* TradeItStockOrEtfTradeReviewOrderDetails.h in Headers */,
+				A9F565C61C5AE76F00AB879D /* TradeItLinkedLogin.h in Headers */,
 				08EFE9EC1B71980200B77918 /* TradeItBrokerListSuccessResult.h in Headers */,
 				084794B41B43505300DA86AC /* TradeItResult.h in Headers */,
 				084794B51B43505A00DA86AC /* TradeItStockOrEtfTradeSuccessResult.h in Headers */,
@@ -658,6 +665,7 @@
 				086607AB1B3B03AC00B66D81 /* TradeItSecurityQuestionResult.m in Sources */,
 				A91F425A1C4985CD008A0D07 /* TradeItTradeService.m in Sources */,
 				08EDE0971B3E025000D74866 /* TradeItSelectAccountRequest.m in Sources */,
+				A9F565C71C5AE76F00AB879D /* TradeItLinkedLogin.m in Sources */,
 				08ABD7911B6FDBC5008FE4DB /* TIEMSJSONKeyMapper.m in Sources */,
 				A955C3BA1B83A8170049794E /* NSArray+TIEMSJSONModel.m in Sources */,
 				08EDE09D1B3E02FE00D74866 /* TradeItCloseSessionRequest.m in Sources */,

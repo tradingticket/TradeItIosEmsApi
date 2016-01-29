@@ -55,7 +55,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     }];
 }
 
--(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlack:(void (^)(TradeItResult *)) completionBlock {
+-(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
     TradeItAuthLinkRequest * authLinkRequest = [[TradeItAuthLinkRequest alloc] initWithAuthInfo:authInfo andAPIKey:self.apiKey];
     
     NSMutableURLRequest * request = buildJsonRequest(authLinkRequest, @"user/oAuthLink", self.environment);
@@ -74,15 +74,15 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 }
 
 -(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker {
-    return [self saveLinkToKeychain:link withBroker:broker andDescription:broker];
+    return [self saveLinkToKeychain:link withBroker:broker andLabel:broker];
 }
 
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc {
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
     NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLogins]];
     NSString * keychainId = [[NSUUID UUID] UUIDString];
     
-    NSDictionary * newRecord = @{@"description":desc,
+    NSDictionary * newRecord = @{@"label":label,
                                  @"broker":broker,
                                  @"userId":link.userId,
                                  @"keychainId":keychainId};
@@ -101,7 +101,12 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         linkedAccounts = [[NSArray alloc] init];
     }
     
-    return linkedAccounts;
+    NSMutableArray * accountsToReturn = [[NSMutableArray alloc] init];
+    for (NSDictionary * account in linkedAccounts) {
+        [accountsToReturn addObject: [[TradeItLinkedLogin alloc] initWithLabel:account[@"label"] broker:account[@"broker"] userId:account[@"userId"] andKeyChainId:account[@"keychainId"]]];
+    }
+    
+    return accountsToReturn;
 }
 
 - (void) unlinkBroker: (NSString *) broker {
@@ -122,7 +127,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return [TradeItKeychain getStringForKey:keychainId];
 }
 
-- (TradeItResult *) updateUserToken: (NSDictionary *) linkedLogin {
+- (TradeItResult *) updateUserToken: (TradeItLinkedLogin *) linkedLogin {
     NSLog(@"Implement Me");
     return [[TradeItResult alloc] init];
 }

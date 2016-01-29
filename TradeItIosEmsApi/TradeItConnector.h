@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 #import "TradeItTypeDefs.h"
-#import "TradeItAccount.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItResult.h"
 #import "TradeItAuthLinkResult.h"
+#import "TradeItLinkedLogin.h"
 
 /**
    Main class to manage the connection settings to the Trade It Execution Management System (EMS). And the account linking and storing of the userToken used for establishing the session
@@ -49,7 +49,7 @@
  *  
  *  @return TradeItResult returned into the completion block will indicate success/failure of the credentials
  */
--(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlack:(void (^)(TradeItResult *)) completionBlock;
+-(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 /**
  *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
@@ -57,17 +57,13 @@
 -(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker;
 
 /**
- *  Same as above, but with a custom description. Useful if allowing users to link to more than one login per broker. The default, in the above method, is just the broker name.
+ *  Same as above, but with a custom label. Useful if allowing users to link to more than one login per broker. The default, in the above method, is just the broker name.
  */
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andDescription:(NSString *) desc;
+-(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label;
 
 /**
  *  Retrieve a list of stored linkedLogins
- * @return a Dictionary:
-    @"description"
-    @"broker"
-    @"userId"
-    @"keychainId"
+ * @return an Array of TradeItLinkedLogin
  */
 - (NSArray *) getLinkedLogins;
 
@@ -89,6 +85,15 @@
  *
  *  @return TradeItResult if successful will include a new userId and userToken
  */
-- (TradeItResult *) updateUserToken: (NSDictionary *) linkedLogin;
+- (TradeItResult *) updateUserToken: (TradeItLinkedLogin *) linkedLogin;
+
+
+
+
+/**
+ *  Method used by the session and services to issue requests to the ems servers
+ *  You shouldn't need to call this method directly
+ */
+-(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock;
 
 @end

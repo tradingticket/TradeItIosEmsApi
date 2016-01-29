@@ -116,7 +116,7 @@
 -(void) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
     [connector saveLinkToKeychain:link withBroker:@"Dummy" andDescription:@"Dummy Test Save"];
     
-    NSArray * accounts = [connector getLinkedAccounts];
+    NSArray * accounts = [connector getLinkedLogins];
     BOOL found = NO;
     for (NSDictionary * account in accounts) {
         if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
@@ -130,7 +130,7 @@
     
     [connector unlinkBroker:@"Dummy"];
     
-    NSArray * accounts2 = [connector getLinkedAccounts];
+    NSArray * accounts2 = [connector getLinkedLogins];
     found = NO;
     for (NSDictionary * account in accounts2) {
         if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
@@ -153,7 +153,7 @@
     
     TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy" andBroker:@"Dummy"];
     
-    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlack:^(TradeItResult * result) {
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
         resultToReturn = (TradeItAuthLinkResult *) result;
         [expectation fulfill];
@@ -173,7 +173,7 @@
     
     TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"fail" andPassword:@"dummy" andBroker:@"Dummy"];
     
-    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlack:^(TradeItResult * result) {
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
         
         if([result isKindOfClass: [TradeItErrorResult class]] &&

@@ -23,6 +23,7 @@
  */
 @property (copy) NSString * postbackURL;
 
+-(id) initWithOrderInfo:(TradeItStockOrEtfOrderInfo *) orderInfo;
 
 - (TradeItResult *) previewTrade;
 
