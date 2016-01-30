@@ -13,6 +13,8 @@
 #import "TradeitStockOrEtfOrderPrice.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItAuthLinkResult.h"
+#import "TradeItLinkedLogin.h"
+#import "TradeItSession.h"
 
 #import "TradeItConnector.h"
 
@@ -45,16 +47,17 @@
     NSLog(@"******************Testing oAuth Link to Dummy broker");
     TradeItAuthLinkResult * authLink = [self testAuthLink: connector];
     
-    /*
     if(![authLink.status isEqualToString:@"SUCCESS"]) {
         NSLog(@"Something failed during auth link, unable to proceed");
         return;
     }
     
     NSLog(@"*******************Testing saving/removing token into keychain");
-    [self testLinkingAccount: connector withLink:authLink];
-    */
-    
+    TradeItLinkedLogin * linkedLogin = [self testLinkingAccount: connector withLink:authLink];
+
+    NSLog(@"*******************Testing authentication");
+    TradeItSession * session = [self testAuthentication:connector withLinkedLogin:linkedLogin];
+    NSLog(@"Session Established:  %@", session);
     
 //    NSLog(@"******************TESTING BASIC USE CASE");
 //        asyncBasicTest();
@@ -113,13 +116,14 @@
     }];
 }
 
--(void) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
-    [connector saveLinkToKeychain:link withBroker:@"Dummy" andDescription:@"Dummy Test Save"];
+-(TradeItLinkedLogin *) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
+    TradeItLinkedLogin * linkedLogin = [connector saveLinkToKeychain:link withBroker:@"Dummy" andLabel:@"Dummy Test Save"];
     
     NSArray * accounts = [connector getLinkedLogins];
+    NSLog(@"%@", accounts);
     BOOL found = NO;
-    for (NSDictionary * account in accounts) {
-        if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
+    for (TradeItLinkedLogin * account in accounts) {
+        if ([account.label isEqualToString: @"Dummy Test Save"]) {
             found = YES;
         }
     }
@@ -131,9 +135,10 @@
     [connector unlinkBroker:@"Dummy"];
     
     NSArray * accounts2 = [connector getLinkedLogins];
+    NSLog(@"%@", accounts2);
     found = NO;
-    for (NSDictionary * account in accounts2) {
-        if ([account[@"description"] isEqualToString: @"Dummy Test Save"]) {
+    for (TradeItLinkedLogin * account in accounts2) {
+        if ([account.label isEqualToString: @"Dummy Test Save"]) {
             found = YES;
         }
     }
@@ -141,6 +146,8 @@
     if(found) {
         XCTFail(@"Failed removing stored linked account");
     }
+    
+    return linkedLogin;
 }
 
 -(TradeItAuthLinkResult *) testAuthLink: (TradeItConnector *) connector {
@@ -190,6 +197,30 @@
             NSLog(@"Timeout Error: %@", error);
         }
     }];
+}
+
+-(TradeItSession *) testAuthentication:(TradeItConnector *) connector withLinkedLogin:(TradeItLinkedLogin *) linkedLogin {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed creating a session"];
+    
+    TradeItSession * session = [[TradeItSession alloc] initWithConnector:connector];
+    
+    [session authenticate:linkedLogin withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Auth Response: %@", result);
+        
+        if(![result isKindOfClass:[TradeItSuccessAuthenticationResult class]]) {
+            XCTFail(@"Failed establishing a valid session");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+    return session;
 }
 
 void testClose(){

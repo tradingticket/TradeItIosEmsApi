@@ -73,13 +73,13 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     
 }
 
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker {
+-(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker {
     return [self saveLinkToKeychain:link withBroker:broker andLabel:broker];
 }
 
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label {
+-(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLogins]];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
     NSString * keychainId = [[NSUUID UUID] UUIDString];
     
     NSDictionary * newRecord = @{@"label":label,
@@ -91,15 +91,23 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
     
     [TradeItKeychain saveString:link.userToken forKey:keychainId];
+    
+    return [[TradeItLinkedLogin alloc] initWithLabel:label broker:broker userId:link.userId andKeyChainId:keychainId];
 }
 
-- (NSArray *) getLinkedLogins {
+- (NSArray *) getLinkedLoginsRaw {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
     NSArray * linkedAccounts = [standardUserDefaults arrayForKey:BROKER_LIST_KEYNAME];
     
     if(!linkedAccounts) {
         linkedAccounts = [[NSArray alloc] init];
     }
+    
+    return linkedAccounts;
+}
+
+- (NSArray *) getLinkedLogins {
+    NSArray * linkedAccounts = [self getLinkedLoginsRaw];
     
     NSMutableArray * accountsToReturn = [[NSMutableArray alloc] init];
     for (NSDictionary * account in linkedAccounts) {
@@ -111,14 +119,19 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
 - (void) unlinkBroker: (NSString *) broker {
     NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLogins]];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
+    NSMutableArray * toRemove = [[NSMutableArray alloc] init];
     
     [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSDictionary * account = (NSDictionary *) obj;
         if([account[@"broker"] isEqualToString:broker]) {
-            [accounts removeObjectAtIndex:idx];
+            [toRemove addObject:obj];
         }
     }];
+    
+    for (NSDictionary * account in toRemove) {
+        [accounts removeObject:account];
+    }
     
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
 }
@@ -143,7 +156,8 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         if ((responseJsonData==nil) || ([response statusCode]!=200)) {
             //error occured
             NSLog(@"ERROR from EMS server response=%@ error=%@", response, error);
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(nil,nil);});
+            TradeItErrorResult * errorResult = [TradeItErrorResult tradeErrorWithSystemMessage:@"error sending request to ems server"];
+            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(errorResult,nil);});
             return;
         }
         

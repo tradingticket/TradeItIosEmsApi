@@ -10,16 +10,8 @@
 
 @implementation TradeItSuccessAuthenticationResult
 
-- (id)init {
-    self =  [super init];
-    if(self){
-        self.credentialsValid = NO;
-    }
-    return self;
-}
-
 - (NSString*) description{
-    return [NSString stringWithFormat:@"TradeItSuccessAuthenticationResult: %@ credentialsValid=%d ",[super description], self.credentialsValid];
+    return [NSString stringWithFormat:@"TradeItSuccessAuthenticationResult: %@ accounts=%@ ",[super description], self.accounts];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TradeItAuthLinkResult.h"
 
 @interface TradeItLinkedLogin : NSObject
 

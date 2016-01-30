@@ -54,12 +54,12 @@
 /**
  *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
  */
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker;
+-(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker;
 
 /**
  *  Same as above, but with a custom label. Useful if allowing users to link to more than one login per broker. The default, in the above method, is just the broker name.
  */
--(void) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label;
+-(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label;
 
 /**
  *  Retrieve a list of stored linkedLogins

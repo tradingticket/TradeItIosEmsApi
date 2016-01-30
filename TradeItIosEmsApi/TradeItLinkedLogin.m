@@ -21,4 +21,8 @@
     return self;
 }
 
+-(NSString *) description {
+    return [NSString stringWithFormat:@"Label: %@, Broker: %@, UserId: %@, KeychainId: %@", self.label, self.broker, self.userId, self.keychainId];
+}
+
 @end
