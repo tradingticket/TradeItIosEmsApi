@@ -12,6 +12,7 @@
 #import "TradeItErrorResult.h"
 #import "TradeItSuccessAuthenticationResult.h"
 #import "TradeItSecurityQuestionResult.h"
+#import "TradeItSecurityQuestionRequest.h"
 
 @implementation TradeItSession
 
@@ -30,30 +31,45 @@
     NSMutableURLRequest * request = buildJsonRequest(authRequest, @"user/authenticate", self.connector.environment);
     
     [self.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        TradeItResult * resultToReturn = result;
-        
-        if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItSuccessAuthenticationResult alloc], jsonResponse);
-            self.token = [(TradeItSuccessAuthenticationResult *)result token];
-        }
-        else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
-            resultToReturn = buildResult([TradeItSecurityQuestionResult alloc], jsonResponse);
-        }
-        
-        completionBlock(resultToReturn);
+        completionBlock([self parseAuthResponse: result jsonResponse:jsonResponse]);
     }];
 }
 
 -(void) answerSecurityQuestion:(NSString *)answer withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    TradeItSecurityQuestionRequest * secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];
     
+    NSMutableURLRequest * request = buildJsonRequest(secRequest, @"user/answerSecurityQuestion", self.connector.environment);
+    
+    [self.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+        completionBlock([self parseAuthResponse: result jsonResponse:jsonResponse]);
+    }];
+}
+
+-(TradeItResult *) parseAuthResponse:(TradeItResult *) result jsonResponse:(NSMutableString *) jsonResponse {
+    TradeItResult * resultToReturn = result;
+    
+    if ([result.status isEqual:@"SUCCESS"]){
+        resultToReturn = buildResult([TradeItSuccessAuthenticationResult alloc], jsonResponse);
+        self.token = [(TradeItSuccessAuthenticationResult *)result token];
+    }
+    else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
+        resultToReturn = buildResult([TradeItSecurityQuestionResult alloc], jsonResponse);
+        self.token = [(TradeItSuccessAuthenticationResult *)result token];
+    }
+    
+    return resultToReturn;
 }
 
 -(void) keepSessionAliveWithCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    
+    NSLog(@"Implement me!!");
 }
 
 -(void) closeSession {
-    
+    NSLog(@"Implement me!!");    
+}
+
+-(NSString *) description {
+    return [NSString stringWithFormat:@"TradeItSession: %@", self.token];
 }
 
 @end

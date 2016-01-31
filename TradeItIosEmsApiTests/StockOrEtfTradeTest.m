@@ -59,39 +59,10 @@
     TradeItSession * session = [self testAuthentication:connector withLinkedLogin:linkedLogin];
     NSLog(@"Session Established:  %@", session);
     
-//    NSLog(@"******************TESTING BASIC USE CASE");
-//        asyncBasicTest();
-//        asyncSecurityAnswerTest();
-//        asyncMultiAccountTest();
-//        asyncCloseSessionTest();
-//    NSLog(@"Done");
-//
-//    
-//
-//    NSLog(@"******************TESTING BASIC USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
-//    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING MULI OPTION SECURITY QUESTION  USE CASE");
-//    sendTestOrder(@"Dummy", @"dummyOptionLong", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING MULI ACCOUNT USE CASE");
-//    sendTestOrder(@"Dummy", @"dummyMultiple", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING ERROR USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//    
-//    NSLog(@"******************TESTING Warning USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//    
-//    NSLog(@"******************TESTING closing session USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//
-//    testClose();
-//
-   
+    NSLog(@"*******************Testing answering sec question");
+    [self testAnswerSecQuestion: session];
+    
+    
 }
 
 - (void)testPerformanceExample {
@@ -158,7 +129,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
     __block TradeItAuthLinkResult * resultToReturn;
     
-    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy" andBroker:@"Dummy"];
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummySecurity" andPassword:@"dummy" andBroker:@"Dummy"];
     
     [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
@@ -207,7 +178,7 @@
     [session authenticate:linkedLogin withCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth Response: %@", result);
         
-        if(![result isKindOfClass:[TradeItSuccessAuthenticationResult class]]) {
+        if(![result isKindOfClass:[TradeItSecurityQuestionResult class]]) {
             XCTFail(@"Failed establishing a valid session");
         }
         
@@ -221,6 +192,26 @@
     }];
     
     return session;
+}
+
+-(void) testAnswerSecQuestion:(TradeItSession *) session {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed answering security question"];
+    
+    [session answerSecurityQuestion:@"tradingticket" withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Ans. Sec. Response: %@", result);
+        
+        if(![result isKindOfClass:[TradeItSuccessAuthenticationResult class]]) {
+            XCTFail(@"Failed to successfully answer security question");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
 }
 
 void testClose(){

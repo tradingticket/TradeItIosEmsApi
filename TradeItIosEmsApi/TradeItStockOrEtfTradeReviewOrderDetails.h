@@ -15,48 +15,31 @@
 /**
  *  The symbol passed into the order
  */
-@property (copy) NSString* orderSymbol;
+@property (copy) NSString * orderSymbol;
 
 /**
  *  The action passed into the order
  */
-@property (copy) NSString* orderAction;
+@property (copy) NSString * orderAction;
 
 /**
  *  The number of shares passed in the order
  */
-@property int orderQuantity;
+@property (copy) NSNumber * orderQuantity;
+
+/**
+ *  The expiration passed into order. Values are either Day or 'Good Till Cancelled'
+ */
+@property (copy) NSString * orderExpiration;
 
 /**
  *  The price at which the order will execute, contains:
  *  "Market" for market orders
  *  <limit price> for limit orders (i.e. 34.56)
  *  <stop price>  for stop market orders (i.e 30.67)
- *  <limit price> (trigger:<stop price>) for stop limit orders (i.e 34.56(trigger:30.67) )
+ *  <stop limit price> (trigger:<stop price>) for stop limit orders (i.e 34.56(trigger:30.67) )
  */
-@property (copy) NSString* orderPrice;
-
-/**
- *  The expiration passed into order. Values are either Day or 'Good Till Cancelled'
- */
-@property (copy) NSString* orderExpiration;
-
-/**
- *  A user friendly description of the order. i.e "You are about to place a market order to buy AAPL" or "You are about to place a limit order to sell short AAPL"
- */
-@property (copy) NSString* orderMessage;
-
-/**
- *  The number of shares held long by the user (pre-trade)
- *  If value is -1 then server was not able to pull value
- */
-@property (copy) NSNumber<Optional>* longHoldings;
-
-/**
- *  The number of shares held short by the user (pre-trade)
- *  If value is -1 then server was not able to pull value
- */
-@property (copy) NSNumber<Optional>* shortHoldings;
+@property (copy) NSString * orderPrice;
 
 /**
  *  "Estimated Proceeds" or "Estimated Cost" depending on the order action
@@ -64,31 +47,73 @@
 @property (copy) NSString * orderValueLabel;
 
 /**
+ *  A user friendly description of the order. i.e "You are about to place a market order to buy AAPL" or "You are about to place a limit order to sell short AAPL"
+ */
+@property (copy) NSString * orderMessage;
+
+/**
+ *  Quote from the broker, last trade price
+ */
+@property (copy) NSNumber<Optional> * lastPrice;
+
+/**
+ *  Quote from the broker, bid price
+ */
+@property (copy) NSNumber<Optional> * bidPrice;
+
+/**
+ *  Quote from the broker, ask price
+ */
+@property (copy) NSNumber<Optional> * askPrice;
+
+/**
+ *  Quote from the broker, timestamp is ET
+ */
+@property (copy) NSString<Optional> * timestamp;
+
+/**
  *  The user buying power (pre-trade)
- *  Note: tradestation and IB return buyingPower for all account types. Other brokers return buyingPower for margin accounts and availableCash for cash accounts
+ *  Note: Tradestation returns buyingPower for all account types.
+ *  Other brokers return buyingPower for margin accounts and availableCash for cash accounts
+ *  If nil ignore field as not available
  */
-@property (copy) NSNumber<Optional>* buyingPower; //if nil ignore field as not available
+@property (copy) NSNumber<Optional> * buyingPower;
 
 /**
- *  The user available cash (pre-trade). If nil ignore field as not available
+ *  The user's available cash (to withdraw). If nil ignore field as not available
  */
-@property (copy) NSNumber<Optional>* availableCash;
+@property (copy) NSNumber<Optional> * availableCash;
 
 /**
- *  Estimated value of the order, does not include fees. If nil ignore field as not available
+ *  The number of shares held long by the user (pre-trade)
+ *  If nil ignore field as not available
  */
-@property (copy) NSNumber<Optional>* estimatedOrderValue; //
+@property (copy) NSNumber<Optional> * longHoldings;
+
+/**
+ *  The number of shares held short by the user (pre-trade)
+ *  If nil ignore field as not available
+ */
+@property (copy) NSNumber<Optional> * shortHoldings;
+
+/**
+ *  Estimated value of the order, does not include fees.
+ *  If nil ignore field as not available
+ */
+@property (copy) NSNumber<Optional> * estimatedOrderValue;
 
 
 /**
- *  The estimated cost of fees and commissions for the order. If nil ignore field as not available
+ *  The estimated cost of fees and commissions for the order.
+ *  If nil ignore field as not available
  */
-@property (copy) NSNumber<Optional>* estimatedOrderCommission;
+@property (copy) NSNumber<Optional> * estimatedOrderCommission;
 
 
 /**
- *  The estimated total cost of the order including fees. If nil ignore field as not available
+ *  The estimated total cost of the order including fees.
+ *  If nil ignore field as not available
  */
-@property (copy) NSNumber<Optional>* estimatedTotalValue;
+@property (copy) NSNumber<Optional> * estimatedTotalValue;
 
 @end
