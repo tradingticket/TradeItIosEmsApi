@@ -10,7 +10,7 @@
 /**
  *  Class containing the Order details contained in the TradeItStockOrEtfTradeReviewResult
  */
-@interface TradeItStockOrEtfTradeReviewOrderDetails : TIEMSJSONModel<NSCopying>
+@interface TradeItPreviewTradeOrderDetails : TIEMSJSONModel<NSCopying>
 
 /**
  *  The symbol passed into the order

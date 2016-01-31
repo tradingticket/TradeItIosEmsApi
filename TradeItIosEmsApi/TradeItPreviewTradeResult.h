@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TradeItResult.h"
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
+#import "TradeItPreviewTradeOrderDetails.h"
 
 @interface TradeItPreviewTradeResult : TradeItResult
 
@@ -25,6 +25,6 @@
 /**
  *  An Object with order details. @see TradeItStockOrEtfTradeReviewOrderDetails
  */
-@property (copy) TradeItStockOrEtfTradeReviewOrderDetails * orderDetails;
+@property (copy) TradeItPreviewTradeOrderDetails * orderDetails;
 
 @end

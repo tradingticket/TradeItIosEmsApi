@@ -24,7 +24,7 @@
 @property (copy) NSString * orderAction;
 
 // Set the order quantity
-@property (copy) NSString * orderQuantity;
+@property (copy) NSNumber * orderQuantity;
 
 // Set the order expiration, possible values day, gtc
 @property (copy) NSString * orderExpiration;

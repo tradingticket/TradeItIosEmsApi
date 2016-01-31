@@ -21,7 +21,7 @@
 #import "TradeItResult.h"
 #import "TradeItStockOrEtfTradeSuccessResult.h"
 #import "TradeItStockOrEtfTradeReviewResult.h"
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
+#import "TradeItPreviewTradeOrderDetails.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItMultipleAccountResult.h"
 #import "TradeItErrorResult.h"

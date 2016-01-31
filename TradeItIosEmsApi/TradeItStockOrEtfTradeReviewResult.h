@@ -7,7 +7,7 @@
 //
 
 #import "TradeItResult.h"
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
+#import "TradeItPreviewTradeOrderDetails.h"
 
 /**
  *  Returned if the order does nto have any errors and can be placed with the broker
@@ -27,6 +27,6 @@
 /**
  *  An Object with order details. @see TradeItStockOrEtfTradeReviewOrderDetails
  */
-@property (copy) TradeItStockOrEtfTradeReviewOrderDetails * orderDetails;
+@property (copy) TradeItPreviewTradeOrderDetails * orderDetails;
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
+#import "TradeItPreviewTradeOrderDetails.h"
 
-@implementation TradeItStockOrEtfTradeReviewOrderDetails
+@implementation TradeItPreviewTradeOrderDetails
 
 - (id)init {
     self = [super init];
@@ -43,7 +43,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    TradeItStockOrEtfTradeReviewOrderDetails *copy = [super copyWithZone:zone];
+    TradeItPreviewTradeOrderDetails *copy = [super copyWithZone:zone];
     
     if(copy){
         copy.orderSymbol=[self.orderSymbol copyWithZone:zone];

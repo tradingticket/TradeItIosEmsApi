@@ -15,6 +15,7 @@
 #import "TradeItAuthLinkResult.h"
 #import "TradeItLinkedLogin.h"
 #import "TradeItSession.h"
+#import "TradeItPreviewTradeRequest.h"
 
 #import "TradeItConnector.h"
 
@@ -61,6 +62,9 @@
     
     NSLog(@"*******************Testing answering sec question");
     [self testAnswerSecQuestion: session];
+ 
+    NSLog(@"*******************Testing preview order");
+    
     
     
 }
@@ -212,6 +216,17 @@
             NSLog(@"Timeout Error: %@", error);
         }
     }];
+}
+
+-(void) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
+    TradeItPreviewTradeRequest * previewTradeRequest = [[TradeItPreviewTradeRequest alloc] init];
+    previewTradeRequest.accountNumber = accountNumber;
+    previewTradeRequest.orderSymbol = @"GE";
+    previewTradeRequest.orderPriceType = @"limit";
+    previewTradeRequest.orderAction = @"buy";
+    previewTradeRequest.orderQuantity = [NSNumber numberWithInt:1];
+    previewTradeRequest.orderExpiration = @"day";
+    previewTradeRequest.limitPrice = [NSNumber numberWithInt:20];
 }
 
 void testClose(){
