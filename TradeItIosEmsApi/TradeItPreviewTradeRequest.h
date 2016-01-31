@@ -30,10 +30,17 @@
 @property (copy) NSString * orderExpiration;
 
 // Set limit price for limit, and stopLimit orders
-@property (copy) NSNumber<Optional> * limitPrice;
+@property (copy) NSNumber<Optional> * orderLimitPrice;
 
 // Set stop price for stopLimit and and stopMarket
-@property (copy) NSNumber<Optional> * stopPrice;
+@property (copy) NSNumber<Optional> * orderStopPrice;
 
+
+
+
+
+// Session Token - Will be set by the session associated with the request
+// Setting this will be overriden
+@property (copy) NSString * token;
 
 @end

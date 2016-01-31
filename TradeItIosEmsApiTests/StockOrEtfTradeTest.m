@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "TradeItStockOrEtfTradeSession.h"
+
 #import "TradeItStockOrEtfOrderInfo.h"
 #import "TradeitStockOrEtfOrderPrice.h"
+
+#import "TradeItConnector.h"
+#import "TradeItSession.h"
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItAuthLinkResult.h"
 #import "TradeItLinkedLogin.h"
-#import "TradeItSession.h"
-#import "TradeItPreviewTradeRequest.h"
 
-#import "TradeItConnector.h"
+#import "TradeItTradeService.h"
+#import "TradeItPreviewTradeRequest.h"
+#import "TradeItPreviewTradeResult.h"
+
 
 #import "TradeItIosEmsApiLib.h"
 
@@ -61,10 +65,10 @@
     NSLog(@"Session Established:  %@", session);
     
     NSLog(@"*******************Testing answering sec question");
-    [self testAnswerSecQuestion: session];
+    NSString * account = [self testAnswerSecQuestion: session];
  
     NSLog(@"*******************Testing preview order");
-    
+    [self testPreviewTrade:session andAccount:account];
     
     
 }
@@ -198,14 +202,17 @@
     return session;
 }
 
--(void) testAnswerSecQuestion:(TradeItSession *) session {
+-(NSString *) testAnswerSecQuestion:(TradeItSession *) session {
     XCTestExpectation * expectation = [self expectationWithDescription:@"Failed answering security question"];
+    __block NSString * accountNumber;
     
     [session answerSecurityQuestion:@"tradingticket" withCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Ans. Sec. Response: %@", result);
         
         if(![result isKindOfClass:[TradeItSuccessAuthenticationResult class]]) {
             XCTFail(@"Failed to successfully answer security question");
+        } else {
+            accountNumber = [(TradeItSuccessAuthenticationResult *) result accounts][0][@"accountNumber"];
         }
         
         [expectation fulfill];
@@ -216,9 +223,15 @@
             NSLog(@"Timeout Error: %@", error);
         }
     }];
+    
+    return accountNumber;
 }
 
 -(void) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting preview order request"];
+    
+    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    
     TradeItPreviewTradeRequest * previewTradeRequest = [[TradeItPreviewTradeRequest alloc] init];
     previewTradeRequest.accountNumber = accountNumber;
     previewTradeRequest.orderSymbol = @"GE";
@@ -226,7 +239,23 @@
     previewTradeRequest.orderAction = @"buy";
     previewTradeRequest.orderQuantity = [NSNumber numberWithInt:1];
     previewTradeRequest.orderExpiration = @"day";
-    previewTradeRequest.limitPrice = [NSNumber numberWithInt:20];
+    previewTradeRequest.orderLimitPrice = [NSNumber numberWithInt:20];
+    
+    [tradeService previewTrade:previewTradeRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Preview Trade Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItPreviewTradeResult class]]) {
+            XCTFail(@"Failed to successfully submit preview order");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
 }
 
 void testClose(){

@@ -7,7 +7,35 @@
 //
 
 #import "TradeItTradeService.h"
+#import "TradeItEmsUtils.h"
+#import "TradeItPreviewTradeResult.h"
 
 @implementation TradeItTradeService
+
+-(id) initWithSession:(TradeItSession *) session {
+    self = [super init];
+    if (self) {
+        self.session = session;
+    }
+    return self;
+}
+
+- (void) previewTrade:(TradeItPreviewTradeRequest *) order withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+    order.token = self.session.token;
+    
+    NSMutableURLRequest * request = buildJsonRequest(order, @"order/previewStockOrEtfOrder", self.session.connector.environment);
+    
+    [self.session.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+        TradeItResult * resultToReturn = result;
+        
+        if ([result.status isEqual:@"REVIEW_ORDER"]){
+            resultToReturn = buildResult([TradeItPreviewTradeResult alloc], jsonResponse);
+        }
+
+        completionBlock(resultToReturn);
+    }];
+}
+
+
 
 @end

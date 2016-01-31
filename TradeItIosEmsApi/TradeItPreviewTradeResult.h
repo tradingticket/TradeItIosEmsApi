@@ -23,6 +23,11 @@
 @property (copy) NSArray<Optional> * ackWarningsList;
 
 /**
+ *  
+ */
+@property (copy) NSString * orderId;
+
+/**
  *  An Object with order details. @see TradeItStockOrEtfTradeReviewOrderDetails
  */
 @property (copy) TradeItPreviewTradeOrderDetails * orderDetails;

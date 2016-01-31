@@ -10,4 +10,8 @@
 
 @implementation TradeItPreviewTradeResult
 
+-(NSString *) description {
+    return [NSString stringWithFormat:@"TradeItPreviewTradeResult - Warning List: %@  Acknowledgement List: %@  Order Details: %@", self.warningsList, self.ackWarningsList, self.orderDetails];
+}
+
 @end
