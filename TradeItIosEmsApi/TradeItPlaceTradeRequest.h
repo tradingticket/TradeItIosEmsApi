@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TradeItRequest.h"
 
-@interface TradeItPlaceTradeRequest : NSObject
+@interface TradeItPlaceTradeRequest : TradeItRequest
+
+- (id)initWithOrderId:(NSString *) orderId;
 
 // The orderId as returned from the TradeItPreviewTradeRequest
 @property (copy) NSString * orderId;

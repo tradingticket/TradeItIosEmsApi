@@ -21,6 +21,8 @@
 #import "TradeItTradeService.h"
 #import "TradeItPreviewTradeRequest.h"
 #import "TradeItPreviewTradeResult.h"
+#import "TradeItPlaceTradeRequest.h"
+#import "TradeItPlaceTradeResult.h"
 
 
 #import "TradeItIosEmsApiLib.h"
@@ -68,8 +70,10 @@
     NSString * account = [self testAnswerSecQuestion: session];
  
     NSLog(@"*******************Testing preview order");
-    [self testPreviewTrade:session andAccount:account];
-    
+    NSString * orderId = [self testPreviewTrade:session andAccount:account];
+
+    NSLog(@"*******************Testing place order");
+    [self testPlaceOrder: session withOrderId:orderId];
     
 }
 
@@ -227,8 +231,9 @@
     return accountNumber;
 }
 
--(void) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
+-(NSString *) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
     XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting preview order request"];
+    __block NSString * orderId;
     
     TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
     
@@ -246,6 +251,33 @@
         
         if(![result isKindOfClass:[TradeItPreviewTradeResult class]]) {
             XCTFail(@"Failed to successfully submit preview order");
+        } else {
+            orderId = [(TradeItPreviewTradeResult *) result orderId];
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+    return orderId;
+}
+
+-(void) testPlaceOrder:(TradeItSession *) session withOrderId:(NSString *) orderId {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting place order request"];
+    
+    TradeItPlaceTradeRequest * request = [[TradeItPlaceTradeRequest alloc] initWithOrderId:orderId];
+    
+    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    [tradeService placeTrade:request withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Place Trade Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItPlaceTradeResult class]]) {
+            XCTFail(@"Failed to successfully place order");
         }
         
         [expectation fulfill];

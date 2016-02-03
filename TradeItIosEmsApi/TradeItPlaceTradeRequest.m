@@ -10,4 +10,12 @@
 
 @implementation TradeItPlaceTradeRequest
 
+- (id)initWithOrderId:(NSString *) orderId {
+    self = [super init];
+    if (self) {
+        self.orderId = orderId;
+    }
+    return self;
+}
+
 @end

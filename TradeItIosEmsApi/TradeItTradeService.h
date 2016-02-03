@@ -10,6 +10,7 @@
 #import "TradeItResult.h"
 #import "TradeItSession.h"
 #import "TradeItPreviewTradeRequest.h"
+#import "TradeItPlaceTradeRequest.h"
 
 @interface TradeItTradeService : NSObject
 
@@ -18,6 +19,9 @@
  */
 @property TradeItSession * session;
 
+/**
+ *  As the session needs to be set, this is the preferred init method
+ */
 -(id) initWithSession:(TradeItSession *) session;
 
 /**
@@ -32,7 +36,13 @@
 - (void) previewTrade:(TradeItPreviewTradeRequest *) order withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 
-
-- (void) placeTrade;
+/**
+ *  This method requires a TradeItPlaceTradeRequest
+ *
+ *  @return successful response is a TradeItPlaceTradeResult with placement details that should be presented to the user, such as the broker orderId
+ *  - TradeItErrorResult also possible please see https://www.trade.it/api#ErrorHandling for descriptions of error codes
+ *
+ */
+- (void) placeTrade:(TradeItPlaceTradeRequest *) order withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 @end

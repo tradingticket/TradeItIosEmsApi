@@ -23,7 +23,7 @@
 @property (copy) NSArray<Optional> * ackWarningsList;
 
 /**
- *  
+ *  A TradeIt internal orderId used to reference the preview order, needed to place the order
  */
 @property (copy) NSString * orderId;
 

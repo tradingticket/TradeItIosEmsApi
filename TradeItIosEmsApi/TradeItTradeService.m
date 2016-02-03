@@ -9,6 +9,7 @@
 #import "TradeItTradeService.h"
 #import "TradeItEmsUtils.h"
 #import "TradeItPreviewTradeResult.h"
+#import "TradeItPlaceTradeResult.h"
 
 @implementation TradeItTradeService
 
@@ -36,6 +37,20 @@
     }];
 }
 
-
+- (void) placeTrade:(TradeItPlaceTradeRequest *) order withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+    order.token = self.session.token;
+    
+    NSMutableURLRequest * request = buildJsonRequest(order, @"order/placeStockOrEtfOrder", self.session.connector.environment);
+    
+    [self.session.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+        TradeItResult * resultToReturn = result;
+        
+        if ([result.status isEqual:@"SUCCESS"]){
+            resultToReturn = buildResult([TradeItPlaceTradeResult alloc], jsonResponse);
+        }
+        
+        completionBlock(resultToReturn);
+    }];
+}
 
 @end
