@@ -24,6 +24,13 @@
 #import "TradeItPlaceTradeRequest.h"
 #import "TradeItPlaceTradeResult.h"
 
+#import "TradeItBalanceService.h"
+#import "TradeItAccountOverviewRequest.h"
+#import "TradeItAccountOverviewResult.h"
+
+#import "TradeItPositionService.h"
+#import "TradeItGetPositionsRequest.h"
+#import "TradeItGetPositionsResult.h"
 
 #import "TradeItIosEmsApiLib.h"
 
@@ -74,6 +81,12 @@
 
     NSLog(@"*******************Testing place order");
     [self testPlaceOrder: session withOrderId:orderId];
+    
+    NSLog(@"*******************Testing balance service");
+    [self testAccountOverview:session withAccount:account];
+    
+    NSLog(@"*******************Testing position service");
+    [self testAccountPositions:session withAccount:account];
     
 }
 
@@ -278,6 +291,53 @@
         
         if(![result isKindOfClass:[TradeItPlaceTradeResult class]]) {
             XCTFail(@"Failed to successfully place order");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testAccountOverview:(TradeItSession *) session withAccount:(NSString *) account {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account overview"];
+    
+    TradeItBalanceService * balances = [[TradeItBalanceService alloc] initWithSession:session];
+    TradeItAccountOverviewRequest * overviewRequest = [[TradeItAccountOverviewRequest alloc] initWithAccountNumber:account];
+    
+    [balances getAccountOverview:overviewRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Account Overview Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItAccountOverviewResult class]]) {
+            XCTFail(@"Failed to successfully get account overview");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testAccountPositions:(TradeItSession *) session withAccount:(NSString *) account {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account positions"];
+    
+    TradeItPositionService * positions = [[TradeItPositionService alloc] initWithSession:session];
+    TradeItGetPositionsRequest * positionsRequest = [[TradeItGetPositionsRequest alloc] initWithAccountNumber:account];
+    
+    [positions getAccountPositions:positionsRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Account Positions Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItGetPositionsResult class]]) {
+            XCTFail(@"Failed to successfully place order");
+            NSLog(@"Account Overview Result: %@", (TradeItGetPositionsResult *) result);
         }
         
         [expectation fulfill];

@@ -37,7 +37,7 @@ static const char * kIndexPropertyNameKey;
 static NSArray* allowedJSONTypes = nil;
 static NSArray* allowedPrimitiveTypes = nil;
 static TIEMSJSONValueTransformer* valueTransformer = nil;
-static Class JSONModelClass = NULL;
+static Class TIEMSJSONModelClass = NULL;
 
 #pragma mark - model cache
 static TIEMSJSONKeyMapper* globalKeyMapper = nil;
@@ -78,7 +78,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
             
             // Using NSClassFromString instead of [JSONModel class], as this was breaking unit tests, see below
             //http://stackoverflow.com/questions/21394919/xcode-5-unit-test-seeing-wrong-class
-            JSONModelClass = NSClassFromString(NSStringFromClass(self));
+            TIEMSJSONModelClass = NSClassFromString(NSStringFromClass(self));
 		}
     });
 }
@@ -504,7 +504,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 #ifdef UNIT_TESTING
     return [@"JSONModel" isEqualToString: NSStringFromClass([class superclass])];
 #else
-    return [class isSubclassOfClass:JSONModelClass];
+    return [class isSubclassOfClass:TIEMSJSONModelClass];
 #endif
 }
 
@@ -708,6 +708,9 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 //few built-in transformations
 -(id)__transform:(id)value forProperty:(TIEMSJSONModelClassProperty*)property error:(NSError**)err
 {
+    
+    NSString * test = property.protocol;
+    
     Class protocolClass = NSClassFromString(property.protocol);
     if (!protocolClass) {
 
@@ -982,7 +985,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
         }
         
         //check if the property is another model
-        if ([value isKindOfClass:JSONModelClass]) {
+        if ([value isKindOfClass:TIEMSJSONModelClass]) {
 
             //recurse models
             value = [(TIEMSJSONModel*)value toDictionary];
