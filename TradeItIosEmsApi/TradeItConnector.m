@@ -7,12 +7,12 @@
 //
 
 #import "TradeItConnector.h"
-#import "TradeItStockOrEtfBrokerListRequest.h"
 #import "TradeItEmsUtils.h"
 #import "TradeItErrorResult.h"
-#import "TradeItBrokerListSuccessResult.h"
 #import "TradeItKeychain.h"
 #import "TradeItAuthLinkRequest.h"
+#import "TradeItBrokerListRequest.h"
+#import "TradeItBrokerListResult.h"
 
 @implementation TradeItConnector {
     BOOL runAsyncCompletionBlockOnMainThread;
@@ -32,7 +32,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 }
 
 - (void) getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *)) completionBlock {
-    TradeItStockOrEtfBrokerListRequest * brokerListRequest = [[TradeItStockOrEtfBrokerListRequest alloc] initWithApiKey:self.apiKey];
+    TradeItBrokerListRequest * brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
     NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"preference/getStocksOrEtfsBrokerList", self.environment);
     
     [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString * jsonResponse) {
@@ -41,7 +41,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
              NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
          }
          else if ([tradeItResult.status isEqual:@"SUCCESS"]){
-             TradeItBrokerListSuccessResult* successResult = (TradeItBrokerListSuccessResult*) buildResult([TradeItBrokerListSuccessResult alloc],jsonResponse);
+             TradeItBrokerListResult* successResult = (TradeItBrokerListResult*) buildResult([TradeItBrokerListResult alloc],jsonResponse);
             
              completionBlock(successResult.brokerList);
              

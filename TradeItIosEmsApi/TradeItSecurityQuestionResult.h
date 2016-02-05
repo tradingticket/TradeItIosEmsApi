@@ -7,12 +7,12 @@
 //
 
 
-#import "TradeItInformationNeededResult.h"
+#import "TradeItResult.h"
 
 /**
  *  Returned if the user needs to answer a security question before interacting with her account.
  */
-@interface TradeItSecurityQuestionResult : TradeItInformationNeededResult
+@interface TradeItSecurityQuestionResult : TradeItResult
 
 /**
  *  The security question to ask the user

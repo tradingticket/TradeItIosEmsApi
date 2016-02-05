@@ -27,6 +27,8 @@
 #import "TIEMSJSONModelClassProperty.h"
 #import "TIEMSJSONModelArray.h"
 
+#import "TradeItPosition.h"
+
 #pragma mark - associated objects names
 static const char * kMapperObjectKey;
 static const char * kClassPropertiesKey;
@@ -502,7 +504,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 {
 // http://stackoverflow.com/questions/19883472/objc-nsobject-issubclassofclass-gives-incorrect-failure
 #ifdef UNIT_TESTING
-    return [@"JSONModel" isEqualToString: NSStringFromClass([class superclass])];
+    return [@"TIEMSJSONModel" isEqualToString: NSStringFromClass([class superclass])];
 #else
     return [class isSubclassOfClass:TIEMSJSONModelClass];
 #endif
@@ -708,8 +710,11 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 //few built-in transformations
 -(id)__transform:(id)value forProperty:(TIEMSJSONModelClassProperty*)property error:(NSError**)err
 {
-    
-    NSString * test = property.protocol;
+    //This is disgusting, let's not talk about it
+    //Ok, fine! basically the transformer couldn't find the class
+    //as it hadn't been loaded by the library so we force it
+    //is this the best place for this? probably not, but I'm grumps
+    [TradeItPosition class];
     
     Class protocolClass = NSClassFromString(property.protocol);
     if (!protocolClass) {

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "TradeItStockOrEtfBrokerListRequest.h"
+#import "TradeItBrokerListRequest.h"
 
-@implementation TradeItStockOrEtfBrokerListRequest
+@implementation TradeItBrokerListRequest
 
 -(id) initWithApiKey:(NSString *) apiKey{
     

@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "TradeItSuccessAuthenticationResult.h"
+#import "TradeItAuthenticationResult.h"
 
-@implementation TradeItSuccessAuthenticationResult
+@implementation TradeItAuthenticationResult
 
 - (NSString*) description{
     return [NSString stringWithFormat:@"TradeItSuccessAuthenticationResult: %@ accounts=%@ ",[super description], self.accounts];

@@ -8,7 +8,7 @@
 
 #import "TradeItResult.h"
 
-@interface TradeItBrokerListSuccessResult : TradeItResult
+@interface TradeItBrokerListResult : TradeItResult
 
 @property (copy) NSArray* brokerList;
 

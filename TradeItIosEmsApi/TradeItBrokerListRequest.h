@@ -8,7 +8,7 @@
 
 #import "TradeItRequest.h"
 
-@interface TradeItStockOrEtfBrokerListRequest : TradeItRequest
+@interface TradeItBrokerListRequest : TradeItRequest
 
 @property (copy) NSString * apiKey;
 

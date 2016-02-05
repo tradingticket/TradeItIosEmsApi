@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TradeIt. All rights reserved.
 //
 
-#import "TradeItBrokerListSuccessResult.h"
+#import "TradeItBrokerListResult.h"
 
-@implementation TradeItBrokerListSuccessResult
+@implementation TradeItBrokerListResult
 
 - (NSString *)description{
     return [NSString stringWithFormat:@"TrasdeItBrokerListSuccessResult: %@ brokerList=%@ ",[super description],self.brokerList];

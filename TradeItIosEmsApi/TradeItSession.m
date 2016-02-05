@@ -10,7 +10,7 @@
 #import "TradeItAuthenticationRequest.h"
 #import "TradeItEmsUtils.h"
 #import "TradeItErrorResult.h"
-#import "TradeItSuccessAuthenticationResult.h"
+#import "TradeItAuthenticationResult.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItSecurityQuestionRequest.h"
 
@@ -49,12 +49,12 @@
     TradeItResult * resultToReturn = result;
     
     if ([result.status isEqual:@"SUCCESS"]){
-        resultToReturn = buildResult([TradeItSuccessAuthenticationResult alloc], jsonResponse);
-        self.token = [(TradeItSuccessAuthenticationResult *)result token];
+        resultToReturn = buildResult([TradeItAuthenticationResult alloc], jsonResponse);
+        self.token = [(TradeItAuthenticationResult *)result token];
     }
     else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
         resultToReturn = buildResult([TradeItSecurityQuestionResult alloc], jsonResponse);
-        self.token = [(TradeItSuccessAuthenticationResult *)result token];
+        self.token = [(TradeItAuthenticationResult *)result token];
     }
     
     return resultToReturn;

@@ -8,7 +8,7 @@
 
 #import "TradeItResult.h"
 
-@interface TradeItSuccessAuthenticationResult : TradeItResult
+@interface TradeItAuthenticationResult : TradeItResult
 
 /**
  *  An array of NSDictionary objects, where each object has a "name" and "accountNumber" property corresponding to the account.
