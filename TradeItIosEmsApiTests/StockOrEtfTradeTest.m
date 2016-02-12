@@ -34,6 +34,13 @@
 #import "TradeItGetPositionsRequest.h"
 #import "TradeItGetPositionsResult.h"
 
+#import "TradeItMarketDataService.h"
+#import "TradeItQuoteRequest.h"
+#import "TradeItQuoteResult.h"
+#import "TradeItSymbolLookupRequest.h"
+#import "TradeItSymbolLookupResult.h"
+
+
 //#import "TradeItIosEmsApiLib.h"
 
 
@@ -89,6 +96,12 @@
     
     NSLog(@"*******************Testing position service");
     [self testAccountPositions:session withAccount:account];
+    
+    NSLog(@"*******************Testing quote request");
+    [self testQuoteRequest:session withSymbol:@"AAPL"];
+    
+    NSLog(@"*******************Testing symbol lookup request");
+    [self testSymbolLookupRequest:session withQuery:@"AA"];
     
 }
 
@@ -340,6 +353,54 @@
         if(![result isKindOfClass:[TradeItGetPositionsResult class]]) {
             XCTFail(@"Failed to successfully place order");
             NSLog(@"Account Overview Result: %@", (TradeItGetPositionsResult *) result);
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testQuoteRequest:session withSymbol:(NSString *) symbol {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting quote"];
+    
+    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItQuoteRequest * quoteRequest = [[TradeItQuoteRequest alloc] initWithSymbol:symbol];
+    
+    [mds getQuote:quoteRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Quote Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItQuoteResult class]]) {
+            XCTFail(@"Failed to successfully get quote");
+            NSLog(@"Quote Result: %@", (TradeItQuoteResult *) result);
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testSymbolLookupRequest:session withQuery:(NSString *) query {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting symbol lookup"];
+    
+    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItSymbolLookupRequest * symbolLookupRequest = [[TradeItSymbolLookupRequest alloc] initWithQuery:query];
+    
+    [mds symbolLookup:symbolLookupRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Symbollookup Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItSymbolLookupResult class]]) {
+            XCTFail(@"Failed to successfully get symbollookup");
+            NSLog(@"Quote Result: %@", (TradeItSymbolLookupResult *) result);
         }
         
         [expectation fulfill];
