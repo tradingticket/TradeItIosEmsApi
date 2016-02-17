@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TradeItSession.h"
-#import "TradeItQuoteRequest.h"
+#import "TradeItQuotesRequest.h"
 #import "TradeItSymbolLookupRequest.h"
 
 @interface TradeItMarketDataService : NSObject
@@ -30,7 +30,7 @@
  *  - TradeItErrorResult also possible please see https://www.trade.it/api#ErrorHandling for descriptions of error codes
  *
  */
-- (void) getQuote:(TradeItQuoteRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+- (void) getQuoteData:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 /**
  *  This method requires a TradeItSymbolLookupRequest

@@ -1,5 +1,5 @@
 //
-//  TradeItQuoteRequest.h
+//  TradeItQuotesRequest.h
 //  TradeItIosEmsApi
 //
 //  Created by Antonio Reyes on 2/12/16.
@@ -8,11 +8,13 @@
 
 #import "TradeItRequest.h"
 
-@interface TradeItQuoteRequest : TradeItRequest
+@interface TradeItQuotesRequest : TradeItRequest
 
 @property (copy) NSString * symbol;
+@property (copy) NSArray * symbols;
 
 -(id) initWithSymbol:(NSString *) symbol;
+-(id) initWithSymbols:(NSArray *) symbols;
 
 
 // Session Token - Will be set by the session associated with the request

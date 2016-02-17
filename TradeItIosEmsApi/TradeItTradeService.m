@@ -25,7 +25,7 @@
     order.token = self.session.token;
     
     NSMutableURLRequest * request = buildJsonRequest(order, @"order/previewStockOrEtfOrder", self.session.connector.environment);
-    
+
     [self.session.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
         TradeItResult * resultToReturn = result;
         

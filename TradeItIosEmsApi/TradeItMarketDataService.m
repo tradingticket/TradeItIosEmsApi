@@ -8,7 +8,7 @@
 
 #import "TradeItMarketDataService.h"
 #import "TradeItEmsUtils.h"
-#import "TradeItQuoteResult.h"
+#import "TradeItQuotesResult.h"
 #import "TradeItSymbolLookupResult.h"
 
 @implementation TradeItMarketDataService
@@ -21,16 +21,26 @@
     return self;
 }
 
-- (void) getQuote:(TradeItQuoteRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+- (void) getQuoteData:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
     request.token = self.session.token;
-    
-    NSMutableURLRequest * quoteRequest = buildJsonRequest(request, @"marketdata/getQuote", self.session.connector.environment);
+
+    NSString * endpoint;
+    if (request.symbol) {
+        endpoint = @"marketdata/getQuote";
+    } else if (request.symbols) {
+        endpoint = @"marketdata/getQuotes";
+    } else {
+        completionBlock(nil);
+        return;
+    }
+
+    NSMutableURLRequest * quoteRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
     
     [self.session.connector sendEMSRequest:quoteRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
         TradeItResult * resultToReturn = result;
         
         if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItQuoteResult alloc], jsonResponse);
+            resultToReturn = buildResult([TradeItQuotesResult alloc], jsonResponse);
         }
         
         completionBlock(resultToReturn);

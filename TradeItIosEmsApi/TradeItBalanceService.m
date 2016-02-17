@@ -22,9 +22,9 @@
 
 - (void) getAccountOverview:(TradeItAccountOverviewRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
     request.token = self.session.token;
-    
+
     NSMutableURLRequest * balanceRequest = buildJsonRequest(request, @"balance/getAccountOverview", self.session.connector.environment);
-    
+
     [self.session.connector sendEMSRequest:balanceRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
         TradeItResult * resultToReturn = result;
         

@@ -1,19 +1,27 @@
 //
-//  TradeItQuoteRequest.m
+//  TradeItQuotesRequest.m
 //  TradeItIosEmsApi
 //
 //  Created by Antonio Reyes on 2/12/16.
 //  Copyright © 2016 TradeIt. All rights reserved.
 //
 
-#import "TradeItQuoteRequest.h"
+#import "TradeItQuotesRequest.h"
 
-@implementation TradeItQuoteRequest
+@implementation TradeItQuotesRequest
 
 -(id) initWithSymbol:(NSString *) symbol {
     self = [super init];
     if(self) {
         self.symbol = symbol;
+    }
+    return self;
+}
+
+-(id) initWithSymbols:(NSArray *) symbols {
+    self = [super init];
+    if(self) {
+        self.symbols = symbols;
     }
     return self;
 }
