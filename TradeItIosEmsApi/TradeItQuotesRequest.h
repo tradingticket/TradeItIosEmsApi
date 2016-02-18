@@ -11,7 +11,7 @@
 @interface TradeItQuotesRequest : TradeItRequest
 
 @property (copy) NSString * symbol;
-@property (copy) NSArray * symbols;
+@property (copy) NSString * symbols;
 
 -(id) initWithSymbol:(NSString *) symbol;
 -(id) initWithSymbols:(NSArray *) symbols;

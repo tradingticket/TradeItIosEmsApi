@@ -21,7 +21,7 @@
 -(id) initWithSymbols:(NSArray *) symbols {
     self = [super init];
     if(self) {
-        self.symbols = symbols;
+        self.symbols = [symbols componentsJoinedByString:@","];
     }
     return self;
 }
