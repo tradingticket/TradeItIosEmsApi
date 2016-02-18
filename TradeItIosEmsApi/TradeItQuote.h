@@ -43,4 +43,7 @@
 // date time of the last trade
 @property (copy) NSString * dateTime;
 
+// Initialize with dictionary containing property data
+-(id) initWithQuoteData:(NSDictionary *)quoteData;
+
 @end
