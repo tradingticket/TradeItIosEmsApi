@@ -35,8 +35,8 @@
 #import "TradeItGetPositionsResult.h"
 
 #import "TradeItMarketDataService.h"
-#import "TradeItQuoteRequest.h"
-#import "TradeItQuoteResult.h"
+#import "TradeItQuotesRequest.h"
+#import "TradeItQuotesResult.h"
 #import "TradeItSymbolLookupRequest.h"
 #import "TradeItSymbolLookupResult.h"
 
@@ -369,14 +369,14 @@
     XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting quote"];
     
     TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
-    TradeItQuoteRequest * quoteRequest = [[TradeItQuoteRequest alloc] initWithSymbol:symbol];
+    TradeItQuotesRequest * quoteRequest = [[TradeItQuotesRequest alloc] initWithSymbol:symbol];
     
-    [mds getQuote:quoteRequest withCompletionBlock:^(TradeItResult * result) {
+    [mds getQuoteData:quoteRequest withCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Quote Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItQuoteResult class]]) {
+        if(![result isKindOfClass:[TradeItQuotesResult class]]) {
             XCTFail(@"Failed to successfully get quote");
-            NSLog(@"Quote Result: %@", (TradeItQuoteResult *) result);
+            NSLog(@"Quote Result: %@", (TradeItQuotesResult *) result);
         }
         
         [expectation fulfill];
