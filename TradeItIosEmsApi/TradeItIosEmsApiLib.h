@@ -9,25 +9,48 @@
 #ifndef TradeItIosEmsApi_TradeItIosEmsApiLib_h
 #define TradeItIosEmsApi_TradeItIosEmsApiLib_h
 
-//class that manages sending orders to the TradeIt Execution Management System (EMS)
-#import "TradeItStockOrEtfTradeSession.h"
-#import "TradeItVerifyCredentialSession.h"
-
-//Authentication and Order Information classes
-#import "TradeItStockOrEtfOrderPrice.h"
-#import "TradeItStockOrEtfOrderInfo.h"
-#import "TradeItAuthenticationInfo.h"
-
-//Result classes from the requests sent the to EMS server
+// Generic classes for the request/results sent the to EMS server
+#import "TradeItRequest.h"
 #import "TradeItResult.h"
-#import "TradeItStockOrEtfTradeSuccessResult.h"
-#import "TradeItStockOrEtfTradeReviewResult.h"
-#import "TradeItStockOrEtfTradeReviewOrderDetails.h"
-#import "TradeItSecurityQuestionResult.h"
-#import "TradeItMultipleAccountResult.h"
 #import "TradeItErrorResult.h"
-#import "TradeItInformationNeededResult.h"
+
+// Start with the connector, you'll set your API key and the environment
+// Then link a user to their brokerage(s) account(s)
+#import "TradeItConnector.h"
+#import "TradeItLinkedLogin.h"
+#import "TradeItAuthenticationInfo.h"
+#import "TradeItAuthenticationRequest.h"
+#import "TradeItAuthenticationResult.h"
+#import "TradeItAuthLinkRequest.h"
+#import "TradeItAuthLinkResult.h"
+
+// Once you have a link you'll establish a session using the linkedLogin
+#import "TradeItSession.h"
+#import "TradeItSecurityQuestionRequest.h"
+#import "TradeItSecurityQuestionResult.h"
+
+// Use the TradeService to preview and place trades
+#import "TradeItTradeService.h"
+#import "TradeItPreviewTradeRequest.h"
+#import "TradeItPreviewTradeOrderDetails.h"
+#import "TradeItPreviewTradeResult.h"
+#import "TradeItPlaceTradeRequest.h
+#import "TradeItPlaceTradeResult.h"
+#import "TradeItPlaceTradeOrderInfo.h"
+#import "TradeItPlaceTradeOrderInfoPrice.h"
+
+// Use the BalanceService to get account balance information
+#import "TradeItBalanceService.h"
+#import "TradeItAccountOverviewRequest.h"
+#import "TradeItAccountOverviewResult.h"
+
+// Use the PositionSerview to get account position information
+#import "TradeItPositionService.h"
+#import "TradeItGetPositionsRequest.h"
+#import "TradeItGetPositionsResult.h"
+#import "TradeItPosition.h"
+
+// Util classes
 #import "TradeItTypeDefs.h"
-#import "TradeItSuccessAuthenticationResult.h"
 
 #endif

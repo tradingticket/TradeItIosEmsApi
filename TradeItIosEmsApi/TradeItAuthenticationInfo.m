@@ -10,17 +10,18 @@
 
 @implementation TradeItAuthenticationInfo
 
-- (id) initWithId:(NSString *)id andPassword:(NSString*) password{
+- (id) initWithId:(NSString *)id andPassword:(NSString*) password andBroker:(NSString *)broker{
     self = [super init];
     if (self) {
         self.id = id;
         self.password = password;
+        self.broker = broker;
     }
     return self;
 }
 
 - (id) init {
-    return [self initWithId:@"" andPassword:@""];
+    return [self initWithId:@"" andPassword:@"" andBroker:@""];
 }
 
 -(NSString*) description {
@@ -29,7 +30,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id copy = [[[self class] alloc] initWithId:self.id andPassword:self.password];
+    id copy = [[[self class] alloc] initWithId:self.id andPassword:self.password andBroker:self.broker];
     return copy;
 }
 

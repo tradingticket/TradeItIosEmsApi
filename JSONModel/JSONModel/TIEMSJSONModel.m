@@ -27,6 +27,9 @@
 #import "TIEMSJSONModelClassProperty.h"
 #import "TIEMSJSONModelArray.h"
 
+#import "TradeItPosition.h"
+#import "TradeItSymbolLookupCompany.h"
+
 #pragma mark - associated objects names
 static const char * kMapperObjectKey;
 static const char * kClassPropertiesKey;
@@ -37,7 +40,7 @@ static const char * kIndexPropertyNameKey;
 static NSArray* allowedJSONTypes = nil;
 static NSArray* allowedPrimitiveTypes = nil;
 static TIEMSJSONValueTransformer* valueTransformer = nil;
-static Class JSONModelClass = NULL;
+static Class TIEMSJSONModelClass = NULL;
 
 #pragma mark - model cache
 static TIEMSJSONKeyMapper* globalKeyMapper = nil;
@@ -78,7 +81,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
             
             // Using NSClassFromString instead of [JSONModel class], as this was breaking unit tests, see below
             //http://stackoverflow.com/questions/21394919/xcode-5-unit-test-seeing-wrong-class
-            JSONModelClass = NSClassFromString(NSStringFromClass(self));
+            TIEMSJSONModelClass = NSClassFromString(NSStringFromClass(self));
 		}
     });
 }
@@ -502,9 +505,9 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 {
 // http://stackoverflow.com/questions/19883472/objc-nsobject-issubclassofclass-gives-incorrect-failure
 #ifdef UNIT_TESTING
-    return [@"JSONModel" isEqualToString: NSStringFromClass([class superclass])];
+    return [@"TIEMSJSONModel" isEqualToString: NSStringFromClass([class superclass])];
 #else
-    return [class isSubclassOfClass:JSONModelClass];
+    return [class isSubclassOfClass:TIEMSJSONModelClass];
 #endif
 }
 
@@ -708,6 +711,13 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
 //few built-in transformations
 -(id)__transform:(id)value forProperty:(TIEMSJSONModelClassProperty*)property error:(NSError**)err
 {
+    //This is disgusting, let's not talk about it
+    //Ok, fine! basically the transformer couldn't find the class
+    //as it hadn't been loaded by the library so we force it
+    //is this the best place for this? probably not, but I'm grumps
+    [TradeItPosition class];
+    [TradeItSymbolLookupCompany class];
+    
     Class protocolClass = NSClassFromString(property.protocol);
     if (!protocolClass) {
 
@@ -982,7 +992,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
         }
         
         //check if the property is another model
-        if ([value isKindOfClass:JSONModelClass]) {
+        if ([value isKindOfClass:TIEMSJSONModelClass]) {
 
             //recurse models
             value = [(TIEMSJSONModel*)value toDictionary];

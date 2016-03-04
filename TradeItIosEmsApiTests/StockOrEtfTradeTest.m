@@ -8,12 +8,40 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "TradeItStockOrEtfTradeSession.h"
-#import "TradeItStockOrEtfOrderInfo.h"
-#import "TradeitStockOrEtfOrderPrice.h"
-#import "TradeItAuthenticationInfo.h"
 
-#import "TradeItIosEmsApiLib.h"
+#import "TradeItConnector.h"
+#import "TradeItSession.h"
+#import "TradeItAuthenticationInfo.h"
+#import "TradeItAuthLinkResult.h"
+#import "TradeItLinkedLogin.h"
+#import "TradeItSecurityQuestionResult.h"
+#import "TradeItAuthenticationResult.h"
+
+#import "TradeItResult.h"
+#import "TradeItErrorResult.h"
+
+#import "TradeItTradeService.h"
+#import "TradeItPreviewTradeRequest.h"
+#import "TradeItPreviewTradeResult.h"
+#import "TradeItPlaceTradeRequest.h"
+#import "TradeItPlaceTradeResult.h"
+
+#import "TradeItBalanceService.h"
+#import "TradeItAccountOverviewRequest.h"
+#import "TradeItAccountOverviewResult.h"
+
+#import "TradeItPositionService.h"
+#import "TradeItGetPositionsRequest.h"
+#import "TradeItGetPositionsResult.h"
+
+#import "TradeItMarketDataService.h"
+#import "TradeItQuotesRequest.h"
+#import "TradeItQuotesResult.h"
+#import "TradeItSymbolLookupRequest.h"
+#import "TradeItSymbolLookupResult.h"
+
+
+//#import "TradeItIosEmsApiLib.h"
 
 
 @interface StockOrEtfTradeTest : XCTestCase
@@ -33,50 +61,48 @@
 }
 
 - (void)testExample {
+    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:@"tradeit-test-api-key"];
+    connector.environment = TradeItEmsTestEnv;
     
-    //testFetchBrokerList(@"thestreet");
-    testAsyncFetchBrokerList(@"thestreet");
+    //NSLog(@"******************Testing Fetch Broker List");
+    //[self testFetchBrokerList: connector];
     
-    NSLog(@"******************TESTING VERIFY CREDENTIALS");
-    //testVerifyCredentials(@"Dummy", @"dummy", @"dummy");
-   // testAsyncVerifyCredentials(@"Dummy", @"dummy", @"dummy");
+    NSLog(@"******************Testing oAuth Link to Dummy broker");
+    TradeItAuthLinkResult * authLink = [self testAuthLink: connector];
     
-//    NSLog(@"******************TESTING BASIC USE CASE");
-//        asyncBasicTest();
-//        asyncSecurityAnswerTest();
-//        asyncMultiAccountTest();
-//        asyncCloseSessionTest();
-//    NSLog(@"Done");
-//
-//    
-//
-//    NSLog(@"******************TESTING BASIC USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING SECUIRTY QUESTION  USE CASE");
-//    sendTestOrder(@"Dummy", @"dummySecurity", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING MULI OPTION SECURITY QUESTION  USE CASE");
-//    sendTestOrder(@"Dummy", @"dummyOptionLong", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING MULI ACCOUNT USE CASE");
-//    sendTestOrder(@"Dummy", @"dummyMultiple", @"dummy", 10);
-//    
-//    NSLog(@"******************TESTING ERROR USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//    
-//    NSLog(@"******************TESTING Warning USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//    
-//    NSLog(@"******************TESTING closing session USE CASE");
-//    sendTestOrder(@"Dummy", @"dummy", @"dummy", 150);
-//
-//    testClose();
-//
+    if(![authLink.status isEqualToString:@"SUCCESS"]) {
+        NSLog(@"Something failed during auth link, unable to proceed");
+        return;
+    }
+    
+    NSLog(@"*******************Testing saving/removing token into keychain");
+    TradeItLinkedLogin * linkedLogin = [self testLinkingAccount: connector withLink:authLink];
 
+    NSLog(@"*******************Testing authentication");
+    TradeItSession * session = [self testAuthentication:connector withLinkedLogin:linkedLogin];
+    NSLog(@"Session Established:  %@", session);
+    
+    NSLog(@"*******************Testing answering sec question");
+    NSString * account = [self testAnswerSecQuestion: session];
+ 
+    NSLog(@"*******************Testing preview order");
+    NSString * orderId = [self testPreviewTrade:session andAccount:account];
 
-
-   
+    NSLog(@"*******************Testing place order");
+    [self testPlaceOrder: session withOrderId:orderId];
+    
+    NSLog(@"*******************Testing balance service");
+    [self testAccountOverview:session withAccount:account];
+    
+    NSLog(@"*******************Testing position service");
+    [self testAccountPositions:session withAccount:account];
+    
+    NSLog(@"*******************Testing quote request");
+    [self testQuoteRequest:session withSymbol:@"AAPL"];
+    
+    NSLog(@"*******************Testing symbol lookup request");
+    [self testSymbolLookupRequest:session withQuery:@"AA"];
+    
 }
 
 - (void)testPerformanceExample {
@@ -86,344 +112,306 @@
     }];
 }
 
-
-void testVerifyCredentials(NSString* broker, NSString * id, NSString* password){
+-(void) testFetchBrokerList: (TradeItConnector *) connector{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to get broker list should succeed"];
     
-    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
-    
-    tradeSession.environment = TradeItEmsTestEnv;
-    
-    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    
-    TradeItResult *result = [tradeSession verifyUser:authenticationInfo withBroker:broker ];
-    
-    NSLog(@"Received result: %@", result);
-}
-
-TradeItResult* testAsyncVerifyCredentials(NSString* broker, NSString * id, NSString* password){
-    
-    __block TradeItResult * verifyCredentialsResult = nil;
-    TradeItVerifyCredentialSession * tradeSession = [[TradeItVerifyCredentialSession alloc] initWithpublisherApp:@"MyApp"];
-    
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    tradeSession.environment = TradeItEmsTestEnv;
-
-    TradeItAuthenticationInfo * authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    [tradeSession verifyUser:authenticationInfo withBroker:broker WithCompletionBlock:^(TradeItResult* result){
-        NSLog(@"Received Result in completion block%@", result);
-        verifyCredentialsResult = result;
+    [connector getAvailableBrokersWithCompletionBlock:^(NSArray * brokers) {
+        NSLog(@"Brokers: %@", brokers);
+        [expectation fulfill];
     }];
     
-    while (!verifyCredentialsResult) {}
-    return verifyCredentialsResult;
-}
-
-
-void testFetchBrokerList(NSString* publisherDomain){
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
-    
-    tradeSession.environment = TradeItEmsLocalEnv;
-    
-    NSArray *brokerList = tradeSession.getBrokerList;
-    NSLog(@"Received broker list %@", brokerList);
-    
-}
-
-
-void testAsyncFetchBrokerList(NSString* publisherDomain){
-    __block BOOL done = NO;
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:publisherDomain];
-    
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread=false;
-    
-    [tradeSession asyncGetBrokerListWithCompletionBlock:^(NSArray *brokerList){
-        NSLog(@"Received brokerlist %@", brokerList);
-        done = YES;
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
     }];
-    
-    while (!done) {}
-
 }
 
-
-void testClose(){
-
-    //send Request
-    // This is an example of a functional test case.
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-
-    tradeSession.environment = TradeItEmsTestEnv;
+-(TradeItLinkedLogin *) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
+    TradeItLinkedLogin * linkedLogin = [connector saveLinkToKeychain:link withBroker:@"Dummy" andLabel:@"Dummy Test Save"];
     
-    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
-                              initWithAction:TradeItStockOrEtfOrderActionBuy
-                              andQuantity:12 andSymbol:@"AAPL"
-                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
-                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
-    
-    
-    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy" andPassword:@"dummy"];
-    
-    tradeSession.broker = @"Dummy";
-    
-    TradeItResult *result = [tradeSession authenticateAndReview ];
-    
-    NSLog(@"Received result: %@", result);
-    
-    //Do not place order but istead close session
-    if(![result isKindOfClass:[TradeItErrorResult class]]){ //if error result is sent back the server automatically closes the session
-    NSLog(@"Session Closed %d", [tradeSession closeSession]);
-        
-    }
-}
-
-void sendTestOrder(NSString* broker, NSString * id, NSString* password, int quantity){
-    
-    // This is an example of a functional test case.
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    
-
-    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
-                                              initWithAction:TradeItStockOrEtfOrderActionBuy
-                                              andQuantity:quantity andSymbol:@"AAPL"
-                                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
-                                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
-    
-    tradeSession.environment = TradeItEmsTestEnv;
-    
-    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    tradeSession.broker = broker;
-    
-    TradeItResult *result = [tradeSession authenticateAndReview ];
-    return processResult(tradeSession,result);
-
-}
-
-void processResult(TradeItStockOrEtfTradeSession* tradeSession, TradeItResult * result){
-    
-    if(result == nil){
-        NSLog(@"Received nil result returning");
-    }
-    else if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
-        //process review result
-        
-        NSLog(@"Received review result: %@", result);
-        TradeItStockOrEtfTradeReviewResult * reviewResult = (TradeItStockOrEtfTradeReviewResult* ) result;
-        NSLog(@" Order Message %@", reviewResult.orderDetails.orderMessage);
-
-        NSLog(@"Placing Order...: ");
-        result = [tradeSession placeOrder];
-        return processResult(tradeSession, result);
-        
-    }
-    else if([result isKindOfClass:[TradeItStockOrEtfTradeSuccessResult class]]){        //process success result
-        NSLog(@"Great!!!!, Received Success result: %@", result);
-
-    }
-    else if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
-        //process security question
-        TradeItSecurityQuestionResult *securityQuestionResult = (TradeItSecurityQuestionResult *) result; //cast result
-       
-        NSLog(@"Received security result: %@", securityQuestionResult);
-        
-        if(securityQuestionResult.securityQuestionOptions != nil && securityQuestionResult.securityQuestionOptions.count > 0 ){
-            result = [tradeSession answerSecurityQuestion:@"option 1" ];
-            return processResult(tradeSession, result);
-        }
-        else if(securityQuestionResult.challengeImage !=nil){
-            result = [tradeSession answerSecurityQuestion:@"tradingticket"];
-            return processResult(tradeSession, result);
-        }
-        else if(securityQuestionResult.securityQuestion != nil){
-            //answer security question
-            result = [tradeSession answerSecurityQuestion:@"tradingticket" ];
-            return processResult(tradeSession, result);
+    NSArray * accounts = [connector getLinkedLogins];
+    NSLog(@"%@", accounts);
+    BOOL found = NO;
+    for (TradeItLinkedLogin * account in accounts) {
+        if ([account.label isEqualToString: @"Dummy Test Save"]) {
+            found = YES;
         }
     }
-    else if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
-        NSLog(@"Received TradeItMultipleAccountResult result: %@", result);
-        //process mutli account
-        //cast result
-        TradeItMultipleAccountResult * multiAccountResult = (TradeItMultipleAccountResult* ) result;
-        result = [tradeSession selectAccount:multiAccountResult.accountList[0]];
-        return processResult(tradeSession, result);
+    
+    if(!found) {
+        XCTFail(@"Failed finding stored linked account");
+    }
+    
+    [connector unlinkBroker:@"Dummy"];
+    
+    NSArray * accounts2 = [connector getLinkedLogins];
+    NSLog(@"%@", accounts2);
+    found = NO;
+    for (TradeItLinkedLogin * account in accounts2) {
+        if ([account.label isEqualToString: @"Dummy Test Save"]) {
+            found = YES;
+        }
+    }
+    
+    if(found) {
+        XCTFail(@"Failed removing stored linked account");
+    }
+    
+    return linkedLogin;
+}
+
+-(TradeItAuthLinkResult *) testAuthLink: (TradeItConnector *) connector {
+    NSLog(@"********Testing oAuth Invalid Case");
+    [self testAuthLinkInvalid: connector];
+
+    NSLog(@"********Testing oAuth Valid Case");
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
+    __block TradeItAuthLinkResult * resultToReturn;
+    
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummySecurity" andPassword:@"dummy" andBroker:@"Dummy"];
+    
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Auth link repsonse: %@", result);
+        resultToReturn = (TradeItAuthLinkResult *) result;
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+
+    return resultToReturn;
+}
+
+-(void) testAuthLinkInvalid:(TradeItConnector *) connector {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Request to link broker should fail"];
+    
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"fail" andPassword:@"dummy" andBroker:@"Dummy"];
+    
+    [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Auth link repsonse: %@", result);
         
-    }
-    else if([result isKindOfClass:[TradeItErrorResult class]]){
-        //Received an error
-        NSLog(@"Bummer!!!!, Received Error result: %@", result);
-    }
-
-}
-
-// This is an example of a functional test case.
-
-TradeItResult* sendAsyncAuthenticateAndReviewRequest(NSString* broker, NSString * id, NSString* password, int quantity, TradeItStockOrEtfTradeSession * tradeSession){
-    
-
-    tradeSession.orderInfo = [[TradeItStockOrEtfOrderInfo alloc]
-                              initWithAction:TradeItStockOrEtfOrderActionBuy
-                              andQuantity:quantity andSymbol:@"AAPL"
-                              andPrice:[[TradeitStockOrEtfOrderPrice alloc] initLimit:12.34]
-                              andExpiration:TradeItStockOrEtfOrderExpirationGtc];
-    
-    
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    
-    tradeSession.authenticationInfo = [[TradeItAuthenticationInfo alloc] initWithId:id andPassword:password];
-    
-    tradeSession.broker = broker;
-    __block TradeItResult * authenticateAndReviewResult = nil;
-   [tradeSession asyncAuthenticateAndReviewWithCompletionBlock:^(TradeItResult* result){
-       NSLog(@"Received Result in completion block%@", result);
-       authenticateAndReviewResult = result;
-    }];
-   
-     while (!authenticateAndReviewResult) {
-         //NSLog(@"Aurthenticating & Reviewing ..Asynch.");
-     }
-    return authenticateAndReviewResult;
-}
-
-TradeItResult* sendAsyncPlaceOrder( TradeItStockOrEtfTradeSession * tradeSession){
-    
-    __block TradeItResult * placeOrderResult = nil;
-    [tradeSession asyncPlaceOrderWithCompletionBlock:^(TradeItResult* result){
-        NSLog(@"Received Result in completion block%@", result);
-        placeOrderResult = result;
+        if([result isKindOfClass: [TradeItErrorResult class]] &&
+           [[(TradeItErrorResult *)result code] intValue]  == 300) {
+            
+            [expectation fulfill];
+        } else {
+            XCTFail(@"Invalid credentials did not return expected response: %@", result);
+        }
     }];
     
-    while (!placeOrderResult) {
-        //NSLog(@"Placing Order ..Asynch.");
-    }
-    return placeOrderResult;
-}
-
-TradeItResult* sendAsyncSecurityAnswer( TradeItStockOrEtfTradeSession * tradeSession){
-    __block TradeItResult * securityAnswerResult = nil;
-    [tradeSession asyncAnswerSecurityQuestion:@"tradingticket" andCompletionBlock:^(TradeItResult* result){
-        NSLog(@"Received Result in completion block%@", result);
-        securityAnswerResult = result;
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
     }];
-    
-    while (!securityAnswerResult) {}
-    return securityAnswerResult;
 }
 
-
-TradeItResult* sendAsyncSelectAccount( TradeItStockOrEtfTradeSession * tradeSession, NSDictionary* accountInfo){
-    __block TradeItResult * selectAccountResult = nil;
-    [tradeSession asyncSelectAccount:accountInfo andCompletionBlock:^(TradeItResult* result){
-        NSLog(@"Received Result in completion block%@", result);
-        selectAccountResult = result;
-    }];
+-(TradeItSession *) testAuthentication:(TradeItConnector *) connector withLinkedLogin:(TradeItLinkedLogin *) linkedLogin {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed creating a session"];
     
-    while (!selectAccountResult) {}
-    return selectAccountResult;
-}
-
-
-void sendAsyncCloseSession( TradeItStockOrEtfTradeSession * tradeSession){
-    __block BOOL done = NO;
-    [tradeSession asyncCloseSessionWithCompletionBlock:^(BOOL sessionClosed){
-        NSLog(@"Session CLosed %d", sessionClosed);
-        done = YES;
-    }];
+    TradeItSession * session = [[TradeItSession alloc] initWithConnector:connector];
     
-    while (!done) {}
-}
-
-
-
-void asyncBasicTest(){
-    
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    
-    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
-    if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
-        NSLog(@"Received review result %@", result);
-        NSLog(@"placing order");
-        result = sendAsyncPlaceOrder(tradeSession);
-        NSLog(@"After placing order Received result%@", result);
-    }
-    else{
-        NSLog(@"Received result %@", result);
-
-    }
-}
-
-
-void asyncMultiAccountTest(){
-    
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    
-    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
-    if([result isKindOfClass:[TradeItMultipleAccountResult class]]){
-        TradeItMultipleAccountResult* multiAcctResult = (TradeItMultipleAccountResult*) result;
-        NSLog(@"Received Multi Account result %@", multiAcctResult);
-        NSLog(@"Selecting Account");
-        result = sendAsyncSelectAccount(tradeSession, multiAcctResult.accountList[0]);
-        NSLog(@"Received result %@", result);
-        NSLog(@"placing order");
-        result = sendAsyncPlaceOrder(tradeSession);
-        NSLog(@"After placing order Received result%@", result);
-    }
-    else{
-        NSLog(@"Received result %@", result);
+    [session authenticate:linkedLogin withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Auth Response: %@", result);
         
-    }
-}
-
-
-void asyncSecurityAnswerTest(){
-    
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    
-    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummyMultiple", @"dummy", 10, tradeSession);
-    if([result isKindOfClass:[TradeItSecurityQuestionResult class]]){
-        NSLog(@"Received Security Question Result result %@", result);
-        NSLog(@"Answering question");
-        result = sendAsyncSecurityAnswer(tradeSession);
-        NSLog(@"Received result %@", result);
-        NSLog(@"placing order");
-        result = sendAsyncPlaceOrder(tradeSession);
-        NSLog(@"After placing order Received result%@", result);
-    }
-    else{
-        NSLog(@"Received result %@", result);
+        if(![result isKindOfClass:[TradeItSecurityQuestionResult class]]) {
+            XCTFail(@"Failed establishing a valid session");
+        }
         
-    }
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+    return session;
 }
 
-void asyncCloseSessionTest(){
+-(NSString *) testAnswerSecQuestion:(TradeItSession *) session {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed answering security question"];
+    __block NSString * accountNumber;
     
-    TradeItStockOrEtfTradeSession * tradeSession = [[TradeItStockOrEtfTradeSession alloc] initWithpublisherApp:@"StockTracker"];
-    tradeSession.environment = TradeItEmsTestEnv;
-    tradeSession.runAsyncCompletionBlockOnMainThread = false;
-    
-    TradeItResult* result = sendAsyncAuthenticateAndReviewRequest(@"Dummy", @"dummy", @"dummy", 10, tradeSession);
-    if([result isKindOfClass:[TradeItStockOrEtfTradeReviewResult class]]){
-        NSLog(@"Received review result %@", result);
-        NSLog(@"Close Sessiom session");
-        sendAsyncCloseSession(tradeSession);
-    }
-    else{
-        NSLog(@"Received result %@", result);
+    [session answerSecurityQuestion:@"tradingticket" withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Ans. Sec. Response: %@", result);
         
-    }
+        if(![result isKindOfClass:[TradeItAuthenticationResult class]]) {
+            XCTFail(@"Failed to successfully answer security question");
+        } else {
+            accountNumber = [(TradeItAuthenticationResult *) result accounts][0][@"accountNumber"];
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+    return accountNumber;
 }
 
+-(NSString *) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting preview order request"];
+    __block NSString * orderId;
+    
+    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    
+    TradeItPreviewTradeRequest * previewTradeRequest = [[TradeItPreviewTradeRequest alloc] init];
+    previewTradeRequest.accountNumber = accountNumber;
+    previewTradeRequest.orderSymbol = @"GE";
+    previewTradeRequest.orderPriceType = @"limit";
+    previewTradeRequest.orderAction = @"buy";
+    previewTradeRequest.orderQuantity = [NSNumber numberWithInt:1];
+    previewTradeRequest.orderExpiration = @"day";
+    previewTradeRequest.orderLimitPrice = [NSNumber numberWithInt:20];
+    
+    [tradeService previewTrade:previewTradeRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Preview Trade Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItPreviewTradeResult class]]) {
+            XCTFail(@"Failed to successfully submit preview order");
+        } else {
+            orderId = [(TradeItPreviewTradeResult *) result orderId];
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+    
+    return orderId;
+}
 
+-(void) testPlaceOrder:(TradeItSession *) session withOrderId:(NSString *) orderId {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting place order request"];
+    
+    TradeItPlaceTradeRequest * request = [[TradeItPlaceTradeRequest alloc] initWithOrderId:orderId];
+    
+    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    [tradeService placeTrade:request withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Place Trade Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItPlaceTradeResult class]]) {
+            XCTFail(@"Failed to successfully place order");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
 
+-(void) testAccountOverview:(TradeItSession *) session withAccount:(NSString *) account {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account overview"];
+    
+    TradeItBalanceService * balances = [[TradeItBalanceService alloc] initWithSession:session];
+    TradeItAccountOverviewRequest * overviewRequest = [[TradeItAccountOverviewRequest alloc] initWithAccountNumber:account];
+    
+    [balances getAccountOverview:overviewRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Account Overview Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItAccountOverviewResult class]]) {
+            XCTFail(@"Failed to successfully get account overview");
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testAccountPositions:(TradeItSession *) session withAccount:(NSString *) account {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account positions"];
+    
+    TradeItPositionService * positions = [[TradeItPositionService alloc] initWithSession:session];
+    TradeItGetPositionsRequest * positionsRequest = [[TradeItGetPositionsRequest alloc] initWithAccountNumber:account];
+    
+    [positions getAccountPositions:positionsRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Account Positions Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItGetPositionsResult class]]) {
+            XCTFail(@"Failed to successfully place order");
+            NSLog(@"Account Overview Result: %@", (TradeItGetPositionsResult *) result);
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testQuoteRequest:session withSymbol:(NSString *) symbol {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting quote"];
+    
+    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItQuotesRequest * quoteRequest = [[TradeItQuotesRequest alloc] initWithSymbol:symbol];
+    
+    [mds getQuoteData:quoteRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Quote Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItQuotesResult class]]) {
+            XCTFail(@"Failed to successfully get quote");
+            NSLog(@"Quote Result: %@", (TradeItQuotesResult *) result);
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
+
+-(void) testSymbolLookupRequest:session withQuery:(NSString *) query {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting symbol lookup"];
+    
+    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItSymbolLookupRequest * symbolLookupRequest = [[TradeItSymbolLookupRequest alloc] initWithQuery:query];
+    
+    [mds symbolLookup:symbolLookupRequest withCompletionBlock:^(TradeItResult * result) {
+        NSLog(@"Symbollookup Result: %@", result);
+        
+        if(![result isKindOfClass:[TradeItSymbolLookupResult class]]) {
+            XCTFail(@"Failed to successfully get symbollookup");
+            NSLog(@"Quote Result: %@", (TradeItSymbolLookupResult *) result);
+        }
+        
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
+}
 
 
 @end
