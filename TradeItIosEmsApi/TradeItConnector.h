@@ -80,6 +80,8 @@
  */
 - (void) unlinkBroker: (NSString *) broker;
 
+- (void) unlinkLogin: (TradeItLinkedLogin *)login;
+
 /**
  *  If the oAuth token becomes stale, we can issue a new token by the previous linked login. This will replace the occurrence, if any, in the keychain/userprofile
  *

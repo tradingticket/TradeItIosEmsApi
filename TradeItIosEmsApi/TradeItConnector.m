@@ -136,6 +136,25 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
 }
 
+- (void) unlinkLogin: (TradeItLinkedLogin *)login {
+    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
+    NSMutableArray * toRemove = [[NSMutableArray alloc] init];
+
+    [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary * account = (NSDictionary *) obj;
+        if([account[@"userId"] isEqualToString: login.userId]) {
+            [toRemove addObject:obj];
+        }
+    }];
+    
+    for (NSDictionary * account in toRemove) {
+        [accounts removeObject:account];
+    }
+    
+    [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
+}
+
 -(NSString *) userTokenFromKeychainId:(NSString *) keychainId {
     return [TradeItKeychain getStringForKey:keychainId];
 }
