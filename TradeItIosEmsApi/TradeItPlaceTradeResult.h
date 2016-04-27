@@ -15,26 +15,26 @@
 /**
  *  Message providing a recap of the order that was placed
  */
-@property (copy) NSString * confirmationMessage;
+@property (copy) NSString<Optional> * confirmationMessage;
 
 /**
  *  The order number returned by the broker
  */
-@property (copy) NSString * orderNumber;
+@property (copy) NSString<Optional> * orderNumber;
 
 /**
  *  Date the order was entered in US Eastern time
  */
-@property (copy) NSString * timestamp;
+@property (copy) NSString<Optional> * timestamp;
 
 /**
  *  The broker the order was placed with
  */
-@property (copy) NSString * broker;
+@property (copy) NSString<Optional> * broker;
 
 /**
  *  Details about the order just placed
  */
-@property (copy) TradeItPlaceTradeOrderInfo * orderInfo;
+@property (copy) TradeItPlaceTradeOrderInfo<Optional> * orderInfo;
 
 @end
