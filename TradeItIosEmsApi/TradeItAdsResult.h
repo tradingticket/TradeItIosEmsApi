@@ -6,7 +6,7 @@
 //  Copyright © 2016 TradeIt. All rights reserved.
 //
 
-#import <TradeItIosTicketSDK/TradeItIosTicketSDK.h>
+#import "TradeItResult.h"
 
 @interface TradeItAdsResult : TradeItResult
 
