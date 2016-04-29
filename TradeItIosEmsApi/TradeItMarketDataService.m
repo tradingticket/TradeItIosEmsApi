@@ -22,8 +22,8 @@
 }
 
 - (void) getQuoteData:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    request.token = self.session.token;
-
+    request.apiKey = self.session.connector.apiKey;
+    
     NSString * endpoint;
     if (request.symbol) {
         endpoint = @"marketdata/getQuote";
@@ -48,8 +48,6 @@
 }
 
 -(void) symbolLookup:(TradeItSymbolLookupRequest *)request withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    request.token = self.session.token;
-    
     NSMutableURLRequest * symbolLookupRequest = buildJsonRequest(request, @"marketdata/symbolLookup", self.session.connector.environment);
     
     [self.session.connector sendEMSRequest:symbolLookupRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
