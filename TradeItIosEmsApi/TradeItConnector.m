@@ -165,7 +165,7 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 }
 
 -(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         NSHTTPURLResponse *response;
         NSError *error;
         NSData *responseJsonData = [NSURLConnection sendSynchronousRequest:request
