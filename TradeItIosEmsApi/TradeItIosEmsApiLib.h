@@ -29,6 +29,10 @@
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSecurityQuestionResult.h"
 
+// Use the PublisherService to retrieve ad sources
+#import "TradeItAdsRequest.h"
+#import "TradeitAdsResult.h"
+
 // Use the TradeService to preview and place trades
 #import "TradeItTradeService.h"
 #import "TradeItPreviewTradeRequest.h"

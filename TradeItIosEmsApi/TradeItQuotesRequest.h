@@ -12,13 +12,9 @@
 
 @property (copy) NSString * symbol;
 @property (copy) NSString * symbols;
+@property (copy) NSString * apiKey;
 
 -(id) initWithSymbol:(NSString *) symbol;
 -(id) initWithSymbols:(NSArray *) symbols;
-
-
-// Session Token - Will be set by the session associated with the request
-// Setting this here will be overriden
-@property (copy) NSString * token;
 
 @end
