@@ -103,6 +103,14 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         linkedAccounts = [[NSArray alloc] init];
     }
     
+    /*
+    NSLog(@"------------Linked Logins-------------");
+    [linkedAccounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary * account = (NSDictionary *) obj;
+        NSLog(@"Broker: %@ - Label: %@ - UserId: %@ - KeychainId: %@", account[@"broker"], account[@"label"], account[@"userId"], account[@"keychainId"]);
+    }];
+    */
+    
     return linkedAccounts;
 }
 
@@ -165,6 +173,14 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 }
 
 -(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
+    
+    /*
+    NSLog(@"----------New Request----------");
+    NSLog([[request URL] absoluteString]);
+    NSString *data = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
+    NSLog(data);
+    */
+     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
         NSHTTPURLResponse *response;
         NSError *error;
@@ -182,6 +198,11 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         
         NSMutableString *jsonResponse = [[NSMutableString alloc] initWithData:responseJsonData encoding:NSUTF8StringEncoding];
         
+        /*
+        NSLog(@"----------Response %@----------", [[request URL] absoluteString]);
+        NSLog(jsonResponse);
+        */
+         
         //first convert to a generic result to check the type
         TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
         

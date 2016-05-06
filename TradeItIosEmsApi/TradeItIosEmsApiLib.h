@@ -38,7 +38,7 @@
 #import "TradeItPreviewTradeRequest.h"
 #import "TradeItPreviewTradeOrderDetails.h"
 #import "TradeItPreviewTradeResult.h"
-#import "TradeItPlaceTradeRequest.h
+#import "TradeItPlaceTradeRequest.h"
 #import "TradeItPlaceTradeResult.h"
 #import "TradeItPlaceTradeOrderInfo.h"
 #import "TradeItPlaceTradeOrderInfoPrice.h"
@@ -54,7 +54,12 @@
 #import "TradeItGetPositionsResult.h"
 #import "TradeItPosition.h"
 
-// Util classes
+// Use the PublisherService to get publisher specific configurations/data
+#import "TradeItPublisherService.h"
+#import "TradeItAdsRequest.h"
+#import "TradeItAdsResult.h"
+
+// EMS API Util classes
 #import "TradeItTypeDefs.h"
 
 #endif
