@@ -15,15 +15,18 @@
 @interface TradeItBrokerCenterBroker : TIEMSJSONModel<NSCopying>
 
 @property (copy) NSString<Optional> * broker;
-
 @property (copy) NSNumber<Optional> * active;
-
-@property (copy) NSDictionary<Optional> * offers;
-
-@property (copy) NSDictionary<Optional> * colors;
-
+@property (copy) NSString<Optional> * signupTitle;
+@property (copy) NSString<Optional> * signupDescription;
+@property (copy) NSString<Optional> * accountMinimum;
+@property (copy) NSString<Optional> * optionsOffer;
+@property (copy) NSString<Optional> * stocksEtfsOffer;
+@property (copy) NSString<Optional> * prompt;
+@property (copy) NSArray<Optional> * backgroundColor;
+@property (copy) NSArray<Optional> * textColor;
+@property (copy) NSArray<Optional> * promptBackgroundColor;
+@property (copy) NSArray<Optional> * promptTextColor;
 @property (copy) NSDictionary<Optional> * logo;
-
 @property (copy) NSArray<Optional> * disclaimers;
 
 @end
