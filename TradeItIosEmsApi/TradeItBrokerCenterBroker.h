@@ -9,18 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "TIEMSJSONModel.h"
 
+@protocol TradeItBrokerCenterBroker
+@end
+
 @interface TradeItBrokerCenterBroker : TIEMSJSONModel<NSCopying>
 
-@property (copy) NSString * broker;
+@property (copy) NSString<Optional> * broker;
 
-@property (copy) NSNumber * active;
+@property (copy) NSNumber<Optional> * active;
 
-@property (copy) NSDictionary * offers;
+@property (copy) NSDictionary<Optional> * offers;
 
-@property (copy) NSDictionary * colors;
+@property (copy) NSDictionary<Optional> * colors;
 
-@property (copy) NSDictionary * logo;
+@property (copy) NSDictionary<Optional> * logo;
 
-@property (copy) NSArray * disclaimers;
+@property (copy) NSArray<Optional> * disclaimers;
 
 @end

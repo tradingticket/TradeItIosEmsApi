@@ -12,6 +12,6 @@
 
 @interface TradeItBrokerCenterResult : TradeItResult
 
-@property NSArray<TradeItBrokerCenterBroker *> * brokers;
+@property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
 
 @end
