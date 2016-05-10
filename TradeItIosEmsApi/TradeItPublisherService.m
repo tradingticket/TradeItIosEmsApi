@@ -20,7 +20,7 @@
 }
 
 -(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    NSString * endpoint = @"publisher/getAdPlacements";
+    NSString * endpoint = @"publisherad/getAdPlacements";
     request.apiKey = self.session.connector.apiKey;
 
     NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
@@ -30,6 +30,23 @@
 
         if ([result.status isEqual:@"SUCCESS"]){
             resultToReturn = buildResult([TradeItAdsResult alloc], jsonResponse);
+        }
+
+        completionBlock(resultToReturn);
+    }];
+}
+
+-(void) getBrokerCenter:(TradeItBrokerCenterRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+    NSString * endpoint = @"publisherad/getBrokerCenter";
+    request.apiKey = self.session.connector.apiKey;
+
+    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
+
+    [self.session.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+        TradeItResult * resultToReturn = result;
+
+        if ([result.status isEqual:@"SUCCESS"]){
+            resultToReturn = buildResult([TradeItBrokerCenterResult alloc], jsonResponse);
         }
 
         completionBlock(resultToReturn);

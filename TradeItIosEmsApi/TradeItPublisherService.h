@@ -10,6 +10,8 @@
 #import "TradeItSession.h"
 #import "TradeItAdsRequest.h"
 #import "TradeItAdsResult.h"
+#import "TradeItBrokerCenterRequest.h"
+#import "TradeItBrokerCenterResult.h"
 
 @interface TradeItPublisherService : NSObject
 
@@ -21,5 +23,6 @@
 -(id) initWithSession:(TradeItSession *) session;
 
 -(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+-(void) getBrokerCenter:(TradeItBrokerCenterRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 @end
