@@ -11,21 +11,21 @@
 
 @implementation TradeItPublisherService
 
--(id) initWithSession:(TradeItSession *) session {
+-(id) initWithConnector:(TradeItConnector *) connector {
     self = [super init];
     if(self) {
-        self.session = session;
+        self.connector = connector;
     }
     return self;
 }
 
 -(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
     NSString * endpoint = @"publisherad/getAdPlacements";
-    request.apiKey = self.session.connector.apiKey;
+    request.apiKey = self.connector.apiKey;
 
-    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
+    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.connector.environment);
 
-    [self.session.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
         TradeItResult * resultToReturn = result;
 
         if ([result.status isEqual:@"SUCCESS"]){
@@ -38,11 +38,11 @@
 
 -(void) getBrokerCenter:(TradeItBrokerCenterRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
     NSString * endpoint = @"publisherad/getBrokerCenter";
-    request.apiKey = self.session.connector.apiKey;
+    request.apiKey = self.connector.apiKey;
 
-    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
+    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.connector.environment);
 
-    [self.session.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
+    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
         TradeItResult * resultToReturn = result;
 
         if ([result.status isEqual:@"SUCCESS"]){

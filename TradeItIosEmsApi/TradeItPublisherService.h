@@ -18,9 +18,9 @@
 /**
  *  The session will need to be set for the request to be made
  */
-@property TradeItSession * session;
+@property TradeItConnector * connector;
 
--(id) initWithSession:(TradeItSession *) session;
+-(id) initWithConnector:(TradeItConnector *) connector;
 
 -(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 -(void) getBrokerCenter:(TradeItBrokerCenterRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
