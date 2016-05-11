@@ -12,6 +12,8 @@
 
 @interface TradeItBrokerCenterResult : TradeItResult
 
+@property BOOL active;
+
 @property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
 
 @end
