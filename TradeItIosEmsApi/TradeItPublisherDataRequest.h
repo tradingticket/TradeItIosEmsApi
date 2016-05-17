@@ -1,5 +1,5 @@
 //
-//  TradeItBrokerCenterRequest.h
+//  TradeItPublisherDataRequest.h
 //  TradeItIosEmsApi
 //
 //  Created by Daniel Vaughn on 5/10/16.
@@ -8,7 +8,7 @@
 
 #import "TradeItRequest.h"
 
-@interface TradeItBrokerCenterRequest : TradeItRequest
+@interface TradeItPublisherDataRequest : TradeItRequest
 
 @property NSString * apiKey;
 

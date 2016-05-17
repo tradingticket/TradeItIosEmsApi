@@ -10,8 +10,9 @@
 #import "TradeItSession.h"
 #import "TradeItAdsRequest.h"
 #import "TradeItAdsResult.h"
-#import "TradeItBrokerCenterRequest.h"
+#import "TradeItPublisherDataRequest.h"
 #import "TradeItBrokerCenterResult.h"
+#import "TradeItPublisherDataResult.h"
 
 @interface TradeItPublisherService : NSObject
 
@@ -23,6 +24,7 @@
 -(id) initWithConnector:(TradeItConnector *) connector;
 
 -(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
--(void) getBrokerCenter:(TradeItBrokerCenterRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+-(void) getBrokerCenter:(TradeItPublisherDataRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+-(void) getPublisherData:(TradeItPublisherDataRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
 @end

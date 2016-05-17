@@ -1,13 +1,13 @@
 //
-//  TradeItBrokerCenterRequest.m
+//  TradeItPublisherDataRequest.m
 //  TradeItIosEmsApi
 //
 //  Created by Daniel Vaughn on 5/10/16.
 //  Copyright © 2016 TradeIt. All rights reserved.
 //
 
-#import "TradeItBrokerCenterRequest.h"
+#import "TradeItPublisherDataRequest.h"
 
-@implementation TradeItBrokerCenterRequest
+@implementation TradeItPublisherDataRequest
 
 @end
