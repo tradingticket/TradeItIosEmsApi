@@ -173,21 +173,21 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 }
 
 -(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
-    
+
     /*
     NSLog(@"----------New Request----------");
     NSLog([[request URL] absoluteString]);
     NSString *data = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
     NSLog(data);
     */
-     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
         NSHTTPURLResponse *response;
         NSError *error;
         NSData *responseJsonData = [NSURLConnection sendSynchronousRequest:request
                                                          returningResponse:&response
                                                                      error:&error];
-        
+
         if ((responseJsonData==nil) || ([response statusCode]!=200)) {
             //error occured
             NSLog(@"ERROR from EMS server response=%@ error=%@", response, error);
@@ -197,12 +197,12 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         }
         
         NSMutableString *jsonResponse = [[NSMutableString alloc] initWithData:responseJsonData encoding:NSUTF8StringEncoding];
-        
+
         /*
         NSLog(@"----------Response %@----------", [[request URL] absoluteString]);
         NSLog(jsonResponse);
         */
-         
+
         //first convert to a generic result to check the type
         TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
         

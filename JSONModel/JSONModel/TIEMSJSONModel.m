@@ -29,6 +29,8 @@
 
 #import "TradeItPosition.h"
 #import "TradeItSymbolLookupCompany.h"
+#import "TradeItBrokerCenterBroker.h"
+
 
 #pragma mark - associated objects names
 static const char * kMapperObjectKey;
@@ -717,6 +719,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
     //is this the best place for this? probably not, but I'm grumps
     [TradeItPosition class];
     [TradeItSymbolLookupCompany class];
+    [TradeItBrokerCenterBroker class];
     
     Class protocolClass = NSClassFromString(property.protocol);
     if (!protocolClass) {
