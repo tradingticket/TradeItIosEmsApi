@@ -15,13 +15,13 @@
 @interface TradeItPosition : TIEMSJSONModel<NSCopying>
 
 // Symbol - normally the street symbol, w/ bonds it's a cusip
-@property (copy) NSString * symbol;
+@property (copy) NSString<Optional> * symbol;
 
 // String, the type of security: EQUITY_OR_ETF, MUTUAL_FUND, OPTION, FIXED_INCOME, CASH, UNKOWN
-@property (copy) NSString * symbolClass;
+@property (copy) NSString<Optional> * symbolClass;
 
 // String, "LONG" or "SHORT"
-@property (copy) NSString * holdingType;
+@property (copy) NSString<Optional> * holdingType;
 
 // Double, the total base cost of the security
 @property (copy) NSNumber<Optional> * costbasis;
