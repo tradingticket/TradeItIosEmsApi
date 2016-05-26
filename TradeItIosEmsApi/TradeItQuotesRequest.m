@@ -15,6 +15,12 @@
     if(self) {
         self.symbol = symbol;
     }
+    
+    if([symbol containsString:@".SI"]) {
+        self.symbol = [symbol substringToIndex:[symbol rangeOfString:@".SI"].location];
+        self.suffixMarket = @"SI";
+    }
+    
     return self;
 }
 
@@ -22,6 +28,15 @@
     self = [super init];
     if(self) {
         self.symbols = [symbols componentsJoinedByString:@","];
+    }
+    return self;
+}
+
+-(id) initWithSymbol:(NSString *) symbol andMarketSuffix: (NSString *) suffix {
+    self = [super init];
+    if(self) {
+        self.symbol = symbol;
+        self.suffixMarket = suffix;
     }
     return self;
 }

@@ -25,7 +25,9 @@
     request.apiKey = self.session.connector.apiKey;
     
     NSString * endpoint;
-    if (request.symbol) {
+    if (request.suffixMarket) {
+        endpoint = @"marketdata/getYahooQuotes";
+    } else if (request.symbol) {
         endpoint = @"marketdata/getQuote";
     } else if (request.symbols) {
         endpoint = @"marketdata/getQuotes";
