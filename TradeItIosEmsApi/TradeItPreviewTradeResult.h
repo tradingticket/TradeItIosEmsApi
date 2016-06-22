@@ -32,4 +32,7 @@
  */
 @property (copy) TradeItPreviewTradeOrderDetails * orderDetails;
 
+// The base currency used for the positions
+@property (copy) NSString<Optional> * accountBaseCurrency;
+
 @end

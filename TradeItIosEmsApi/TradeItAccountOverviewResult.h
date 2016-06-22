@@ -32,4 +32,7 @@
 // The total percentage return on the account
 @property (copy) NSNumber<Optional> * totalPercentReturn;
 
+// The base currency used in the account
+@property (copy) NSString<Optional> * accountBaseCurrency;
+
 @end

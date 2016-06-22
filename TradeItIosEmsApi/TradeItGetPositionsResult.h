@@ -21,4 +21,7 @@
 // All positions in the account
 @property NSArray<TradeItPosition, Optional> * positions;
 
+// The base currency used for the positions
+@property (copy) NSString<Optional> * accountBaseCurrency;
+
 @end
