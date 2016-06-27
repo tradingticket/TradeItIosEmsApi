@@ -31,11 +31,11 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return self;
 }
 
-- (void) getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *)) completionBlock {
+- (void)getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *))completionBlock {
     TradeItBrokerListRequest * brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
     NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"preference/getStocksOrEtfsBrokerList", self.environment);
     
-    [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString * jsonResponse) {
+    [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString *jsonResponse) {
          
          if([tradeItResult isKindOfClass: [TradeItErrorResult class]]){
              NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
@@ -55,14 +55,15 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     }];
 }
 
--(void) linkBrokerWithAuthenticationInfo: (TradeItAuthenticationInfo *) authInfo andCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    TradeItAuthLinkRequest * authLinkRequest = [[TradeItAuthLinkRequest alloc] initWithAuthInfo:authInfo andAPIKey:self.apiKey];
+- (void)linkBrokerWithAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo
+                      andCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    TradeItAuthLinkRequest *authLinkRequest = [[TradeItAuthLinkRequest alloc] initWithAuthInfo:authInfo andAPIKey:self.apiKey];
     
-    NSMutableURLRequest * request = buildJsonRequest(authLinkRequest, @"user/oAuthLink", self.environment);
+    NSMutableURLRequest *request = buildJsonRequest(authLinkRequest, @"user/oAuthLink", self.environment);
     
-    [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString * jsonResponse) {
+    [self sendEMSRequest:request withCompletionBlock:^(TradeItResult *tradeItResult, NSMutableString * jsonResponse) {
         
-        if ([tradeItResult.status isEqual:@"SUCCESS"]){
+        if ([tradeItResult.status isEqual:@"SUCCESS"]) {
             TradeItAuthLinkResult* successResult = (TradeItAuthLinkResult*) buildResult([TradeItAuthLinkResult alloc],jsonResponse);
             
             tradeItResult = successResult;
@@ -73,16 +74,19 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     
 }
 
--(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker {
+- (TradeItLinkedLogin *)saveLinkToKeychain:(TradeItAuthLinkResult *)link
+                                withBroker:(NSString *)broker {
     return [self saveLinkToKeychain:link withBroker:broker andLabel:broker];
 }
 
--(TradeItLinkedLogin *) saveLinkToKeychain: (TradeItAuthLinkResult *) link withBroker: (NSString *) broker andLabel:(NSString *) label {
-    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
-    NSString * keychainId = [[NSUUID UUID] UUIDString];
+- (TradeItLinkedLogin *)saveLinkToKeychain:(TradeItAuthLinkResult *)link
+                                withBroker:(NSString *)broker
+                                  andLabel:(NSString *)label {
+    NSUserDefaults *standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray *accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
+    NSString *keychainId = [[NSUUID UUID] UUIDString];
     
-    NSDictionary * newRecord = @{@"label":label,
+    NSDictionary *newRecord = @{@"label":label,
                                  @"broker":broker,
                                  @"userId":link.userId,
                                  @"keychainId":keychainId};
@@ -95,11 +99,11 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return [[TradeItLinkedLogin alloc] initWithLabel:label broker:broker userId:link.userId andKeyChainId:keychainId];
 }
 
-- (NSArray *) getLinkedLoginsRaw {
-    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSArray * linkedAccounts = [standardUserDefaults arrayForKey:BROKER_LIST_KEYNAME];
+- (NSArray *)getLinkedLoginsRaw {
+    NSUserDefaults *standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSArray *linkedAccounts = [standardUserDefaults arrayForKey:BROKER_LIST_KEYNAME];
     
-    if(!linkedAccounts) {
+    if (!linkedAccounts) {
         linkedAccounts = [[NSArray alloc] init];
     }
     
@@ -114,44 +118,47 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return linkedAccounts;
 }
 
-- (NSArray *) getLinkedLogins {
-    NSArray * linkedAccounts = [self getLinkedLoginsRaw];
+- (NSArray *)getLinkedLogins {
+    NSArray *linkedAccounts = [self getLinkedLoginsRaw];
     
-    NSMutableArray * accountsToReturn = [[NSMutableArray alloc] init];
-    for (NSDictionary * account in linkedAccounts) {
-        [accountsToReturn addObject: [[TradeItLinkedLogin alloc] initWithLabel:account[@"label"] broker:account[@"broker"] userId:account[@"userId"] andKeyChainId:account[@"keychainId"]]];
+    NSMutableArray *accountsToReturn = [[NSMutableArray alloc] init];
+    for (NSDictionary *account in linkedAccounts) {
+        [accountsToReturn addObject:[[TradeItLinkedLogin alloc] initWithLabel:account[@"label"]
+                                                                       broker:account[@"broker"]
+                                                                       userId:account[@"userId"]
+                                                                andKeyChainId:account[@"keychainId"]]];
     }
     
     return accountsToReturn;
 }
 
-- (void) unlinkBroker: (NSString *) broker {
-    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
-    NSMutableArray * toRemove = [[NSMutableArray alloc] init];
+- (void)unlinkBroker:(NSString *)broker {
+    NSUserDefaults *standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray *accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
+    NSMutableArray *toRemove = [[NSMutableArray alloc] init];
     
-    [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDictionary * account = (NSDictionary *) obj;
+    [accounts enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDictionary *account = (NSDictionary *) obj;
         if([account[@"broker"] isEqualToString:broker]) {
             [toRemove addObject:obj];
         }
     }];
     
-    for (NSDictionary * account in toRemove) {
+    for (NSDictionary *account in toRemove) {
         [accounts removeObject:account];
     }
     
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
 }
 
-- (void) unlinkLogin: (TradeItLinkedLogin *)login {
-    NSUserDefaults * standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
-    NSMutableArray * accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
-    NSMutableArray * toRemove = [[NSMutableArray alloc] init];
+- (void)unlinkLogin:(TradeItLinkedLogin *)login {
+    NSUserDefaults *standardUserDefaults = [[NSUserDefaults alloc] initWithSuiteName:USER_DEFAULTS_SUITE];
+    NSMutableArray *accounts = [[NSMutableArray alloc] initWithArray:[self getLinkedLoginsRaw]];
+    NSMutableArray *toRemove = [[NSMutableArray alloc] init];
 
     [accounts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDictionary * account = (NSDictionary *) obj;
-        if([account[@"userId"] isEqualToString: login.userId]) {
+        NSDictionary *account = (NSDictionary *)obj;
+        if ([account[@"userId"] isEqualToString: login.userId]) {
             [toRemove addObject:obj];
         }
     }];
@@ -163,16 +170,18 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
 }
 
--(NSString *) userTokenFromKeychainId:(NSString *) keychainId {
+- (NSString *)userTokenFromKeychainId:(NSString *)keychainId {
     return [TradeItKeychain getStringForKey:keychainId];
 }
 
-- (TradeItResult *) updateUserToken: (TradeItLinkedLogin *) linkedLogin {
+- (TradeItResult *)updateUserToken:(TradeItLinkedLogin *)linkedLogin
+            withAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo {
     NSLog(@"Implement Me");
     return [[TradeItResult alloc] init];
 }
 
--(void) sendEMSRequest:(NSMutableURLRequest *) request withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *)) completionBlock {
+-(void) sendEMSRequest:(NSMutableURLRequest *)request
+   withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *))completionBlock {
 
     /*
     NSLog(@"----------New Request----------");
@@ -220,7 +229,6 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         
         dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(tradeItResult, jsonResponse);});
     });
-
 }
 
 @end
