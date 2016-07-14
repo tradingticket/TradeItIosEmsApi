@@ -61,17 +61,16 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     
     NSMutableURLRequest *request = buildJsonRequest(authLinkRequest, @"user/oAuthLink", self.environment);
     
-    [self sendEMSRequest:request withCompletionBlock:^(TradeItResult *tradeItResult, NSMutableString * jsonResponse) {
-        
+    [self sendEMSRequest:request
+     withCompletionBlock:^(TradeItResult *tradeItResult, NSMutableString *jsonResponse) {
         if ([tradeItResult.status isEqual:@"SUCCESS"]) {
-            TradeItAuthLinkResult* successResult = (TradeItAuthLinkResult*) buildResult([TradeItAuthLinkResult alloc],jsonResponse);
+            TradeItAuthLinkResult *successResult = (TradeItAuthLinkResult *)buildResult([TradeItAuthLinkResult alloc], jsonResponse);
             
             tradeItResult = successResult;
         }
         
         completionBlock(tradeItResult);
     }];
-    
 }
 
 - (TradeItLinkedLogin *)saveLinkToKeychain:(TradeItAuthLinkResult *)link
@@ -90,13 +89,36 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
                                  @"broker":broker,
                                  @"userId":link.userId,
                                  @"keychainId":keychainId};
+
     [accounts addObject:newRecord];
     
     [standardUserDefaults setObject:accounts forKey:BROKER_LIST_KEYNAME];
     
     [TradeItKeychain saveString:link.userToken forKey:keychainId];
     
-    return [[TradeItLinkedLogin alloc] initWithLabel:label broker:broker userId:link.userId andKeyChainId:keychainId];
+    return [[TradeItLinkedLogin alloc] initWithLabel:label
+                                              broker:broker
+                                              userId:link.userId
+                                       andKeyChainId:keychainId];
+}
+
+- (NSDictionary *)getLinkedLoginDictByuserId:(NSString *)userId {
+    NSArray *linkedLoginDicts = [self getLinkedLoginsRaw];
+
+    // Search for the existing saved link by userId
+    NSPredicate *filter = [NSPredicate predicateWithBlock:^BOOL(NSDictionary *linkDict, NSDictionary *bindings) {
+        return [linkDict[@"userId"] isEqual:userId];
+    }];
+
+    NSArray *filteredLinkDicts = [linkedLoginDicts filteredArrayUsingPredicate:filter];
+
+    if (filteredLinkDicts.count > 0) {
+        // Link found
+        return filteredLinkDicts[0];
+    } else {
+        // Link not found
+        return nil;
+    }
 }
 
 - (NSArray *)getLinkedLoginsRaw {
@@ -174,12 +196,6 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return [TradeItKeychain getStringForKey:keychainId];
 }
 
-- (TradeItResult *)updateUserToken:(TradeItLinkedLogin *)linkedLogin
-            withAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo {
-    NSLog(@"Implement Me");
-    return [[TradeItResult alloc] init];
-}
-
 -(void) sendEMSRequest:(NSMutableURLRequest *)request
    withCompletionBlock:(void (^)(TradeItResult *, NSMutableString *))completionBlock {
 
@@ -197,11 +213,14 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
                                                          returningResponse:&response
                                                                      error:&error];
 
-        if ((responseJsonData==nil) || ([response statusCode]!=200)) {
+        if ((responseJsonData == nil) || ([response statusCode] != 200)) {
             //error occured
             NSLog(@"ERROR from EMS server response=%@ error=%@", response, error);
-            TradeItErrorResult * errorResult = [TradeItErrorResult tradeErrorWithSystemMessage:@"error sending request to ems server"];
-            dispatch_async(dispatch_get_main_queue(),^(void){completionBlock(errorResult,nil);});
+            TradeItErrorResult *errorResult = [TradeItErrorResult tradeErrorWithSystemMessage:@"error sending request to ems server"];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                completionBlock(errorResult, nil);
+            });
+
             return;
         }
         

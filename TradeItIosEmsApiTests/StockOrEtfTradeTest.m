@@ -41,10 +41,9 @@
 #import "TradeItSymbolLookupResult.h"
 
 
-//#import "TradeItIosEmsApiLib.h"
-
-
 @interface StockOrEtfTradeTest : XCTestCase
+
+@property (strong, nonatomic) TradeItConnector *connector;
 
 @end
 
@@ -52,7 +51,9 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    self.connector = [[TradeItConnector alloc] initWithApiKey:@"tradeit-test-api-key"];
+    self.connector.environment = TradeItEmsTestEnv;
 }
 
 - (void)tearDown {
@@ -61,61 +62,59 @@
 }
 
 - (void)testExample {
-    TradeItConnector * connector = [[TradeItConnector alloc] initWithApiKey:@"tradeit-test-api-key"];
-    connector.environment = TradeItEmsTestEnv;
-    
-    //NSLog(@"******************Testing Fetch Broker List");
-    //[self testFetchBrokerList: connector];
+    NSLog(@"******************Testing Fetch Broker List");
+    [self testFetchBrokerList:self.connector];
     
     NSLog(@"******************Testing oAuth Link to Dummy broker");
-    TradeItAuthLinkResult * authLink = [self testAuthLink: connector];
+    TradeItAuthLinkResult *authLink = [self testAuthLink:self.connector];
     
-    if(![authLink.status isEqualToString:@"SUCCESS"]) {
+    if (![authLink.status isEqualToString:@"SUCCESS"]) {
         NSLog(@"Something failed during auth link, unable to proceed");
         return;
     }
     
     NSLog(@"*******************Testing saving/removing token into keychain");
-    TradeItLinkedLogin * linkedLogin = [self testLinkingAccount: connector withLink:authLink];
+    TradeItLinkedLogin *linkedLogin = [self testLinkingAccount:self.connector
+                                                      withLink:authLink];
 
     NSLog(@"*******************Testing authentication");
-    TradeItSession * session = [self testAuthentication:connector withLinkedLogin:linkedLogin];
+    TradeItSession *session = [self testAuthentication:self.connector
+                                       withLinkedLogin:linkedLogin];
     NSLog(@"Session Established:  %@", session);
     
     NSLog(@"*******************Testing answering sec question");
-    NSString * account = [self testAnswerSecQuestion: session];
+    NSString *account = [self testAnswerSecQuestion:session];
  
     NSLog(@"*******************Testing preview order");
-    NSString * orderId = [self testPreviewTrade:session andAccount:account];
+    NSString *orderId = [self testPreviewTrade:session
+                                    andAccount:account];
 
     NSLog(@"*******************Testing place order");
-    [self testPlaceOrder: session withOrderId:orderId];
+    [self testPlaceOrder:session
+             withOrderId:orderId];
     
     NSLog(@"*******************Testing balance service");
-    [self testAccountOverview:session withAccount:account];
+    [self testAccountOverview:session
+                  withAccount:account];
     
     NSLog(@"*******************Testing position service");
-    [self testAccountPositions:session withAccount:account];
+    [self testAccountPositions:session
+                   withAccount:account];
     
     NSLog(@"*******************Testing quote request");
-    [self testQuoteRequest:session withSymbol:@"AAPL"];
+    [self testQuoteRequest:session
+                withSymbol:@"AAPL"];
     
     NSLog(@"*******************Testing symbol lookup request");
-    [self testSymbolLookupRequest:session withQuery:@"AA"];
+    [self testSymbolLookupRequest:session
+                        withQuery:@"AA"];
     
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
-
--(void) testFetchBrokerList: (TradeItConnector *) connector{
+- (void)testFetchBrokerList:(TradeItConnector *)connector {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Request to get broker list should succeed"];
     
-    [connector getAvailableBrokersWithCompletionBlock:^(NSArray * brokers) {
+    [connector getAvailableBrokersWithCompletionBlock:^(NSArray *brokers) {
         NSLog(@"Brokers: %@", brokers);
         [expectation fulfill];
     }];
@@ -127,53 +126,61 @@
     }];
 }
 
--(TradeItLinkedLogin *) testLinkingAccount:(TradeItConnector *) connector withLink:(TradeItAuthLinkResult *) link {
-    TradeItLinkedLogin * linkedLogin = [connector saveLinkToKeychain:link withBroker:@"Dummy" andLabel:@"Dummy Test Save"];
+- (TradeItLinkedLogin *)testLinkingAccount:(TradeItConnector *)connector
+                                  withLink:(TradeItAuthLinkResult *)link {
+
+    TradeItLinkedLogin *linkedLogin = [connector saveLinkToKeychain:link
+                                                         withBroker:@"Dummy"
+                                                           andLabel:@"Dummy Test Save"];
     
-    NSArray * accounts = [connector getLinkedLogins];
+    NSArray *accounts = [connector getLinkedLogins];
     NSLog(@"%@", accounts);
     BOOL found = NO;
-    for (TradeItLinkedLogin * account in accounts) {
+    for (TradeItLinkedLogin *account in accounts) {
         if ([account.label isEqualToString: @"Dummy Test Save"]) {
             found = YES;
         }
     }
     
-    if(!found) {
+    if (!found) {
         XCTFail(@"Failed finding stored linked account");
     }
     
     [connector unlinkBroker:@"Dummy"];
     
-    NSArray * accounts2 = [connector getLinkedLogins];
+    NSArray *accounts2 = [connector getLinkedLogins];
     NSLog(@"%@", accounts2);
+
     found = NO;
-    for (TradeItLinkedLogin * account in accounts2) {
+
+    for (TradeItLinkedLogin *account in accounts2) {
         if ([account.label isEqualToString: @"Dummy Test Save"]) {
             found = YES;
         }
     }
     
-    if(found) {
+    if (found) {
         XCTFail(@"Failed removing stored linked account");
     }
     
     return linkedLogin;
 }
 
--(TradeItAuthLinkResult *) testAuthLink: (TradeItConnector *) connector {
+- (TradeItAuthLinkResult *)testAuthLink: (TradeItConnector *) connector {
     NSLog(@"********Testing oAuth Invalid Case");
-    [self testAuthLinkInvalid: connector];
+    [self testAuthLinkInvalid:connector];
 
     NSLog(@"********Testing oAuth Valid Case");
     XCTestExpectation *expectation = [self expectationWithDescription:@"Request to link broker should succeed"];
     __block TradeItAuthLinkResult * resultToReturn;
     
-    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummySecurity" andPassword:@"dummy" andBroker:@"Dummy"];
+    TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummySecurity"
+                                                                             andPassword:@"dummy"
+                                                                               andBroker:@"Dummy"];
     
     [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
-        resultToReturn = (TradeItAuthLinkResult *) result;
+        resultToReturn = (TradeItAuthLinkResult *)result;
         [expectation fulfill];
     }];
     
@@ -186,7 +193,7 @@
     return resultToReturn;
 }
 
--(void) testAuthLinkInvalid:(TradeItConnector *) connector {
+- (void)testAuthLinkInvalid:(TradeItConnector *) connector {
     XCTestExpectation * expectation = [self expectationWithDescription:@"Request to link broker should fail"];
     
     TradeItAuthenticationInfo * authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"fail" andPassword:@"dummy" andBroker:@"Dummy"];
@@ -194,7 +201,7 @@
     [connector linkBrokerWithAuthenticationInfo: authInfo andCompletionBlock:^(TradeItResult * result) {
         NSLog(@"Auth link repsonse: %@", result);
         
-        if([result isKindOfClass: [TradeItErrorResult class]] &&
+        if ([result isKindOfClass: [TradeItErrorResult class]] &&
            [[(TradeItErrorResult *)result code] intValue]  == 300) {
             
             [expectation fulfill];
@@ -210,22 +217,25 @@
     }];
 }
 
--(TradeItSession *) testAuthentication:(TradeItConnector *) connector withLinkedLogin:(TradeItLinkedLogin *) linkedLogin {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed creating a session"];
+- (TradeItSession *)testAuthentication:(TradeItConnector *)connector
+                       withLinkedLogin:(TradeItLinkedLogin *)linkedLogin {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed creating a session"];
     
-    TradeItSession * session = [[TradeItSession alloc] initWithConnector:connector];
+    TradeItSession *session = [[TradeItSession alloc] initWithConnector:connector];
     
-    [session authenticate:linkedLogin withCompletionBlock:^(TradeItResult * result) {
+    [session authenticate:linkedLogin
+      withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Auth Response: %@", result);
         
-        if(![result isKindOfClass:[TradeItSecurityQuestionResult class]]) {
+        if (![result isKindOfClass:[TradeItSecurityQuestionResult class]]) {
             XCTFail(@"Failed establishing a valid session");
         }
         
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
@@ -234,17 +244,18 @@
     return session;
 }
 
--(NSString *) testAnswerSecQuestion:(TradeItSession *) session {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed answering security question"];
-    __block NSString * accountNumber;
+- (NSString *)testAnswerSecQuestion:(TradeItSession *)session {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed answering security question"];
+    __block NSString *accountNumber;
     
-    [session answerSecurityQuestion:@"tradingticket" withCompletionBlock:^(TradeItResult * result) {
+    [session answerSecurityQuestion:@"tradingticket"
+                withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Ans. Sec. Response: %@", result);
         
-        if(![result isKindOfClass:[TradeItAuthenticationResult class]]) {
+        if (![result isKindOfClass:[TradeItAuthenticationResult class]]) {
             XCTFail(@"Failed to successfully answer security question");
         } else {
-            accountNumber = [(TradeItAuthenticationResult *) result accounts][0][@"accountNumber"];
+            accountNumber = [(TradeItAuthenticationResult *)result accounts][0][@"accountNumber"];
         }
         
         [expectation fulfill];
@@ -259,13 +270,14 @@
     return accountNumber;
 }
 
--(NSString *) testPreviewTrade:(TradeItSession *) session andAccount:(NSString *) accountNumber {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting preview order request"];
-    __block NSString * orderId;
+- (NSString *)testPreviewTrade:(TradeItSession *)session
+                    andAccount:(NSString *)accountNumber {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed submitting preview order request"];
+    __block NSString *orderId;
     
-    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    TradeItTradeService *tradeService = [[TradeItTradeService alloc] initWithSession:session];
     
-    TradeItPreviewTradeRequest * previewTradeRequest = [[TradeItPreviewTradeRequest alloc] init];
+    TradeItPreviewTradeRequest *previewTradeRequest = [[TradeItPreviewTradeRequest alloc] init];
     previewTradeRequest.accountNumber = accountNumber;
     previewTradeRequest.orderSymbol = @"GE";
     previewTradeRequest.orderPriceType = @"limit";
@@ -274,13 +286,14 @@
     previewTradeRequest.orderExpiration = @"day";
     previewTradeRequest.orderLimitPrice = [NSNumber numberWithInt:20];
     
-    [tradeService previewTrade:previewTradeRequest withCompletionBlock:^(TradeItResult * result) {
+    [tradeService previewTrade:previewTradeRequest
+           withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Preview Trade Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItPreviewTradeResult class]]) {
+        if (![result isKindOfClass:[TradeItPreviewTradeResult class]]) {
             XCTFail(@"Failed to successfully submit preview order");
         } else {
-            orderId = [(TradeItPreviewTradeResult *) result orderId];
+            orderId = [(TradeItPreviewTradeResult *)result orderId];
         }
         
         [expectation fulfill];
@@ -295,62 +308,70 @@
     return orderId;
 }
 
--(void) testPlaceOrder:(TradeItSession *) session withOrderId:(NSString *) orderId {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed submitting place order request"];
+- (void)testPlaceOrder:(TradeItSession *)session
+           withOrderId:(NSString *)orderId {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed submitting place order request"];
     
-    TradeItPlaceTradeRequest * request = [[TradeItPlaceTradeRequest alloc] initWithOrderId:orderId];
+    TradeItPlaceTradeRequest *request = [[TradeItPlaceTradeRequest alloc] initWithOrderId:orderId];
     
-    TradeItTradeService * tradeService = [[TradeItTradeService alloc] initWithSession:session];
-    [tradeService placeTrade:request withCompletionBlock:^(TradeItResult * result) {
+    TradeItTradeService *tradeService = [[TradeItTradeService alloc] initWithSession:session];
+    [tradeService placeTrade:request
+         withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Place Trade Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItPlaceTradeResult class]]) {
+        if (![result isKindOfClass:[TradeItPlaceTradeResult class]]) {
             XCTFail(@"Failed to successfully place order");
         }
         
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
 }
 
--(void) testAccountOverview:(TradeItSession *) session withAccount:(NSString *) account {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account overview"];
+- (void)testAccountOverview:(TradeItSession *)session
+                withAccount:(NSString *)account {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed getting account overview"];
     
-    TradeItBalanceService * balances = [[TradeItBalanceService alloc] initWithSession:session];
-    TradeItAccountOverviewRequest * overviewRequest = [[TradeItAccountOverviewRequest alloc] initWithAccountNumber:account];
+    TradeItBalanceService *balances = [[TradeItBalanceService alloc] initWithSession:session];
+    TradeItAccountOverviewRequest *overviewRequest = [[TradeItAccountOverviewRequest alloc] initWithAccountNumber:account];
     
-    [balances getAccountOverview:overviewRequest withCompletionBlock:^(TradeItResult * result) {
+    [balances getAccountOverview:overviewRequest
+             withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Account Overview Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItAccountOverviewResult class]]) {
+        if (![result isKindOfClass:[TradeItAccountOverviewResult class]]) {
             XCTFail(@"Failed to successfully get account overview");
         }
         
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
 }
 
--(void) testAccountPositions:(TradeItSession *) session withAccount:(NSString *) account {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting account positions"];
+- (void)testAccountPositions:(TradeItSession *)session
+                withAccount:(NSString *)account {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed getting account positions"];
     
-    TradeItPositionService * positions = [[TradeItPositionService alloc] initWithSession:session];
-    TradeItGetPositionsRequest * positionsRequest = [[TradeItGetPositionsRequest alloc] initWithAccountNumber:account];
+    TradeItPositionService *positions = [[TradeItPositionService alloc] initWithSession:session];
+    TradeItGetPositionsRequest *positionsRequest = [[TradeItGetPositionsRequest alloc] initWithAccountNumber:account];
     
-    [positions getAccountPositions:positionsRequest withCompletionBlock:^(TradeItResult * result) {
+    [positions getAccountPositions:positionsRequest
+               withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Account Positions Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItGetPositionsResult class]]) {
+        if (![result isKindOfClass:[TradeItGetPositionsResult class]]) {
             XCTFail(@"Failed to successfully place order");
             NSLog(@"Account Overview Result: %@", (TradeItGetPositionsResult *) result);
         }
@@ -365,16 +386,16 @@
     }];
 }
 
--(void) testQuoteRequest:session withSymbol:(NSString *) symbol {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting quote"];
+- (void)testQuoteRequest:session withSymbol:(NSString *)symbol {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed getting quote"];
     
-    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
-    TradeItQuotesRequest * quoteRequest = [[TradeItQuotesRequest alloc] initWithSymbol:symbol];
+    TradeItMarketDataService *mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItQuotesRequest *quoteRequest = [[TradeItQuotesRequest alloc] initWithSymbol:symbol];
     
-    [mds getQuoteData:quoteRequest withCompletionBlock:^(TradeItResult * result) {
+    [mds getQuoteData:quoteRequest withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Quote Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItQuotesResult class]]) {
+        if (![result isKindOfClass:[TradeItQuotesResult class]]) {
             XCTFail(@"Failed to successfully get quote");
             NSLog(@"Quote Result: %@", (TradeItQuotesResult *) result);
         }
@@ -382,36 +403,38 @@
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
 }
 
--(void) testSymbolLookupRequest:session withQuery:(NSString *) query {
-    XCTestExpectation * expectation = [self expectationWithDescription:@"Failed getting symbol lookup"];
+- (void)testSymbolLookupRequest:session
+                      withQuery:(NSString *)query {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Failed getting symbol lookup"];
     
-    TradeItMarketDataService * mds = [[TradeItMarketDataService alloc] initWithSession:session];
-    TradeItSymbolLookupRequest * symbolLookupRequest = [[TradeItSymbolLookupRequest alloc] initWithQuery:query];
+    TradeItMarketDataService *mds = [[TradeItMarketDataService alloc] initWithSession:session];
+    TradeItSymbolLookupRequest *symbolLookupRequest = [[TradeItSymbolLookupRequest alloc] initWithQuery:query];
     
-    [mds symbolLookup:symbolLookupRequest withCompletionBlock:^(TradeItResult * result) {
+    [mds symbolLookup:symbolLookupRequest withCompletionBlock:^(TradeItResult *result) {
         NSLog(@"Symbollookup Result: %@", result);
         
-        if(![result isKindOfClass:[TradeItSymbolLookupResult class]]) {
+        if (![result isKindOfClass:[TradeItSymbolLookupResult class]]) {
             XCTFail(@"Failed to successfully get symbollookup");
-            NSLog(@"Quote Result: %@", (TradeItSymbolLookupResult *) result);
+            NSLog(@"Quote Result: %@", (TradeItSymbolLookupResult *)result);
         }
         
         [expectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5.0 handler:^(NSError *error) {
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
         if (error) {
             NSLog(@"Timeout Error: %@", error);
         }
     }];
 }
-
 
 @end

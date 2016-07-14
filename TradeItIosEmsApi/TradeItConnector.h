@@ -49,8 +49,8 @@
  *  
  *  @return TradeItResult returned into the completion block will indicate success/failure of the credentials
  */
-- (void) linkBrokerWithAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo
-                       andCompletionBlock:(void (^)(TradeItResult *))completionBlock;
+- (void)linkBrokerWithAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo
+                      andCompletionBlock:(void (^)(TradeItResult *))completionBlock;
 
 /**
  *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
@@ -93,9 +93,6 @@
  */
 - (TradeItResult *)updateUserToken:(TradeItLinkedLogin *)linkedLogin
             withAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo;
-
-
-
 
 /**
  *  Method used by the session and services to issue requests to the ems servers
