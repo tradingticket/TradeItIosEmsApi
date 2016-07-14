@@ -56,9 +56,63 @@
     self.connector.environment = TradeItEmsTestEnv;
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+- (void)testUpdatingLinkedAccount {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Updating linked account"];
+
+    TradeItAuthenticationInfo *authInfo = [[TradeItAuthenticationInfo alloc] initWithId:@"dummy"
+                                                                            andPassword:@"dummy"
+                                                                              andBroker:@"Dummy"];
+
+    [self.connector linkBrokerWithAuthenticationInfo:authInfo
+                                  andCompletionBlock:^(TradeItResult *result) {
+        if ([result isKindOfClass:[TradeItAuthLinkResult class]]) {
+            TradeItAuthLinkResult *authLinkResult = (TradeItAuthLinkResult *)result;
+
+            TradeItLinkedLogin *originalLinkedLogin = [self.connector saveLinkToKeychain:authLinkResult
+                                                                              withBroker:authInfo.broker
+                                                                                andLabel:@"My Special Label"];
+
+            XCTAssert([originalLinkedLogin.broker isEqualToString:authInfo.broker]);
+            XCTAssert([originalLinkedLogin.label isEqualToString:@"My Special Label"]);
+            XCTAssert([originalLinkedLogin.userId isEqualToString:authLinkResult.userId]);
+
+            NSString *originalSavedUserToken = [self.connector userTokenFromKeychainId:originalLinkedLogin.keychainId];
+
+            XCTAssert([originalSavedUserToken isEqualToString:authLinkResult.userToken]);
+
+            [self.connector updateUserToken:originalLinkedLogin
+                     withAuthenticationInfo:authInfo
+                         andCompletionBlock:^(TradeItResult *result) {
+                if ([result isKindOfClass:[TradeItUpdateLinkResult class]]) {
+                    TradeItUpdateLinkResult *updateLinkResult = (TradeItUpdateLinkResult *)result;
+
+                    TradeItLinkedLogin *updatedLinkedLogin = [self.connector updateLinkInKeychain:updateLinkResult
+                                                                                       withBroker:authInfo.broker];
+
+                    XCTAssert([updatedLinkedLogin.broker isEqualToString:authInfo.broker]);
+                    XCTAssert([updatedLinkedLogin.label isEqualToString:@"My Special Label"]);
+                    XCTAssert([updatedLinkedLogin.userId isEqualToString:updateLinkResult.userId]);
+
+                    NSString *updatedSavedUserToken = [self.connector userTokenFromKeychainId:updatedLinkedLogin.keychainId];
+
+                    XCTAssert([updatedSavedUserToken isEqualToString:updateLinkResult.userToken]);
+
+                    [expectation fulfill];
+                } else {
+                    XCTFail(@"Could not update linked Dummy account!");
+                }
+            }];
+        } else {
+            XCTFail(@"Could not link Dummy account!");
+        }
+    }];
+
+    [self waitForExpectationsWithTimeout:5.0
+                                 handler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Timeout Error: %@", error);
+        }
+    }];
 }
 
 - (void)testExample {

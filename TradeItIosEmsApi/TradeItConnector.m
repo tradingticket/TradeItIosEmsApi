@@ -13,6 +13,8 @@
 #import "TradeItAuthLinkRequest.h"
 #import "TradeItBrokerListRequest.h"
 #import "TradeItBrokerListResult.h"
+#import "TradeItUpdateLinkRequest.h"
+#import "TradeItUpdateLinkResult.h"
 
 @implementation TradeItConnector {
     BOOL runAsyncCompletionBlockOnMainThread;
@@ -71,6 +73,54 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         
         completionBlock(tradeItResult);
     }];
+}
+
+- (void)updateUserToken:(TradeItLinkedLogin *)linkedLogin
+ withAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo
+     andCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+
+    TradeItUpdateLinkRequest *updateLinkRequest = [[TradeItUpdateLinkRequest alloc] initWithUserId:linkedLogin.userId
+                                                                                          authInfo:authInfo
+                                                                                            apiKey:self.apiKey];
+
+    NSMutableURLRequest *request = buildJsonRequest(updateLinkRequest, @"user/oAuthUpdate", self.environment);
+
+    [self sendEMSRequest:request
+     withCompletionBlock:^(TradeItResult *tradeItResult, NSMutableString *jsonResponse) {
+         if ([tradeItResult.status isEqual:@"SUCCESS"]) {
+             TradeItUpdateLinkResult* successResult = (TradeItUpdateLinkResult *)buildResult([TradeItUpdateLinkResult alloc],
+                                                                                             jsonResponse);
+             tradeItResult = successResult;
+         }
+
+         completionBlock(tradeItResult);
+     }];
+
+}
+
+- (TradeItLinkedLogin *)updateLinkInKeychain:(TradeItUpdateLinkResult *)link
+                                  withBroker:(NSString *)broker {
+    NSDictionary *linkDict = [self getLinkedLoginDictByuserId:link.userId];
+
+    if (linkDict) {
+        // If the saved link is found, update the token in the keychain for its keychainId
+        NSString *keychainId = linkDict[@"keychainId"];
+
+        [TradeItKeychain saveString:link.userToken forKey:keychainId];
+        
+        return [[TradeItLinkedLogin alloc] initWithLabel:linkDict[@"label"]
+                                                  broker:broker
+                                                  userId:link.userId
+                                           andKeyChainId:keychainId];
+    } else {
+        // No existing link for that userId so make a new one
+        TradeItAuthLinkResult *authLinkResult = [[TradeItAuthLinkResult alloc] init];
+        authLinkResult.userId = link.userId;
+        authLinkResult.userToken = link.userToken;
+
+        return [self saveLinkToKeychain:authLinkResult
+                             withBroker:broker];
+    }
 }
 
 - (TradeItLinkedLogin *)saveLinkToKeychain:(TradeItAuthLinkResult *)link
