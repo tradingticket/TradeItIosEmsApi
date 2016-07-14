@@ -17,7 +17,7 @@ NSURL* getEmsBaseUrl(TradeitEmsEnvironments env){
         case TradeItEmsTestEnv:
             return [NSURL URLWithString:@"https://ems.qa.tradingticket.com/api/v1/"];
         case TradeItEmsLocalEnv:
-            return [NSURL URLWithString:@"http://localhost:8080/ems/api/v1/"];
+            return [NSURL URLWithString:@"http://localhost:8080/api/v1/"];
         default:
             NSLog(@"Invalid environment %d - directing to production by default", env);
             return [NSURL URLWithString:@"https://ems.tradingticket.com/api/v1/"];
