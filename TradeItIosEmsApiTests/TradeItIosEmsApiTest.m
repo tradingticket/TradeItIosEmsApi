@@ -40,14 +40,13 @@
 #import "TradeItSymbolLookupRequest.h"
 #import "TradeItSymbolLookupResult.h"
 
-
-@interface StockOrEtfTradeTest : XCTestCase
+@interface TradeItIosEmsApiTest : XCTestCase
 
 @property (strong, nonatomic) TradeItConnector *connector;
 
 @end
 
-@implementation StockOrEtfTradeTest
+@implementation TradeItIosEmsApiTest
 
 - (void)setUp {
     [super setUp];

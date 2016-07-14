@@ -23,7 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		08ABD7951B6FDF76008FE4DB /* libTradeItIosEmsApi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08CD8B851B338A7500F7E530 /* libTradeItIosEmsApi.a */; };
-		08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */; };
+		08CD8BAC1B338BAC00F7E530 /* TradeItIosEmsApiTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CD8BAB1B338BAC00F7E530 /* TradeItIosEmsApiTest.m */; };
 		651700EA1C751EC100519844 /* TradeItQuote.h in Headers */ = {isa = PBXBuildFile; fileRef = 651700E81C751EC100519844 /* TradeItQuote.h */; };
 		651700EB1C751EC100519844 /* TradeItQuote.m in Sources */ = {isa = PBXBuildFile; fileRef = 651700E91C751EC100519844 /* TradeItQuote.m */; };
 		6549CFC31CD16F0D0075B29F /* TradeItAdsRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 6549CFC11CD16F0D0075B29F /* TradeItAdsRequest.h */; };
@@ -203,7 +203,7 @@
 		08CD8B961B338A7500F7E530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08CD8BA31B338B5A00F7E530 /* TradeItAuthenticationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItAuthenticationInfo.m; sourceTree = "<group>"; };
 		08CD8BA51B338B5A00F7E530 /* TradeItAuthenticationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItAuthenticationInfo.h; sourceTree = "<group>"; };
-		08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StockOrEtfTradeTest.m; sourceTree = "<group>"; };
+		08CD8BAB1B338BAC00F7E530 /* TradeItIosEmsApiTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItIosEmsApiTest.m; sourceTree = "<group>"; };
 		08D3DFC31B55977F0094BC61 /* TradeItAuthenticationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeItAuthenticationResult.h; sourceTree = "<group>"; };
 		08D3DFC41B55977F0094BC61 /* TradeItAuthenticationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeItAuthenticationResult.m; sourceTree = "<group>"; };
 		08D3DFCB1B55A0010094BC61 /* TradeItEmsUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TradeItEmsUtils.h; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 		08CD8B941B338A7500F7E530 /* TradeItIosEmsApiTests */ = {
 			isa = PBXGroup;
 			children = (
-				08CD8BAB1B338BAC00F7E530 /* StockOrEtfTradeTest.m */,
+				08CD8BAB1B338BAC00F7E530 /* TradeItIosEmsApiTest.m */,
 				08CD8B951B338A7500F7E530 /* Supporting Files */,
 			);
 			path = TradeItIosEmsApiTests;
@@ -930,7 +930,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA69366B1D2EADF300F2E798 /* TradeItUpdateLinkRequest.m in Sources */,
-				08CD8BAC1B338BAC00F7E530 /* StockOrEtfTradeTest.m in Sources */,
+				08CD8BAC1B338BAC00F7E530 /* TradeItIosEmsApiTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
