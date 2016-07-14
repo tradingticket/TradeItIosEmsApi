@@ -15,5 +15,6 @@
 @property BOOL brokerCenterActive;
 @property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
 @property (copy) NSArray* brokerList;
+@property NSString <Optional> * preferredBroker;
 
 @end
