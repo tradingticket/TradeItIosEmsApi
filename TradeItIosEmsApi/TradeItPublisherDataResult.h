@@ -6,7 +6,6 @@
 //  Copyright © 2016 TradeIt. All rights reserved.
 //
 
-#import <TradeItIosTicketSDK/TradeItIosTicketSDK.h>
 #import "TradeItBrokerCenterBroker.h"
 #import "TradeItBrokerListResult.h"
 
