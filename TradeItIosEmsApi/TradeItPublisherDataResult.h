@@ -6,7 +6,6 @@
 //  Copyright © 2016 TradeIt. All rights reserved.
 //
 
-#import <TradeItIosTicketSDK/TradeItIosTicketSDK.h>
 #import "TradeItBrokerCenterBroker.h"
 #import "TradeItBrokerListResult.h"
 
@@ -15,6 +14,6 @@
 @property BOOL brokerCenterActive;
 @property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
 @property (copy) NSArray* brokerList;
-@property NSString <Optional> * preferredBroker;
+@property NSString <Optional>* preferredBroker;
 
 @end
