@@ -31,6 +31,24 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return self;
 }
 
+- (void)getAvailableBrokersAsObjectsWithCompletionBlock:(void (^ _Nonnull)(NSArray<TradeItBroker *> * _Nullable))completionBlock {
+    [self getAvailableBrokersWithCompletionBlock:^void(NSArray *brokerDictionaries) {
+        if (brokerDictionaries == nil) {
+            completionBlock(nil);
+        }
+
+        NSMutableArray<TradeItBroker *> *brokers = [[NSMutableArray alloc] init];
+
+        for (NSDictionary *brokerDictionary in brokerDictionaries) {
+            TradeItBroker *broker = [[TradeItBroker alloc] initWithShortName:brokerDictionary[@"shortName"]
+                                                                    longName:brokerDictionary[@"longName"]];
+            [brokers addObject:broker];
+        }
+
+        completionBlock(brokers);
+    }];
+}
+
 - (void)getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *))completionBlock {
     TradeItBrokerListRequest * brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
     NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"preference/getStocksOrEtfsBrokerList", self.environment);
