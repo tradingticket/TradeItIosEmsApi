@@ -24,6 +24,7 @@
 #import "TradeItAuthLinkRequest.h"
 #import "TradeItAuthLinkResult.h"
 #import "TradeItBroker.h"
+#import "TradeItAccount.h"
 
 // Once you have a link you'll establish a session using the linkedLogin
 #import "TradeItSession.h"

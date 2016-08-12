@@ -13,6 +13,7 @@
 #import "TradeItAuthenticationResult.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItSecurityQuestionRequest.h"
+#import "TradeItAccount.h"
 
 @implementation TradeItSession
 
@@ -34,6 +35,31 @@
         completionBlock([self parseAuthResponse: result jsonResponse:jsonResponse]);
     }];
 }
+
+-(void) authenticateAsObject:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    [self authenticate:linkedLogin withCompletionBlock:^void(TradeItResult *tradeItResult){
+        
+        if ([tradeItResult isKindOfClass:[TradeItAuthenticationResult class] ]) {
+            TradeItAuthenticationResult * result = (TradeItAuthenticationResult*)tradeItResult;
+            NSMutableArray<TradeItAccount *> *accounts = [[NSMutableArray alloc] init];
+            NSArray *accountsArray = result.accounts;
+            for (NSDictionary *accountDictionary in accountsArray) {
+                TradeItAccount *account = [[TradeItAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
+                                                                               accountNumber:accountDictionary[@"accountNumber"]
+                                                                               accountName:accountDictionary[@"accountName"]
+                                                                               tradable:accountDictionary[@"tradable"]];
+                [accounts addObject:account];
+            }
+            result.accounts = accounts;
+            completionBlock(result);
+        }
+        else {
+            completionBlock(tradeItResult);
+        }
+    }];
+     
+}
+
 
 -(void) answerSecurityQuestion:(NSString *)answer withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     TradeItSecurityQuestionRequest * secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];

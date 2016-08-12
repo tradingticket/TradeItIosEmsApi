@@ -39,6 +39,8 @@
  */
 - (void) authenticate:(TradeItLinkedLogin *) linkedLogin withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
+- (void) authenticateAsObject:(TradeItLinkedLogin *) linkedLogin withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+
 /**
  *  Use this method to answer the broker secuirty question after the ems server sent a TradeItSecurityQuestionResult
  *
