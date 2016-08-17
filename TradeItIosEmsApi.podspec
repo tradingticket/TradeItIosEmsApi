@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TradeItIosEmsApi'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'ObjC EMS API Client'
 
   s.description      = <<-DESC
