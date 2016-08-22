@@ -46,7 +46,7 @@
             for (NSDictionary *accountDictionary in accountsArray) {
                 TradeItAccount *account = [[TradeItAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
                                                                                accountNumber:accountDictionary[@"accountNumber"]
-                                                                               accountName:accountDictionary[@"accountName"]
+                                                                               accountName:accountDictionary[@"name"]
                                                                                tradable:accountDictionary[@"tradable"]];
                 [accounts addObject:account];
             }
