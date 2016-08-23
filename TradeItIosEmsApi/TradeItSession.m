@@ -17,7 +17,7 @@
 
 @implementation TradeItSession
 
-- (id) initWithConnector: (TradeItConnector *) connector {
+- (id)initWithConnector:(TradeItConnector *)connector {
     self = [super init];
     if (self) {
         self.connector = connector;
@@ -25,64 +25,70 @@
     return self;
 }
 
--(void) authenticate:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    NSString * userToken = [self.connector userTokenFromKeychainId:linkedLogin.keychainId];
-    TradeItAuthenticationRequest * authRequest = [[TradeItAuthenticationRequest alloc] initWithUserToken:userToken userId:linkedLogin.userId andApiKey:self.connector.apiKey];
-    
-    NSMutableURLRequest * request = buildJsonRequest(authRequest, @"user/authenticate", self.connector.environment);
-    
-    [self.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        completionBlock([self parseAuthResponse: result jsonResponse:jsonResponse]);
+- (void)authenticate:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    NSString *userToken = [self.connector userTokenFromKeychainId:linkedLogin.keychainId];
+    TradeItAuthenticationRequest *authRequest = [[TradeItAuthenticationRequest alloc] initWithUserToken:userToken
+                                                                                                 userId:linkedLogin.userId
+                                                                                              andApiKey:self.connector.apiKey];
+
+    NSMutableURLRequest *request = buildJsonRequest(authRequest, @"user/authenticate", self.connector.environment);
+
+    [self.connector sendEMSRequest:request
+               withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        completionBlock([self parseAuthResponse:result
+                                   jsonResponse:jsonResponse]);
     }];
 }
 
--(void) authenticateAsObject:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    [self authenticate:linkedLogin withCompletionBlock:^void(TradeItResult *tradeItResult){
-        
+- (void)authenticateAsObject:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    [self authenticate:linkedLogin withCompletionBlock:^void(TradeItResult *tradeItResult) {
         if ([tradeItResult isKindOfClass:[TradeItAuthenticationResult class] ]) {
-            TradeItAuthenticationResult * result = (TradeItAuthenticationResult*)tradeItResult;
+            TradeItAuthenticationResult *result = (TradeItAuthenticationResult*)tradeItResult;
             NSMutableArray<TradeItAccount *> *accounts = [[NSMutableArray alloc] init];
             NSArray *accountsArray = result.accounts;
             for (NSDictionary *accountDictionary in accountsArray) {
                 TradeItAccount *account = [[TradeItAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
-                                                                               accountNumber:accountDictionary[@"accountNumber"]
-                                                                               accountName:accountDictionary[@"name"]
-                                                                               tradable:accountDictionary[@"tradable"]];
+                                                                                accountNumber:accountDictionary[@"accountNumber"]
+                                                                                  accountName:accountDictionary[@"name"]
+                                                                                     tradable:accountDictionary[@"tradable"]];
                 [accounts addObject:account];
             }
+
             result.accounts = accounts;
             completionBlock(result);
-        }
-        else {
+        } else {
             completionBlock(tradeItResult);
         }
     }];
-     
+
 }
 
 
--(void) answerSecurityQuestion:(NSString *)answer withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    TradeItSecurityQuestionRequest * secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];
-    
-    NSMutableURLRequest * request = buildJsonRequest(secRequest, @"user/answerSecurityQuestion", self.connector.environment);
-    
-    [self.connector sendEMSRequest:request withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        completionBlock([self parseAuthResponse: result jsonResponse:jsonResponse]);
+- (void)answerSecurityQuestion:(NSString *)answer
+           withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+    TradeItSecurityQuestionRequest *secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];
+
+    NSMutableURLRequest *request = buildJsonRequest(secRequest, @"user/answerSecurityQuestion", self.connector.environment);
+
+    [self.connector sendEMSRequest:request
+               withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        completionBlock([self parseAuthResponse:result
+                                   jsonResponse:jsonResponse]);
     }];
 }
 
--(TradeItResult *) parseAuthResponse:(TradeItResult *) result jsonResponse:(NSMutableString *) jsonResponse {
-    TradeItResult * resultToReturn = result;
-    
-    if ([result.status isEqual:@"SUCCESS"]){
+- (TradeItResult *)parseAuthResponse:(TradeItResult *)result
+                        jsonResponse:(NSMutableString *)jsonResponse {
+    TradeItResult *resultToReturn = result;
+
+    if ([result.status isEqual:@"SUCCESS"]) {
         resultToReturn = buildResult([TradeItAuthenticationResult alloc], jsonResponse);
         self.token = [(TradeItAuthenticationResult *)result token];
-    }
-    else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
+    } else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
         resultToReturn = buildResult([TradeItSecurityQuestionResult alloc], jsonResponse);
         self.token = [(TradeItAuthenticationResult *)result token];
     }
-    
+
     return resultToReturn;
 }
 
@@ -91,7 +97,7 @@
 }
 
 -(void) closeSession {
-    NSLog(@"Implement me!!");    
+    NSLog(@"Implement me!!");
 }
 
 -(NSString *) description {
