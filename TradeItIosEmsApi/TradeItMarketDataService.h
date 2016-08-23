@@ -32,6 +32,8 @@
  */
 - (void) getQuoteData:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
+- (void) getQuoteDataAsArray:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+
 /**
  *  This method requires a TradeItSymbolLookupRequest
  *

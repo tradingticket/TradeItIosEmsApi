@@ -10,6 +10,7 @@
 #import "TradeItEmsUtils.h"
 #import "TradeItQuotesResult.h"
 #import "TradeItSymbolLookupResult.h"
+#import "TradeItQuote.h"
 
 @implementation TradeItMarketDataService
 
@@ -48,6 +49,27 @@
         completionBlock(resultToReturn);
     }];
 }
+
+- (void) getQuoteDataAsArray:(TradeItQuotesRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+    [self getQuoteData:request withCompletionBlock:^void(TradeItResult *tradeItResult) {
+        if ([tradeItResult isKindOfClass:[TradeItQuotesResult class] ]) {
+            TradeItQuotesResult * result = (TradeItQuotesResult*)tradeItResult;
+            NSMutableArray<TradeItQuote *> *quotes = [[NSMutableArray alloc] init];
+            NSArray *quotesArray = result.quotes;
+            for (NSDictionary *quotesDictionary in quotesArray) {
+                TradeItQuote *quote = [[TradeItQuote alloc] initWithQuoteData: quotesDictionary];
+                [quotes addObject:quote];
+            }
+            result.quotes = quotes;
+            completionBlock(result);
+        }
+        else {
+            completionBlock(tradeItResult);
+        }
+    }];
+}
+
+
 
 -(void) symbolLookup:(TradeItSymbolLookupRequest *)request withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     NSMutableURLRequest * symbolLookupRequest = buildJsonRequest(request, @"marketdata/symbolLookup", self.session.connector.environment);

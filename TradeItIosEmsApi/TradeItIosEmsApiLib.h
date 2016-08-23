@@ -26,10 +26,15 @@
 #import "TradeItBroker.h"
 #import "TradeItAccount.h"
 
+#import "TradeItMarketDataService.h"
+#import "TradeItQuotesRequest.h"
+
 // Once you have a link you'll establish a session using the linkedLogin
 #import "TradeItSession.h"
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSecurityQuestionResult.h"
+#import "TradeItQuotesResult.h"
+#import "TradeItQuote.h"
 
 // Use the PublisherService to retrieve ad sources
 #import "TradeItAdsRequest.h"
