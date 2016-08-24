@@ -60,6 +60,7 @@
 #import "TradeItGetPositionsRequest.h"
 #import "TradeItGetPositionsResult.h"
 #import "TradeItPosition.h"
+#import "TradeItFxPosition.h"
 
 // Use the PublisherService to get publisher specific configurations/data
 #import "TradeItPublisherService.h"

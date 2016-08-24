@@ -141,7 +141,7 @@
 		A97FEF9D1C6E8FBA00AB3E2F /* TradeItMarketDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = A97FEF9B1C6E8FBA00AB3E2F /* TradeItMarketDataService.m */; };
 		B5B3D65C1D5DFE7600A7A2AA /* TradeItAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = B5B3D65A1D5DFE7600A7A2AA /* TradeItAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5B3D65D1D5DFE7600A7A2AA /* TradeItAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B3D65B1D5DFE7600A7A2AA /* TradeItAccount.m */; };
-		FA5B1E421D6D0649006EED56 /* TradeItFxPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = FA5B1E401D6D0649006EED56 /* TradeItFxPosition.h */; };
+		FA5B1E421D6D0649006EED56 /* TradeItFxPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = FA5B1E401D6D0649006EED56 /* TradeItFxPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA5B1E431D6D0649006EED56 /* TradeItFxPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5B1E411D6D0649006EED56 /* TradeItFxPosition.m */; };
 		FA61AC261D5A668800DEC7C4 /* TradeItBroker.h in Headers */ = {isa = PBXBuildFile; fileRef = FA61AC241D5A668800DEC7C4 /* TradeItBroker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FA61AC271D5A668800DEC7C4 /* TradeItBroker.m in Sources */ = {isa = PBXBuildFile; fileRef = FA61AC251D5A668800DEC7C4 /* TradeItBroker.m */; };
@@ -697,7 +697,6 @@
 				A96061DD1C65083B007A569C /* TIEMSJSONKeyMapper.h in Headers */,
 				65D9F8071CE22AC0006977B0 /* TradeItBrokerCenterBroker.h in Headers */,
 				A96061DE1C65083B007A569C /* TIEMSJSONValueTransformer.h in Headers */,
-				FA5B1E421D6D0649006EED56 /* TradeItFxPosition.h in Headers */,
 				A96061E01C65083B007A569C /* TradeItGetPositionsRequest.h in Headers */,
 				A96061E11C65083B007A569C /* TradeItAccountOverviewRequest.h in Headers */,
 				A96061E21C65083B007A569C /* TradeItBrokerListRequest.h in Headers */,
@@ -739,6 +738,7 @@
 				A96061FB1C65083C007A569C /* TradeItTradeService.h in Headers */,
 				A96061FC1C65083C007A569C /* TradeItBalanceService.h in Headers */,
 				A96061FD1C65083C007A569C /* TradeItPositionService.h in Headers */,
+				FA5B1E421D6D0649006EED56 /* TradeItFxPosition.h in Headers */,
 				A96061FE1C65083C007A569C /* TradeItTypeDefs.h in Headers */,
 				651700EA1C751EC100519844 /* TradeItQuote.h in Headers */,
 				A96062001C65083C007A569C /* TradeItIosEmsApiLib.h in Headers */,
