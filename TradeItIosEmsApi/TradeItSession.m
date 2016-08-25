@@ -13,7 +13,7 @@
 #import "TradeItAuthenticationResult.h"
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItSecurityQuestionRequest.h"
-#import "TradeItAccount.h"
+#import "TradeItBrokerAccount.h"
 
 @implementation TradeItSession
 
@@ -40,14 +40,15 @@
     }];
 }
 
-- (void)authenticateAsObject:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+- (void)authenticate:(TradeItLinkedLogin *)linkedLogin withObjectsCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     [self authenticate:linkedLogin withCompletionBlock:^void(TradeItResult *tradeItResult) {
-        if ([tradeItResult isKindOfClass:[TradeItAuthenticationResult class] ]) {
-            TradeItAuthenticationResult *result = (TradeItAuthenticationResult*)tradeItResult;
-            NSMutableArray<TradeItAccount *> *accounts = [[NSMutableArray alloc] init];
+        if ([tradeItResult isKindOfClass:[TradeItAuthenticationResult class]]) {
+            TradeItAuthenticationResult *result = (TradeItAuthenticationResult *)tradeItResult;
+            NSMutableArray<TradeItBrokerAccount *> *accounts = [[NSMutableArray alloc] init];
             NSArray *accountsArray = result.accounts;
+
             for (NSDictionary *accountDictionary in accountsArray) {
-                TradeItAccount *account = [[TradeItAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
+                TradeItBrokerAccount *account = [[TradeItBrokerAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
                                                                                 accountNumber:accountDictionary[@"accountNumber"]
                                                                                   accountName:accountDictionary[@"name"]
                                                                                      tradable:accountDictionary[@"tradable"]];
