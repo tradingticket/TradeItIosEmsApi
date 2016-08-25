@@ -24,7 +24,7 @@
 #import "TradeItAuthLinkRequest.h"
 #import "TradeItAuthLinkResult.h"
 #import "TradeItBroker.h"
-#import "TradeItAccount.h"
+#import "TradeItBrokerAccount.h"
 
 #import "TradeItMarketDataService.h"
 #import "TradeItQuotesRequest.h"
