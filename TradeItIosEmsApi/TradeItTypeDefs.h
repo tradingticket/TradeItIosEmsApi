@@ -16,8 +16,11 @@
  */
 typedef enum {
     TradeItEmsProductionEnv,
+    TradeItEmsProductionEnvV2,
     TradeItEmsTestEnv,
-    TradeItEmsLocalEnv
+    TradeItEmsTestEnvV2,
+    TradeItEmsLocalEnv,
+    TradeItEmsLocalEnvV2
 } TradeitEmsEnvironments;
 
 typedef void (^TradeItRequestCompletionBlock)(TradeItResult* result);

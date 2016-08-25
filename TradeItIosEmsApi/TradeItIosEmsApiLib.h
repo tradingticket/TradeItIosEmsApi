@@ -54,6 +54,9 @@
 #import "TradeItBalanceService.h"
 #import "TradeItAccountOverviewRequest.h"
 #import "TradeItAccountOverviewResult.h"
+#import "TradeItSuccessBalanceResult.h"
+#import "TradeItAccountOverview.h"
+#import "TradeItFxAccountOverview.h"
 
 // Use the PositionSerview to get account position information
 #import "TradeItPositionService.h"

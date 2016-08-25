@@ -31,5 +31,7 @@
  */
 - (void) getAccountOverview:(TradeItAccountOverviewRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
 
+- (void) getAccountOverviewV2:(TradeItAccountOverviewRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+
 
 @end
