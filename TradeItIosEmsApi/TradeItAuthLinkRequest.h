@@ -12,11 +12,12 @@
 
 @interface TradeItAuthLinkRequest : TradeItRequest
 
-@property NSString * id;
-@property NSString * password;
-@property NSString * broker;
-@property NSString * apiKey;
+@property NSString *id;
+@property NSString *password;
+@property NSString *broker;
+@property NSString *apiKey;
 
--(id) initWithAuthInfo: (TradeItAuthenticationInfo *) authInfo andAPIKey: (NSString *) apiKey;
+- (id)initWithAuthInfo:(TradeItAuthenticationInfo *)authInfo
+             andAPIKey:(NSString *)apiKey;
 
 @end

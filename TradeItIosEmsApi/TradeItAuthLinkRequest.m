@@ -10,8 +10,10 @@
 
 @implementation TradeItAuthLinkRequest
 
--(id) initWithAuthInfo: (TradeItAuthenticationInfo *) authInfo andAPIKey: (NSString *) apiKey {
+- (id)initWithAuthInfo:(TradeItAuthenticationInfo *)authInfo
+             andAPIKey:(NSString *)apiKey {
     self = [super init];
+
     if (self) {
         self.id = authInfo.id;
         self.password = authInfo.password;
@@ -22,7 +24,7 @@
     return self;
 }
 
--(NSString*) description {
+- (NSString *)description {
     return [NSString stringWithFormat:@"TradeItAuthenticationInfo: id:%@ password:%@  Broker:%@, APIKey:%@", self.id, self.password, self.broker, self.apiKey];
 }
 
