@@ -8,7 +8,7 @@
 
 #import "TradeItSession.h"
 #import "TradeItAuthenticationRequest.h"
-#import "TradeItEmsUtils.h"
+#import "TradeItJsonConverter.h"
 #import "TradeItErrorResult.h"
 #import "TradeItAuthenticationResult.h"
 #import "TradeItSecurityQuestionResult.h"
@@ -31,7 +31,9 @@
                                                                                                  userId:linkedLogin.userId
                                                                                               andApiKey:self.connector.apiKey];
 
-    NSMutableURLRequest *request = buildJsonRequest(authRequest, @"user/authenticate", self.connector.environment);
+    NSMutableURLRequest *request = [TradeItJsonConverter buildJsonRequestForModel:authRequest
+                                                                        emsAction:@"user/authenticate"
+                                                                      environment:self.connector.environment];
 
     [self.connector sendEMSRequest:request
                withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
@@ -49,9 +51,9 @@
 
             for (NSDictionary *accountDictionary in accountsArray) {
                 TradeItBrokerAccount *account = [[TradeItBrokerAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
-                                                                                accountNumber:accountDictionary[@"accountNumber"]
-                                                                                  accountName:accountDictionary[@"name"]
-                                                                                     tradable:accountDictionary[@"tradable"]];
+                                                                                            accountNumber:accountDictionary[@"accountNumber"]
+                                                                                              accountName:accountDictionary[@"name"]
+                                                                                                 tradable:accountDictionary[@"tradable"]];
                 [accounts addObject:account];
             }
 
@@ -69,7 +71,9 @@
            withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     TradeItSecurityQuestionRequest *secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];
 
-    NSMutableURLRequest *request = buildJsonRequest(secRequest, @"user/answerSecurityQuestion", self.connector.environment);
+    NSMutableURLRequest *request = [TradeItJsonConverter buildJsonRequestForModel:secRequest
+                                                                        emsAction:@"user/answerSecurityQuestion"
+                                                                      environment:self.connector.environment];
 
     [self.connector sendEMSRequest:request
                withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
@@ -83,10 +87,10 @@
     TradeItResult *resultToReturn = result;
 
     if ([result.status isEqual:@"SUCCESS"]) {
-        resultToReturn = buildResult([TradeItAuthenticationResult alloc], jsonResponse);
+        resultToReturn = [TradeItJsonConverter buildResult:[TradeItAuthenticationResult alloc] jsonString:jsonResponse];
         self.token = [(TradeItAuthenticationResult *)result token];
     } else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
-        resultToReturn = buildResult([TradeItSecurityQuestionResult alloc], jsonResponse);
+        resultToReturn = [TradeItJsonConverter buildResult:[TradeItSecurityQuestionResult alloc] jsonString:jsonResponse];
         self.token = [(TradeItAuthenticationResult *)result token];
     }
 

@@ -7,7 +7,7 @@
 //
 
 #import "TradeItMarketDataService.h"
-#import "TradeItEmsUtils.h"
+#import "TradeItJsonConverter.h"
 #import "TradeItQuotesResult.h"
 #import "TradeItSymbolLookupResult.h"
 #import "TradeItQuote.h"
@@ -37,13 +37,15 @@
         return;
     }
 
-    NSMutableURLRequest *quoteRequest = buildJsonRequest(request, endpoint, self.session.connector.environment);
+    NSMutableURLRequest *quoteRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                             emsAction:endpoint
+                                                                           environment:self.session.connector.environment];
 
     [self.session.connector sendEMSRequest:quoteRequest withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
         TradeItResult *resultToReturn = result;
 
         if ([result.status isEqual:@"SUCCESS"]) {
-            resultToReturn = buildResult([TradeItQuotesResult alloc], jsonResponse);
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItQuotesResult alloc] jsonString:jsonResponse];
         }
 
         completionBlock(resultToReturn);
@@ -71,13 +73,15 @@
 }
 
 - (void)symbolLookup:(TradeItSymbolLookupRequest *)request withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    NSMutableURLRequest *symbolLookupRequest = buildJsonRequest(request, @"marketdata/symbolLookup", self.session.connector.environment);
+    NSMutableURLRequest *symbolLookupRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                                    emsAction:@"marketdata/symbolLookup"
+                                                                                  environment:self.session.connector.environment];
     
     [self.session.connector sendEMSRequest:symbolLookupRequest withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
         TradeItResult *resultToReturn = result;
         
         if ([result.status isEqual:@"SUCCESS"]) {
-            resultToReturn = buildResult([TradeItSymbolLookupResult alloc], jsonResponse);
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItSymbolLookupResult alloc] jsonString:jsonResponse];
         }
 
         completionBlock(resultToReturn);

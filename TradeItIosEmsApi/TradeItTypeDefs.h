@@ -16,13 +16,15 @@
  */
 typedef enum {
     TradeItEmsProductionEnv,
-    TradeItEmsProductionEnvV2,
     TradeItEmsTestEnv,
-    TradeItEmsTestEnvV2,
-    TradeItEmsLocalEnv,
-    TradeItEmsLocalEnvV2
+    TradeItEmsLocalEnv
 } TradeitEmsEnvironments;
 
-typedef void (^TradeItRequestCompletionBlock)(TradeItResult* result);
+typedef enum {
+    TradeItEmsApiVersion_1,
+    TradeItEmsApiVersion_2,
+} TradeItEmsApiVersion;
+
+typedef void(^TradeItRequestCompletionBlock)(TradeItResult* result);
 
 #endif

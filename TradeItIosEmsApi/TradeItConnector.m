@@ -7,7 +7,7 @@
 //
 
 #import "TradeItConnector.h"
-#import "TradeItEmsUtils.h"
+#import "TradeItJsonConverter.h"
 #import "TradeItErrorResult.h"
 #import "TradeItKeychain.h"
 #import "TradeItAuthLinkRequest.h"
@@ -21,13 +21,31 @@
 NSString * BROKER_LIST_KEYNAME = @"TRADEIT_BROKERS";
 NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
-- (id)initWithApiKey:(NSString *) apiKey {
+- (id)initWithApiKey:(NSString *)apiKey
+         environment:(TradeitEmsEnvironments)environment
+             version:(TradeItEmsApiVersion)version {
     self = [super init];
+
+    if (self) {
+        self.apiKey = apiKey;
+        self.environment = environment;
+        self.version = version;
+        runAsyncCompletionBlockOnMainThread = true;
+    }
+
+    return self;
+}
+
+- (id)initWithApiKey:(NSString *)apiKey {
+    self = [super init];
+
     if (self) {
         self.apiKey = apiKey;
         self.environment = TradeItEmsProductionEnv;
+        self.version = TradeItEmsApiVersion_2;
         runAsyncCompletionBlockOnMainThread = true;
     }
+
     return self;
 }
 
@@ -51,7 +69,9 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
 
 - (void)getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *))completionBlock {
     TradeItBrokerListRequest * brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
-    NSMutableURLRequest *request = buildJsonRequest(brokerListRequest, @"preference/getStocksOrEtfsBrokerList", self.environment);
+    NSMutableURLRequest *request = [TradeItJsonConverter buildJsonRequestForModel:brokerListRequest
+                                                                        emsAction:@"preference/getStocksOrEtfsBrokerList"
+                                                                      environment:self.environment];
     
     [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString *jsonResponse) {
          
@@ -59,7 +79,8 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
              NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
          }
          else if ([tradeItResult.status isEqual:@"SUCCESS"]){
-             TradeItBrokerListResult* successResult = (TradeItBrokerListResult*) buildResult([TradeItBrokerListResult alloc],jsonResponse);
+             TradeItBrokerListResult* successResult = (TradeItBrokerListResult*)[TradeItJsonConverter buildResult:[TradeItBrokerListResult alloc]
+                                                                                                       jsonString:jsonResponse];
             
              completionBlock(successResult.brokerList);
              
@@ -77,12 +98,15 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
                       andCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     TradeItAuthLinkRequest *authLinkRequest = [[TradeItAuthLinkRequest alloc] initWithAuthInfo:authInfo andAPIKey:self.apiKey];
     
-    NSMutableURLRequest *request = buildJsonRequest(authLinkRequest, @"user/oAuthLink", self.environment);
+    NSMutableURLRequest *request = [TradeItJsonConverter buildJsonRequestForModel:authLinkRequest
+                                                                        emsAction:@"user/oAuthLink"
+                                                                      environment:self.environment];
     
     [self sendEMSRequest:request withCompletionBlock:^(TradeItResult *tradeItResult, NSMutableString * jsonResponse) {
         
         if ([tradeItResult.status isEqual:@"SUCCESS"]) {
-            TradeItAuthLinkResult* successResult = (TradeItAuthLinkResult*) buildResult([TradeItAuthLinkResult alloc],jsonResponse);
+            TradeItAuthLinkResult* successResult = (TradeItAuthLinkResult*) [TradeItJsonConverter buildResult:[TradeItAuthLinkResult alloc]
+                                                                                                   jsonString:jsonResponse];
             
             tradeItResult = successResult;
         }
@@ -231,13 +255,15 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
         */
 
         //first convert to a generic result to check the type
-        TradeItResult * tradeItResult = buildResult([TradeItResult alloc],jsonResponse);
+        TradeItResult *tradeItResult = [TradeItJsonConverter buildResult:[TradeItResult alloc]
+                                                               jsonString:jsonResponse];
         
-        if([tradeItResult.status isEqual:@"ERROR"]){
+        if ([tradeItResult.status isEqual:@"ERROR"]) {
             TradeItErrorResult * errorResult;
             
-            if(![tradeItResult isKindOfClass: [TradeItErrorResult class]]) {
-                errorResult = (TradeItErrorResult *) buildResult([TradeItErrorResult alloc],jsonResponse); //this is an error as served directly from the EMS server
+            if (![tradeItResult isKindOfClass:[TradeItErrorResult class]]) {
+                errorResult = (TradeItErrorResult *)[TradeItJsonConverter buildResult:[TradeItErrorResult alloc]
+                                                                           jsonString:jsonResponse];
             } else {
                 errorResult = (TradeItErrorResult *) tradeItResult; //this type of error caused by something wrong parsing the response
             }
