@@ -12,6 +12,7 @@
 #import "TradeItAuthenticationInfo.h"
 #import "TradeItResult.h"
 #import "TradeItAuthLinkResult.h"
+#import "TradeItUpdateLinkResult.h"
 #import "TradeItLinkedLogin.h"
 #import "TradeItBroker.h"
 
@@ -60,7 +61,16 @@
                       andCompletionBlock:(void (^ _Nullable)(TradeItResult * _Nullable))completionBlock;
 
 /**
- *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
+ *  If the oAuth token becomes stale, we can issue a new token by the previous linked login. This will replace the occurrence, if any, in the keychain/userprofile.  If it was never previously saved, it will be created.
+ *
+ *  @return TradeItResult returned in completion block if successful will include a new userId and userToken
+ */
+- (void)updateUserToken:(TradeItLinkedLogin *)linkedLogin
+ withAuthenticationInfo:(TradeItAuthenticationInfo *)authInfo
+     andCompletionBlock:(void (^)(TradeItResult *))completionBlock;
+
+/**
+ *  Using a successful response from the linkBrokerWithAuthenticationInfo:andCompletionBlock: this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
  */
 - (TradeItLinkedLogin * _Nullable)saveLinkToKeychain:(TradeItAuthLinkResult * _Nullable)link
                                           withBroker:(NSString * _Nullable)broker;
@@ -71,6 +81,12 @@
 - (TradeItLinkedLogin * _Nullable)saveLinkToKeychain:(TradeItAuthLinkResult * _Nullable)link
                                           withBroker:(NSString * _Nullable)broker
                                             andLabel:(NSString * _Nullable)label;
+
+/**
+ *  Using a successful response from the updateUserToken:withAuthenticationInfo:andCompletionBlock: this method will update the keychain token for an already linked account.
+ */
+- (TradeItLinkedLogin *)updateLinkInKeychain:(TradeItUpdateLinkResult *)link
+                                  withBroker:(NSString *)broker;
 
 /**
  *  Retrieve a list of stored linkedLogins
