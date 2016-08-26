@@ -49,8 +49,8 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     return self;
 }
 
-- (void)getAvailableBrokersAsObjectsWithCompletionBlock:(void (^ _Nonnull)(NSArray<TradeItBroker *> * _Nullable))completionBlock {
-    [self getAvailableBrokersWithCompletionBlock:^void(NSArray *brokerDictionaries) {
+- (void)getAvailableBrokersWithCompletionBlock:(void (^ _Nullable)(NSArray<TradeItBroker *> * _Nullable))completionBlock {
+    [self getAvailableBrokersJsonWithCompletionBlock:^void(NSArray *brokerDictionaries) {
         if (brokerDictionaries == nil) {
             completionBlock(nil);
         }
@@ -67,21 +67,19 @@ NSString * USER_DEFAULTS_SUITE = @"TRADEIT";
     }];
 }
 
-- (void)getAvailableBrokersWithCompletionBlock:(void (^)(NSArray *))completionBlock {
-    TradeItBrokerListRequest * brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
+- (void)getAvailableBrokersJsonWithCompletionBlock:(void (^)(NSArray *))completionBlock {
+    TradeItBrokerListRequest *brokerListRequest = [[TradeItBrokerListRequest alloc] initWithApiKey:self.apiKey];
+
     NSMutableURLRequest *request = [TradeItJsonConverter buildJsonRequestForModel:brokerListRequest
                                                                         emsAction:@"preference/getStocksOrEtfsBrokerList"
                                                                       environment:self.environment];
     
     [self sendEMSRequest:request withCompletionBlock:^(TradeItResult * tradeItResult, NSMutableString *jsonResponse) {
-         
-         if([tradeItResult isKindOfClass: [TradeItErrorResult class]]){
+         if ([tradeItResult isKindOfClass: [TradeItErrorResult class]]) {
              NSLog(@"Could not fetch broker list, got error result%@ ", tradeItResult);
-         }
-         else if ([tradeItResult.status isEqual:@"SUCCESS"]){
-             TradeItBrokerListResult* successResult = (TradeItBrokerListResult*)[TradeItJsonConverter buildResult:[TradeItBrokerListResult alloc]
+         } else if ([tradeItResult.status isEqual:@"SUCCESS"]){
+             TradeItBrokerListResult *successResult = (TradeItBrokerListResult*)[TradeItJsonConverter buildResult:[TradeItBrokerListResult alloc]
                                                                                                        jsonString:jsonResponse];
-            
              completionBlock(successResult.brokerList);
              
              return;

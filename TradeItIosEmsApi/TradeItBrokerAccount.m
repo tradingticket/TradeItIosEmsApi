@@ -12,12 +12,12 @@
 
 - (id)initWithAccountBaseCurrency:(NSString *)accountBaseCurrency
                     accountNumber:(NSString *)accountNumber
-                      accountName:(NSString *)accountName
+                             name:(NSString *)name
                          tradable:(BOOL)tradable {
     if (self = [super init]) {
         self.accountBaseCurrency = accountBaseCurrency;
         self.accountNumber = accountNumber;
-        self.accountName = accountName;
+        self.name = name;
         self.tradable = tradable;
     }
 
@@ -28,7 +28,7 @@
     return [NSString stringWithFormat:@"accountBaseCurrency=%@ accountNumber=%@ accountName=%@ tradable=%d",
             self.accountBaseCurrency,
             self.accountNumber,
-            self.accountName,
+            self.name,
             self.tradable];
 }
 

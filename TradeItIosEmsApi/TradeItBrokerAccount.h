@@ -7,20 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TIEMSJSONModel.h"
 
-@interface TradeItBrokerAccount : NSObject
+@protocol TradeItBrokerAccount
+@end
+
+@interface TradeItBrokerAccount :  TIEMSJSONModel<NSCopying>
 
 @property (copy)NSString *accountBaseCurrency;
 
 @property (copy)NSString *accountNumber;
 
-@property (copy)NSString *accountName;
+@property (copy)NSString *name;
 
 @property (assign, nonatomic)BOOL tradable;
 
 - (id)initWithAccountBaseCurrency:(NSString *)accountBaseCurrency
                     accountNumber:(NSString *)accountNumber
-                      accountName:(NSString *)accountName
+                             name:(NSString *)name
                          tradable:(BOOL)tradable;
 
 @end

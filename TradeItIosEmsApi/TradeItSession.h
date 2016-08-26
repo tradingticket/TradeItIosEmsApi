@@ -29,17 +29,15 @@
 - (id)initWithConnector:(TradeItConnector *)connector;
 
 /**
- *  This will establish a session give the user's token.
+ *  This will establish a session give the user's token and will set the userToken on the session.
  *
  *  @param userToken obtained from an linkBrokerWithAuthenticationInfo
  *
- *  @return on success will return a result that will set the token on the session instance
+ *  @return on success will return a list of TradeItBrokerAccount objects
  *  - It's also possible to recieve a TradeItSecurityQuestionResult in which you'll need to issue an answerSecurityQuestion request before you'll recieve the session token
  *  - TradeItErrorResult also possible please see https://www.trade.it/api#ErrorHandling for descriptions of error codes
  */
 - (void)authenticate:(TradeItLinkedLogin *)linkedLogin withCompletionBlock:(void (^)(TradeItResult *))completionBlock;
-
-- (void)authenticate:(TradeItLinkedLogin *)linkedLogin withObjectsCompletionBlock:(void (^)(TradeItResult *))completionBlock;
 
 /**
  *  Use this method to answer the broker secuirty question after the ems server sent a TradeItSecurityQuestionResult

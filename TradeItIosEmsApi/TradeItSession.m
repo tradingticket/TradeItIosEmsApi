@@ -42,31 +42,6 @@
     }];
 }
 
-- (void)authenticate:(TradeItLinkedLogin *)linkedLogin withObjectsCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    [self authenticate:linkedLogin withCompletionBlock:^void(TradeItResult *tradeItResult) {
-        if ([tradeItResult isKindOfClass:[TradeItAuthenticationResult class]]) {
-            TradeItAuthenticationResult *result = (TradeItAuthenticationResult *)tradeItResult;
-            NSMutableArray<TradeItBrokerAccount *> *accounts = [[NSMutableArray alloc] init];
-            NSArray *accountsArray = result.accounts;
-
-            for (NSDictionary *accountDictionary in accountsArray) {
-                TradeItBrokerAccount *account = [[TradeItBrokerAccount alloc] initWithAccountBaseCurrency:accountDictionary[@"accountBaseCurrency"]
-                                                                                            accountNumber:accountDictionary[@"accountNumber"]
-                                                                                              accountName:accountDictionary[@"name"]
-                                                                                                 tradable:accountDictionary[@"tradable"]];
-                [accounts addObject:account];
-            }
-
-            result.accounts = accounts;
-            completionBlock(result);
-        } else {
-            completionBlock(tradeItResult);
-        }
-    }];
-
-}
-
-
 - (void)answerSecurityQuestion:(NSString *)answer
            withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     TradeItSecurityQuestionRequest *secRequest = [[TradeItSecurityQuestionRequest alloc] initWithToken:self.token andAnswer:answer];
@@ -82,30 +57,32 @@
     }];
 }
 
-- (TradeItResult *)parseAuthResponse:(TradeItResult *)result
+- (TradeItResult *)parseAuthResponse:(TradeItResult *)authenticationResult
                         jsonResponse:(NSMutableString *)jsonResponse {
-    TradeItResult *resultToReturn = result;
+    self.token = [authenticationResult token];
+    NSString *status = authenticationResult.status;
 
-    if ([result.status isEqual:@"SUCCESS"]) {
+    TradeItResult *resultToReturn;
+
+    if ([status isEqual:@"SUCCESS"]) {
         resultToReturn = [TradeItJsonConverter buildResult:[TradeItAuthenticationResult alloc] jsonString:jsonResponse];
-        self.token = [(TradeItAuthenticationResult *)result token];
-    } else if([result.status isEqualToString:@"INFORMATION_NEEDED"]) {
+
+    } else if ([status isEqualToString:@"INFORMATION_NEEDED"]) {
         resultToReturn = [TradeItJsonConverter buildResult:[TradeItSecurityQuestionResult alloc] jsonString:jsonResponse];
-        self.token = [(TradeItAuthenticationResult *)result token];
     }
 
     return resultToReturn;
 }
 
--(void) keepSessionAliveWithCompletionBlock:(void (^)(TradeItResult *))completionBlock {
+- (void)keepSessionAliveWithCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     NSLog(@"Implement me!!");
 }
 
--(void) closeSession {
+- (void)closeSession {
     NSLog(@"Implement me!!");
 }
 
--(NSString *) description {
+- (NSString *)description {
     return [NSString stringWithFormat:@"TradeItSession: %@", self.token];
 }
 
