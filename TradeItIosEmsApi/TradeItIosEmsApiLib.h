@@ -24,11 +24,17 @@
 #import "TradeItAuthLinkRequest.h"
 #import "TradeItAuthLinkResult.h"
 #import "TradeItBroker.h"
+#import "TradeItBrokerAccount.h"
+
+#import "TradeItMarketDataService.h"
+#import "TradeItQuotesRequest.h"
 
 // Once you have a link you'll establish a session using the linkedLogin
 #import "TradeItSession.h"
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItSecurityQuestionResult.h"
+#import "TradeItQuotesResult.h"
+#import "TradeItQuote.h"
 
 // Use the PublisherService to retrieve ad sources
 #import "TradeItAdsRequest.h"
@@ -48,12 +54,15 @@
 #import "TradeItBalanceService.h"
 #import "TradeItAccountOverviewRequest.h"
 #import "TradeItAccountOverviewResult.h"
+#import "TradeItAccountOverview.h"
+#import "TradeItFxAccountOverview.h"
 
 // Use the PositionSerview to get account position information
 #import "TradeItPositionService.h"
 #import "TradeItGetPositionsRequest.h"
 #import "TradeItGetPositionsResult.h"
 #import "TradeItPosition.h"
+#import "TradeItFxPosition.h"
 
 // Use the PublisherService to get publisher specific configurations/data
 #import "TradeItPublisherService.h"

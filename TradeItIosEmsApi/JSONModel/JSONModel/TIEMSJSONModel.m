@@ -28,6 +28,7 @@
 #import "TIEMSJSONModelArray.h"
 
 #import "TradeItPosition.h"
+#import "TradeItFxPosition.h"
 #import "TradeItSymbolLookupCompany.h"
 #import "TradeItBrokerCenterBroker.h"
 
@@ -718,6 +719,7 @@ static TIEMSJSONKeyMapper* globalKeyMapper = nil;
     //as it hadn't been loaded by the library so we force it
     //is this the best place for this? probably not, but I'm grumps
     [TradeItPosition class];
+    [TradeItFxPosition class];
     [TradeItSymbolLookupCompany class];
     [TradeItBrokerCenterBroker class];
     

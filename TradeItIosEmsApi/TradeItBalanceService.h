@@ -15,12 +15,12 @@
 /**
  *  The session will need to be set for the request to be made
  */
-@property TradeItSession * session;
+@property TradeItSession *session;
 
 /**
  *  As the session needs to be set, this is the preferred init method
  */
--(id) initWithSession:(TradeItSession *) session;
+- (id)initWithSession:(TradeItSession *)session;
 
 /**
  *  This method requires a TradeItAccountOverviewRequest
@@ -29,7 +29,8 @@
  *  - TradeItErrorResult also possible please see https://www.trade.it/api#ErrorHandling for descriptions of error codes
  *
  */
-- (void) getAccountOverview:(TradeItAccountOverviewRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock;
+- (void)getAccountOverview:(TradeItAccountOverviewRequest *)request
+       withCompletionBlock:(void (^)(TradeItResult *))completionBlock;
 
 
 @end

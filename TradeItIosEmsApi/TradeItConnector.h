@@ -27,46 +27,50 @@
 
 /**
  *  Environment to send the request to. Default value is TradeItEmsProductionEnv
- *  Tokens are specific to environment
+ *  Tokens and API Keys are specific to environment
  */
 @property TradeitEmsEnvironments environment;
 
 /**
- *  Connectors will always need an API key
+ *  API version to use.  Defaults to the latest.
  */
-- (id _Nullable)initWithApiKey:(NSString * _Nullable) apiKey;
+@property TradeItEmsApiVersion version;
+
+- (id _Nullable)initWithApiKey:(NSString *)apiKey;
+
+- (id _Nullable)initWithApiKey:(NSString *)apiKey
+                   environment:(TradeitEmsEnvironments)environment
+                       version:(TradeItEmsApiVersion)version;
 
 /**
  *  Return an array with all the brokers that support stockOrEtfTrading and are enabled for a given apiKey
  *
- *  @return Array NSDictionary objects, where each object has a "longName" and "shortName". The longName should be displauyed to the user and the short name should be used wbe sending a request to the ems server
+ *  @return Array of TradeItBroker objects, where each object has a "longName" and "shortName". The longName should be displauyed to the user and the short name should be used wbe sending a request to the ems server
  */
-- (void)getAvailableBrokersWithCompletionBlock:(void (^ _Nullable)(NSArray * _Nullable))completionBlock;
-
-- (void)getAvailableBrokersAsObjectsWithCompletionBlock:(void (^ _Nonnull)(NSArray<TradeItBroker *> * _Nullable))completionBlock;
+- (void)getAvailableBrokersWithCompletionBlock:(void (^ _Nullable)(NSArray<TradeItBroker *> * _Nullable))completionBlock;
 
 /**
  *  A user oAuth token is generated given credentials for a broker. The token may be used to authenticate the user in the future without them having to re-enter their credentials.
  * **** This token should be treated and stored like a password.  *****
  *  It's recommended to use the saveLinkToKeychain method to hold onto the token, and use either touchId or a short password like a 4 digit pen before retrieving the token for the user
- *  
+ *
  *  @return TradeItResult returned into the completion block will indicate success/failure of the credentials
  */
-- (void) linkBrokerWithAuthenticationInfo:(TradeItAuthenticationInfo * _Nullable)authInfo
-                       andCompletionBlock:(void (^ _Nullable)(TradeItResult * _Nullable))completionBlock;
+- (void)linkBrokerWithAuthenticationInfo:(TradeItAuthenticationInfo * _Nullable)authInfo
+                      andCompletionBlock:(void (^ _Nullable)(TradeItResult * _Nullable))completionBlock;
 
 /**
  *  Using a successful response from the linkBrokerWithAuthenticationInfo this method will save basic information to the user preferences, and a UUID pointed to the actual user token which will be stored in the keychain.
  */
 - (TradeItLinkedLogin * _Nullable)saveLinkToKeychain:(TradeItAuthLinkResult * _Nullable)link
-                                withBroker:(NSString * _Nullable)broker;
+                                          withBroker:(NSString * _Nullable)broker;
 
 /**
  *  Same as above, but with a custom label. Useful if allowing users to link to more than one login per broker. The default, in the above method, is just the broker name.
  */
 - (TradeItLinkedLogin * _Nullable)saveLinkToKeychain:(TradeItAuthLinkResult * _Nullable)link
-                                withBroker:(NSString * _Nullable)broker
-                                  andLabel:(NSString * _Nullable)label;
+                                          withBroker:(NSString * _Nullable)broker
+                                            andLabel:(NSString * _Nullable)label;
 
 /**
  *  Retrieve a list of stored linkedLogins
@@ -95,10 +99,7 @@
  *  @return TradeItResult if successful will include a new userId and userToken
  */
 - (TradeItResult * _Nullable)updateUserToken:(TradeItLinkedLogin * _Nullable)linkedLogin
-            withAuthenticationInfo:(TradeItAuthenticationInfo * _Nullable)authInfo;
-
-
-
+                      withAuthenticationInfo:(TradeItAuthenticationInfo * _Nullable)authInfo;
 
 /**
  *  Method used by the session and services to issue requests to the ems servers

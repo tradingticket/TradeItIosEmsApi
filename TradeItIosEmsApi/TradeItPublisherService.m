@@ -7,7 +7,7 @@
 //
 
 #import "TradeItPublisherService.h"
-#import "TradeItEmsUtils.h"
+#import "TradeItJsonConverter.h"
 
 @implementation TradeItPublisherService
 
@@ -19,51 +19,57 @@
     return self;
 }
 
--(void) getAds:(TradeItAdsRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    NSString * endpoint = @"publisherad/getAdPlacements";
+- (void)getAds:(TradeItAdsRequest *)request withCompletionBlock:(void(^)(TradeItResult *))completionBlock {
+    NSString *endpoint = @"publisherad/getAdPlacements";
     request.apiKey = self.connector.apiKey;
 
-    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.connector.environment);
+    NSMutableURLRequest *adRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                          emsAction:endpoint
+                                                                        environment:self.connector.environment];
 
-    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        TradeItResult * resultToReturn = result;
+    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        TradeItResult *resultToReturn = result;
 
-        if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItAdsResult alloc], jsonResponse);
+        if ([result.status isEqual:@"SUCCESS"]) {
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItAdsResult alloc] jsonString:jsonResponse];
         }
 
         completionBlock(resultToReturn);
     }];
 }
 
--(void) getBrokerCenter:(TradeItPublisherDataRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    NSString * endpoint = @"publisherad/getBrokerCenter";
+- (void) getBrokerCenter:(TradeItPublisherDataRequest *)request withCompletionBlock:(void(^)(TradeItResult *))completionBlock {
+    NSString *endpoint = @"publisherad/getBrokerCenter";
     request.apiKey = self.connector.apiKey;
 
-    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.connector.environment);
+    NSMutableURLRequest *adRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                          emsAction:endpoint
+                                                                        environment:self.connector.environment];
 
-    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        TradeItResult * resultToReturn = result;
+    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        TradeItResult *resultToReturn = result;
 
         if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItBrokerCenterResult alloc], jsonResponse);
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItBrokerCenterResult alloc] jsonString:jsonResponse];
         }
 
         completionBlock(resultToReturn);
     }];
 }
 
--(void) getPublisherData:(TradeItPublisherDataRequest *)request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
-    NSString * endpoint = @"preference/getPublisherSDKData";
+- (void)getPublisherData:(TradeItPublisherDataRequest *)request withCompletionBlock:(void(^)(TradeItResult *))completionBlock {
+    NSString *endpoint = @"preference/getPublisherSDKData";
     request.apiKey = self.connector.apiKey;
 
-    NSMutableURLRequest * adRequest = buildJsonRequest(request, endpoint, self.connector.environment);
+    NSMutableURLRequest *adRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                          emsAction:endpoint
+                                                                        environment:self.connector.environment];
 
-    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        TradeItResult * resultToReturn = result;
+    [self.connector sendEMSRequest:adRequest withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        TradeItResult *resultToReturn = result;
         
         if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItPublisherDataResult alloc], jsonResponse);
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItPublisherDataResult alloc] jsonString:jsonResponse];
         }
 
         completionBlock(resultToReturn);

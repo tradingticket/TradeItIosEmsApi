@@ -7,29 +7,36 @@
 //
 
 #import "TradeItBalanceService.h"
-#import "TradeItEmsUtils.h"
+#import "TradeItJsonConverter.h"
 #import "TradeItAccountOverviewResult.h"
 
 @implementation TradeItBalanceService
 
--(id) initWithSession:(TradeItSession *) session {
+- (id)initWithSession:(TradeItSession *)session {
     self = [super init];
+
     if(self) {
         self.session = session;
     }
+
     return self;
 }
 
-- (void) getAccountOverview:(TradeItAccountOverviewRequest *) request withCompletionBlock:(void (^)(TradeItResult *)) completionBlock {
+- (void)getAccountOverview:(TradeItAccountOverviewRequest *)request
+       withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
     request.token = self.session.token;
-
-    NSMutableURLRequest * balanceRequest = buildJsonRequest(request, @"balance/getAccountOverview", self.session.connector.environment);
-
-    [self.session.connector sendEMSRequest:balanceRequest withCompletionBlock:^(TradeItResult * result, NSMutableString * jsonResponse) {
-        TradeItResult * resultToReturn = result;
+    
+    NSMutableURLRequest *balanceRequest = [TradeItJsonConverter buildJsonRequestForModel:request
+                                                                               emsAction:@"balance/getAccountOverview"
+                                                                             environment:self.session.connector.environment];
+    
+    [self.session.connector sendEMSRequest:balanceRequest
+                       withCompletionBlock:^(TradeItResult *result, NSMutableString *jsonResponse) {
+        TradeItResult *resultToReturn = result;
         
-        if ([result.status isEqual:@"SUCCESS"]){
-            resultToReturn = buildResult([TradeItAccountOverviewResult alloc], jsonResponse);
+        if ([result.status isEqual:@"SUCCESS"]) {
+            resultToReturn = [TradeItJsonConverter buildResult:[TradeItAccountOverviewResult alloc]
+                                                    jsonString:jsonResponse];
         }
         
         completionBlock(resultToReturn);
