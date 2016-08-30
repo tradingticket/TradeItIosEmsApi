@@ -7,9 +7,10 @@
 //
 
 #import "TradeItResult.h"
+#import "TradeItQuote.h"
 
 @interface TradeItQuotesResult : TradeItResult
 
-@property NSArray * quotes;
+@property NSArray<TradeItQuote, Optional> * quotes;
 
 @end

@@ -26,7 +26,9 @@
     request.apiKey = self.session.connector.apiKey;
 
     NSString *endpoint;
-    if (request.suffixMarket) {
+    if (request.isFxMarket) {
+        endpoint = @"order/getFxRate";
+    } else if (request.suffixMarket) {
         endpoint = @"marketdata/getYahooQuotes";
     } else if (request.symbol) {
         endpoint = @"marketdata/getQuote";
@@ -49,26 +51,6 @@
         }
 
         completionBlock(resultToReturn);
-    }];
-}
-
-- (void)getQuoteDataAsArray:(TradeItQuotesRequest *)request withCompletionBlock:(void (^)(TradeItResult *))completionBlock {
-    [self getQuoteData:request withCompletionBlock:^void(TradeItResult *tradeItResult) {
-        if ([tradeItResult isKindOfClass:[TradeItQuotesResult class]]) {
-            TradeItQuotesResult *result = (TradeItQuotesResult*)tradeItResult;
-            NSMutableArray<TradeItQuote *> *quotes = [[NSMutableArray alloc] init];
-            NSArray *quotesArray = result.quotes;
-
-            for (NSDictionary *quotesDictionary in quotesArray) {
-                TradeItQuote *quote = [[TradeItQuote alloc] initWithQuoteData:quotesDictionary];
-                [quotes addObject:quote];
-            }
-
-            result.quotes = quotes;
-            completionBlock(result);
-        } else {
-            completionBlock(tradeItResult);
-        }
     }];
 }
 
