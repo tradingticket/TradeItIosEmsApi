@@ -14,6 +14,7 @@
 #import "TradeItSecurityQuestionResult.h"
 #import "TradeItSecurityQuestionRequest.h"
 #import "TradeItBrokerAccount.h"
+#import "TradeItErrorResult.h"
 
 @implementation TradeItSession
 
@@ -69,6 +70,9 @@
 
     } else if ([status isEqualToString:@"INFORMATION_NEEDED"]) {
         resultToReturn = [TradeItJsonConverter buildResult:[TradeItSecurityQuestionResult alloc] jsonString:jsonResponse];
+        
+    } else if ([status isEqualToString:@"ERROR"]) {
+        resultToReturn = [TradeItJsonConverter buildResult:[TradeItErrorResult alloc] jsonString:jsonResponse];
     }
 
     return resultToReturn;
