@@ -14,13 +14,13 @@
 
 @interface TradeItBrokerAccount :  TIEMSJSONModel<NSCopying>
 
-@property (copy)NSString *accountBaseCurrency;
+@property (copy) NSString *accountBaseCurrency;
 
-@property (copy)NSString *accountNumber;
+@property (copy) NSString *accountNumber;
 
-@property (copy)NSString *name;
+@property (copy) NSString *name;
 
-@property (assign, nonatomic)BOOL tradable;
+@property (assign, nonatomic) BOOL tradable;
 
 - (id)initWithAccountBaseCurrency:(NSString *)accountBaseCurrency
                     accountNumber:(NSString *)accountNumber

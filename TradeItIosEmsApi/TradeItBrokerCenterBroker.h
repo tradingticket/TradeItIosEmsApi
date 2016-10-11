@@ -14,24 +14,23 @@
 
 @interface TradeItBrokerCenterBroker : TIEMSJSONModel<NSCopying>
 
-@property (copy) NSString<Optional>* broker;
-@property (copy) NSNumber<Optional>* active;
-@property (copy) NSString<Optional>* signupTitle;
-@property (copy) NSString<Optional>* signupDescription;
-@property (copy) NSString<Optional>* signupPostfix;
-@property (copy) NSString<Optional>* accountMinimum;
-@property (copy) NSString<Optional>* optionsOffer;
-@property (copy) NSString<Optional>* optionsPostfix;
-@property (copy) NSString<Optional>* stocksEtfsOffer;
-@property (copy) NSString<Optional>* stocksEtfsPostfix;
-@property (copy) NSString<Optional>* prompt;
-@property (copy) NSString<Optional>* promptUrl;
-@property (copy) NSArray<Optional>* backgroundColor;
-@property (copy) NSArray<Optional>* textColor;
-@property (copy) NSArray<Optional>* promptBackgroundColor;
-@property (copy) NSArray<Optional>* promptTextColor;
-@property (copy) NSDictionary<Optional>* logo;
-@property (copy) NSArray<Optional>* disclaimers;
-@property (copy) NSArray<Optional>* features;
+@property (nullable, copy) NSNumber<Optional> *active;
+@property (nullable, copy) NSString<Optional> *signupTitle;
+@property (nullable, copy) NSString<Optional> *signupDescription;
+@property (nullable, copy) NSString<Optional> *signupPostfix;
+@property (nullable, copy) NSString<Optional> *accountMinimum;
+@property (nullable, copy) NSString<Optional> *optionsOffer;
+@property (nullable, copy) NSString<Optional> *optionsPostfix;
+@property (nullable, copy) NSString<Optional> *stocksEtfsOffer;
+@property (nullable, copy) NSString<Optional> *stocksEtfsPostfix;
+@property (nullable, copy) NSString<Optional> *prompt;
+@property (nullable, copy) NSString<Optional> *promptUrl;
+@property (nullable, copy) NSArray<Optional> *backgroundColor;
+@property (nullable, copy) NSArray<Optional> *textColor;
+@property (nullable, copy) NSArray<Optional> *promptBackgroundColor;
+@property (nullable, copy) NSArray<Optional> *promptTextColor;
+@property (nullable, copy) NSDictionary<Optional> *logo;
+@property (nullable, copy) NSArray<Optional> *disclaimers;
+@property (nullable, copy) NSArray<Optional> *features;
 
 @end

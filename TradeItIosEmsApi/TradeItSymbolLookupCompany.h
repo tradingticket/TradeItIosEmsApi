@@ -15,9 +15,9 @@
 @interface TradeItSymbolLookupCompany : TIEMSJSONModel<NSCopying>
 
 // The company street symbol
-@property (copy) NSString<Optional> * symbol;
+@property (nullable, copy) NSString<Optional> *symbol;
 
 // The company name
-@property (copy) NSString<Optional> * name;
+@property (nullable, copy) NSString<Optional> *name;
 
 @end

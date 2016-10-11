@@ -10,16 +10,16 @@
 
 @interface TradeItFxAccountOverview : TIEMSJSONModel
 
-@property (copy) NSNumber<Optional> *totalValueBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *totalValueBaseCurrency;
 
-@property (copy) NSNumber<Optional> *totalValueUSD;
+@property (nullable, copy) NSNumber<Optional> *totalValueUSD;
 
-@property (copy) NSNumber<Optional> *buyingPowerBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *buyingPowerBaseCurrency;
 
-@property (copy) NSNumber<Optional> *unrealizedProfitAndLossBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *unrealizedProfitAndLossBaseCurrency;
 
-@property (copy) NSNumber<Optional> *realizedProfitAndLossBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *realizedProfitAndLossBaseCurrency;
 
-@property (copy) NSNumber<Optional> *marginBalanceBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *marginBalanceBaseCurrency;
 
 @end

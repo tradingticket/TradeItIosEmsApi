@@ -10,9 +10,9 @@
 
 @interface TradeItBroker : NSObject
 
-@property (copy) NSString *brokerShortName;
+@property (nullable, copy) NSString *brokerShortName;
 
-@property (copy) NSString *brokerLongName;
+@property (nullable, copy) NSString *brokerLongName;
 
 - (id)initWithShortName:(NSString *)brokerShortName
                longName:(NSString *)brokerLongName;

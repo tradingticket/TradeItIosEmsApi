@@ -14,18 +14,18 @@
 @interface TradeItGetPositionsResult : TradeItResult
 
 // The total account value
-@property (copy) NSNumber<Optional> *currentPage;
+@property (nullable, copy) NSNumber<Optional> *currentPage;
 
 // Cash available to withdraw
-@property (copy) NSNumber<Optional> *totalPages;
+@property (nullable, copy) NSNumber<Optional> *totalPages;
 
 // All non-FX positions in the account
-@property NSArray<TradeItPosition, Optional> *positions;
+@property (nullable) NSArray<TradeItPosition, Optional> *positions;
 
 // All FX positions in the account
-@property NSArray<TradeItFxPosition, Optional> *fxPositions;
+@property (nullable) NSArray<TradeItFxPosition, Optional> *fxPositions;
 
 // The base currency used for the positions
-@property (copy) NSString<Optional> *accountBaseCurrency;
+@property (nullable, copy) NSString<Optional> *accountBaseCurrency;
 
 @end

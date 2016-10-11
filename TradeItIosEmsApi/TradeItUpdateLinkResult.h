@@ -10,7 +10,7 @@
 
 @interface TradeItUpdateLinkResult : TradeItResult
 
-@property NSString * userId;
-@property NSString * userToken;
+@property (nullable) NSString *userId;
+@property (nullable) NSString *userToken;
 
 @end

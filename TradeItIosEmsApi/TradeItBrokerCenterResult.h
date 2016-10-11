@@ -14,6 +14,6 @@
 
 @property BOOL active;
 
-@property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
+@property (nullable) NSArray<TradeItBrokerCenterBroker, Optional> *brokers;
 
 @end

@@ -14,33 +14,33 @@
 @interface TradeItFxPosition : TIEMSJSONModel<NSCopying>
 
 // The currency pair XXX/XXX
-@property (copy) NSString<Optional> *symbol;
+@property (nullable, copy) NSString<Optional> *symbol;
 
 // The type of security: FX
-@property (copy) NSString<Optional> *symbolClass;
+@property (nullable, copy) NSString<Optional> *symbolClass;
 
 // Holding type "LONG"
-@property (copy) NSString<Optional> *holdingType;
+@property (nullable, copy) NSString<Optional> *holdingType;
 
 // The contract/lot size
-@property (copy) NSNumber<Optional> *quantity;
+@property (nullable, copy) NSNumber<Optional> *quantity;
 
 // Unrealized PnL denominated in the base currency of the account
-@property (copy) NSNumber<Optional> *totalUnrealizedProfitAndLossBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *totalUnrealizedProfitAndLossBaseCurrency;
 
 // Total value of the position denominated in the base currency of the account
-@property (copy) NSNumber<Optional> *totalValueBaseCurrency;
+@property (nullable, copy) NSNumber<Optional> *totalValueBaseCurrency;
 
 // Total value of the position denominated in USD
-@property (copy) NSNumber<Optional> *totalValueUSD;
+@property (nullable, copy) NSNumber<Optional> *totalValueUSD;
 
 // Average rate of the position
-@property (copy) NSNumber<Optional> *averagePrice;
+@property (nullable, copy) NSNumber<Optional> *averagePrice;
 
 // Limit price of the position
-@property (copy) NSNumber<Optional> *limitPrice;
+@property (nullable, copy) NSNumber<Optional> *limitPrice;
 
 // Stop price of the position
-@property (copy) NSNumber<Optional> *stopPrice;
+@property (nullable, copy) NSNumber<Optional> *stopPrice;
 
 @end

@@ -12,8 +12,8 @@
 
 @interface TradeItAccountOverviewResult : TradeItResult
 
-@property (copy) TradeItAccountOverview<Optional> *accountOverview;
+@property (nullable, copy) TradeItAccountOverview<Optional> *accountOverview;
 
-@property (copy) TradeItFxAccountOverview<Optional> *fxAccountOverview;
+@property (nullable, copy) TradeItFxAccountOverview<Optional> *fxAccountOverview;
 
 @end

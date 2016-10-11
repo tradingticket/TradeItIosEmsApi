@@ -15,33 +15,33 @@
 @interface TradeItPosition : TIEMSJSONModel<NSCopying>
 
 // The exchange symbol, or cusip for bonds
-@property (copy) NSString<Optional> *symbol;
+@property (nullable, copy) NSString<Optional> *symbol;
 
 // The type of security: EQUITY_OR_ETF, MUTUAL_FUND, OPTION, FIXED_INCOME, CASH, UNKOWN
-@property (copy) NSString<Optional> *symbolClass;
+@property (nullable, copy) NSString<Optional> *symbolClass;
 
 // "LONG" or "SHORT"
-@property (copy) NSString<Optional> *holdingType;
+@property (nullable, copy) NSString<Optional> *holdingType;
 
 // The total base cost of the security
-@property (copy) NSNumber<Optional> *costbasis;
+@property (nullable, copy) NSNumber<Optional> *costbasis;
 
 // The last traded price of the security
-@property (copy) NSNumber<Optional> *lastPrice;
+@property (nullable, copy) NSNumber<Optional> *lastPrice;
 
 // The total quantity held. It's a double to support cash and Mutual Funds
-@property (copy) NSNumber<Optional> *quantity;
+@property (nullable, copy) NSNumber<Optional> *quantity;
 
 // The total gain/loss in dollars for the day for the position
-@property (copy) NSNumber<Optional> *todayGainLossDollar;
+@property (nullable, copy) NSNumber<Optional> *todayGainLossDollar;
 
 // The percentage gain/loss for the day for the position
-@property (copy) NSNumber<Optional> *todayGainLossPercentage;
+@property (nullable, copy) NSNumber<Optional> *todayGainLossPercentage;
 
 // The total gain/loss in dollars for the position
-@property (copy) NSNumber<Optional> *totalGainLossDollar;
+@property (nullable, copy) NSNumber<Optional> *totalGainLossDollar;
 
 // The total percentage of gain/loss for the position
-@property (copy) NSNumber<Optional> *totalGainLossPercentage;
+@property (nullable, copy) NSNumber<Optional> *totalGainLossPercentage;
 
 @end

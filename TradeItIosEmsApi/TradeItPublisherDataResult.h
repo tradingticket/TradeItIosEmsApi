@@ -12,8 +12,8 @@
 @interface TradeItPublisherDataResult : TradeItResult
 
 @property BOOL brokerCenterActive;
-@property NSArray<TradeItBrokerCenterBroker, Optional> * brokers;
-@property (copy) NSArray* brokerList;
-@property NSString <Optional>* preferredBroker;
+@property (nullable) NSArray<TradeItBrokerCenterBroker, Optional> *brokers;
+@property (nullable, copy) NSArray *brokerList;
+@property (nullable) NSString <Optional> *preferredBroker;
 
 @end

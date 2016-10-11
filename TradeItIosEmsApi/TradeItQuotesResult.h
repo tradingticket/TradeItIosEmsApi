@@ -11,6 +11,6 @@
 
 @interface TradeItQuotesResult : TradeItResult
 
-@property NSArray<TradeItQuote, Optional> * quotes;
+@property (nullable) NSArray<TradeItQuote, Optional> *quotes;
 
 @end

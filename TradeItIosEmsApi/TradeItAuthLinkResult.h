@@ -11,9 +11,9 @@
 
 @interface TradeItAuthLinkResult : TradeItResult
 
-@property NSString * userId;
-@property NSString * userToken;
+@property (nullable) NSString *userId;
+@property (nullable) NSString *userToken;
 
--(NSString *)description;
+- (NSString *)description;
 
 @end

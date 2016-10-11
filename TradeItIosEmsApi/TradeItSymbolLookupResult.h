@@ -12,9 +12,9 @@
 @interface TradeItSymbolLookupResult : TradeItResult
 
 // The query you passed in
-@property (copy) NSString<Optional> * query;
+@property (nullable, copy) NSString<Optional> *query;
 
 // List of matches
-@property (copy) NSArray<Optional, TradeItSymbolLookupCompany> * results;
+@property (nullable, copy) NSArray<Optional, TradeItSymbolLookupCompany> *results;
 
 @end
